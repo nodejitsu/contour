@@ -4,7 +4,6 @@
 // Required native modules.
 //
 var url = require('url')
-  , versions = require('../').versions
   , fs = require('fs');
 
 //

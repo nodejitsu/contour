@@ -3,28 +3,27 @@
 /**
  * Native modules.
  */
-var EventEmitter = require('events').EventEmitter,
-    path = require('path'),
-    fs = require('fs');
+var EventEmitter = require('events').EventEmitter
+  , path = require('path')
+  , fs = require('fs');
 
 /**
  * Third-party modules.
  */
-var async = require('async'),
-    ejs = require('ejs'),
-    util = require('utile'),
-    cheerio = require('cheerio'),
-    md = require('marked'),
-    versions = require('../').versions,
-    Queue = require('./queue');
+var async = require('async')
+  , ejs = require('ejs')
+  , util = require('utile')
+  , cheerio = require('cheerio')
+  , md = require('marked')
+  , Queue = require('./queue');
 
 //
 // Defaults.
 //
-var defaults = require('./defaults'),
-    template = __dirname + '/templates',
-    Assets = require('./assets'),
-    env = process.env.NODE_ENV || 'development';
+var defaults = require('./defaults')
+  , template = __dirname + '/templates'
+  , Assets = require('./assets')
+  , env = process.env.NODE_ENV || 'development';
 
 /**
  * Scaffold will register several default HTML5 templates of Nodejitsu. These
@@ -45,8 +44,8 @@ function Scaffold(origin, options) {
   options = options || {};
 
   // Store options locally and force monitoring if not explicitly cancelled.
-  var store = options.store,
-      monitor = env === 'development' && store;
+  var store = options.store
+    , monitor = env === 'development' && store;
 
   // Check if we got a proper path to userland templates.
   if (!origin || !fs.existsSync(origin)) {
@@ -60,8 +59,7 @@ function Scaffold(origin, options) {
   // Collection of suppliers, file inclusion and supplied origin.
   this.app = {
     include: this.include.bind(this, origin),
-    markdown: this.markdown.bind(this),
-    versions: versions.tag.bind(versions)
+    markdown: this.markdown.bind(this)
   };
 
   // Switch to required framework.
@@ -180,12 +178,12 @@ Scaffold.prototype.markdown = function markdown() {
  * @api public
  */
 Scaffold.prototype.monitor = function monitor() {
-  var file = path.resolve(this._options.store),
-      extend = this._options.import,
-      self = this,
-      save,
-      config,
-      live;
+  var file = path.resolve(this._options.store)
+    , extend = this._options.import
+    , self = this
+    , save
+    , config
+    , live;
 
   /**
    * Add assets to the Square configuration.
@@ -314,9 +312,9 @@ Scaffold.prototype.monitor = function monitor() {
  * @api public
  */
 Scaffold.prototype.addFile = function addFile(file, incl, cache) {
-  var ref = this.app,
-      type = path.basename(file),
-      compiled;
+  var ref = this.app
+    ,  type = path.basename(file)
+    ,  compiled;
 
   // cache by default
   if (arguments.length !== 3) cache = true;
@@ -357,8 +355,8 @@ Scaffold.prototype.addFile = function addFile(file, incl, cache) {
  * @api private
  */
 Scaffold.prototype.supplier = function supplier(type, render, data, incl) {
-  var source = this._options.defaults,
-      copy, html, $;
+  var source = this._options.defaults
+    , copy, html, $;
 
   if (!incl) {
     if (type in source) {

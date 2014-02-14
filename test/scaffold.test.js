@@ -1,7 +1,7 @@
 describe('scaffold', function () {
   'use strict';
 
-  var Scaffold = require('../scaffold'),
+  var Scaffold = require('../index'),
       fs = require('fs'),
       ejs = require('ejs'),
       path = require('path'),
