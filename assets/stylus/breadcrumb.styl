@@ -1,0 +1,31 @@
+@import "defaults"
+
+/**
+ * Default breadcrumb style, last element/link will be highlighted
+ */
+.breadcrumb
+  a, s
+    display: inline-block
+    margin: 1.5em 0
+    color: $breadcrumb-inactive
+
+  .column &
+    a, s
+      margin: 0.25em 0 1em
+
+  s
+    font-size: 16px
+    font-weight: bold
+    padding: 0 0.25em
+
+  // Only color the active page if we are dealing with a subpage.
+  span:last-of-type > a
+    color: $base-color
+
+@media handheld, only screen and (max-width: 767px)
+  // Only add left margin if we are not inside columns
+  .column .breadcrumb
+    margin-left: 0
+
+  .breadcrumb
+    margin-left: 20px

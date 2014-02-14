@@ -1,0 +1,8 @@
+<%
+  menu.forEach(function generate(item) {
+    var active = item.page || item.href.split('/').filter(String).pop();
+%>
+<a href="<%= item.href %>" <%- ~page.indexOf(active) ? 'class="active"' : '' %>>
+  <%= item.name %>
+</a>
+<% }) %>

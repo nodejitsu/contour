@@ -1,0 +1,51 @@
+@import "defaults"
+
+.foss
+  absolute: top 38px right -38px
+  text-align: center
+  transform: rotate(45deg)
+  width: 180px
+  z-index: 1000
+
+  &.orange
+    background-color: $soon
+    background-image: linear-gradient(top, lighten(@background-color, 15) 10%, @background-color)
+
+  &.blue
+    background-color: #91BFD8
+    background-image: linear-gradient(top, lighten(@background-color, 5) 10%, @background-color)
+
+  &.grey
+    background-color: #C5C7C9
+    background-image: linear-gradient(top, lighten(@background-color, 5) 10%, @background-color)
+
+  a
+    border: 1px dashed #FFF
+    border-width: 1px 0
+    color: #FFF
+    display: inline-block
+    font-size: 13px
+    font-weight: bold
+    margin: 1px 0
+    padding: 1px 0
+    height: 28px
+    line-height: @height - 2
+    width: 180px
+
+    &:active
+    &:hover
+      color: #FFF
+      text-decoration: none
+
+@media handheld, only screen and (max-width: 910px)
+  .foss
+    border-bottom: 1px solid $divider
+    position: relative
+    right: 0
+    top: 0
+    transform: rotate(0)
+    margin-left: -20px
+    width: 106%
+
+    a
+      border: 0

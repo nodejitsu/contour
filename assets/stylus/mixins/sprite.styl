@@ -1,0 +1,14 @@
+@import defaults
+
+/**
+ * Generates the correct location of an image in the sprite.
+ *
+ * $x      - The x column number from the sprite.psd, defaults to 0
+ * $y      - The y column number from the sprite.psd, defaults to 0
+ * $height - The height of the sprite, defaults to $sprite-grid
+ * $width  - The width of the sprite, defaults to $height
+ */
+sprite($x = 0, $y = 0, $height = $sprite-grid, $width = $height)
+  background-position: (-($x * $sprite-grid)) (-($y * $sprite-grid))
+  height: unit($height, 'px')
+  width: unit($width, 'px')

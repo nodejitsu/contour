@@ -1,0 +1,54 @@
+@import "defaults"
+
+.modal-active
+  .row
+  .hero
+    vendor('filter', grayscale(100%) blur(5px))
+
+.row
+  transition: -webkit-filter 1s
+  -wekbit-transition: -webkit-filter 1s
+  -moz-transition: -moz-filter 1x
+
+.lightbox
+  background: $modal-bg
+  height: 100%
+  left: 0
+  margin: 0
+  padding: 0
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 100
+  overflow-y: auto
+  overflow-scrolling: touch
+
+.modal
+  left: 50%
+  width: 370px
+  padding: 30px
+  position: fixed
+  top: 50%
+  z-index: 200
+
+  h3
+    border-bottom: 1px solid $divider
+    margin: -10px -30px 25px
+    padding: 0 30px 22px
+
+    .close
+      float: right
+      font-size: 12px
+
+      &:hover
+        text-decoration: none
+
+@media handheld, only screen and (max-width: 767px)
+  .modal
+    left: 3%
+    margin: 0 !important // the important is required to overwrite the style margin
+    padding: 30px !important
+    right: 3%
+    top: 3%
+    width: 94%
+    height: auto

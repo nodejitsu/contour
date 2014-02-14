@@ -1,0 +1,38 @@
+<script type="cerebral/cortex">
+  {
+    "creditcard": {
+      "production": <%= production %>
+    }
+  }
+</script>
+
+<fieldset data-validate="<%= validate %>" class="row creditcard<%= 'class' in locals ? ' ' + locals.class : '' %>">
+  <legend><s class="ss-icon ss-creditcard"></s> Credit card</legend>
+
+  <label class="eightcol">
+    Card number
+    <input name="full_number" placeholder="•••• •••• •••• ••••" maxlength="19" value="<%= data.full_number || '' %>"<%= required ? ' required' : '' %>>
+  </label>
+  <label class="fourcol last">
+    Security code
+    <input name="cvv" placeholder="•••" maxlength="4" value="<%= data.cvv || '' %>"<%= required ? ' required' : '' %>>
+  </label>
+
+  <section class="eightcol">
+    <label class="twelvecol last" for="expiration_month">Expiration</label>
+    <select name="expiration_month" id="expiration_month" class="sixcol"<%= required ? ' required' : '' %>>
+      <% while(++month <= 12) { %>
+      <option value="<%= month %>"<%= +data.expiration_month === month ? ' selected' : '' %>><%= months[month - 1] %></option>
+      <% } %>
+    </select>
+    <select name="expiration_year" class="sixcol last"<%= required ? ' required' : '' %>>
+      <% while(++year < max_year) { %>
+      <option value="<%= year %>"<%= +data.expiration_year === year ? ' selected' : '' %>><%= year %></option>
+      <% } %>
+    </select>
+  </section>
+
+  <p class="twelvecol card gone">
+    You will be paying with: <strong></strong>
+  </p>
+</fieldset>

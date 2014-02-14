@@ -1,0 +1,60 @@
+@import "defaults"
+
+/**
+ * Force the correct box model that we actually want to use in our layouts. This way
+ * the padding respects the set width of our layout.
+ */
+*
+  box-sizing: border-box
+
+/**
+ * Force the same font-smoothing across different platforms. This mostly affects
+ * webkit based browsers on a Mac as it renders the font as a fat turd.. Regular
+ * font hacks such as the -webkit-text-stroke hack have a huge performance overhead
+ * where font-smoothing works without any performance hits.
+ */
+html
+button
+  font-smoothing(antialiased)
+  text-rendering: optimizeLegibility
+
+/**
+ * Helper and utility classes
+ */
+.right:not(.ss-icon)
+  float: right
+
+.gone
+  display: none
+
+.box
+  background-color: #FFF
+  background-image: linear-gradient(top, $box-bg-top 0%, $box-bg-mid 50%, $box-bg-bottom 100%)
+  border-bottom-width: 2px
+  border-radius: $radius
+  border: 1px solid $divider
+
+hr
+  border: 0
+  border-bottom: 1px solid $divider
+  margin: 25px 0
+
+
+/**
+ * Default sprite class, setup so we don't override the background color of the
+ * element that we are attached upon.
+ */
+.sprite
+.sprited-list li:before
+  background-image: url($sprite-location)
+  background-repeat: no-repeat
+
+  display: inline-block
+  margin-right: 3px
+
+/**
+ * We are using the <s> as sprite indicator in the front end, but it's also used for
+ * font based sprites, so don't put stike through the font
+ */
+s
+  text-decoration: none

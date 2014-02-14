@@ -1,0 +1,9 @@
+<% if (href.length) { %>
+<a href="<%= href %>" class="<%= collection[type].class %><%= locals.class ? ' ' + locals.class : '' %>"<%- locals.target ? ' target="' + target + '"' : '' %>>
+  <%- locals.text ? text : collection[type].text %>
+</a>
+<% } else { %>
+<button class="<%= collection[type].class %><%= locals.class ? ' ' + locals.class : '' %>">
+  <%- locals.text ? text : collection[type].text %>
+</button>
+<% } %>

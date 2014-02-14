@@ -1,0 +1,60 @@
+@import "defaults"
+
+/**
+ * Basic typography styling for the over look and feel of the site.
+ */
+body
+  color: $base-color
+  font-family: $font-family
+  font-size: 14px
+  height: 100%
+  letter-spacing: 0.020em
+  line-height: 22px
+
+/**
+ * Header styling.
+ */
+h1
+  font-size: 24px
+
+h2
+  font-size: 22px
+
+h3
+  font-size: 18px
+
+  &[id]
+    color: $link
+
+h4
+  font-size: 16px
+
+h5
+  font-size: 16px
+
+  small
+    color: $h5-small
+    display: block
+    font-size: 14px
+    font-weight: normal
+
+h6
+  font-size: 14px
+  margin-bottom: 0
+
+hgroup
+  h2 ~ h3
+    color: $h2-pre-h3
+    margin-top: -15px
+
+/**
+ * Link styling
+ */
+a
+  color: $link
+  font-weight: bold
+  text-decoration: none
+
+  &:hover
+    color: $link-hover
+    text-decoration: underline

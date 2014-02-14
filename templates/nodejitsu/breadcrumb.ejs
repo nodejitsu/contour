@@ -1,0 +1,11 @@
+<nav class="breadcrumb row">
+  <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+    <a href="/" itemprop="url"><span itemprop="title">Home</span></a>
+  </span>
+  <% breadcrumb.forEach(function (link) { %>
+    <s role="presentation">&rsaquo;</s>
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="<%= link.href %>" itemprop="url"><span itemprop="title"><%= link.text %></span></a>
+    </span>
+  <% }) %>
+</nav>

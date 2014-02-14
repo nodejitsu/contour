@@ -1,0 +1,34 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge;chrome=1">
+  <title><%= title %> | Nodejitsu Inc.</title>
+  <meta name="description" content="<%= description %>">
+  <meta name="keywords" content="<%= keywords.join(',') %>">
+  <meta name="robots" content="<%= 'robots' in locals ? robots : 'noindex,nofollow' %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Nodejitsu Inc.">
+  <link rel="shortcut icon" href="/favicon.png">
+  <% (production ? stylesheets.map(app.versions) : stylesheets).forEach(function (sheet) { %>
+  <link rel="stylesheet" href="<%= sheet %>">
+  <% }) %>
+  <link rel="canonical" href="<%= canonical %>">
+  <script type="text/javascript" src="//use.typekit.net/gmp8svh.js"></script>
+  <script type="text/javascript">
+    // Load the typekit shizzle
+    try{ Typekit.load(); }
+    catch (e) {}
+
+    // Remove the no-js
+    document.documentElement.className = '';
+  </script>
+  <% if (optimizely) { %>
+  <script src="//cdn.optimizely.com/js/<%= optimizely %>.js"></script>
+  <% } else if (experiment) { %>
+  <%- app.experiments({ experiment: experiment }) %>
+  <% } %>
+  <%- extension ? extension : '' %>
+</head>
+<body class="container">
+  <%- foss ? app.foss('object' === typeof foss ? foss : {}) : '' %>

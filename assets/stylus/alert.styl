@@ -1,0 +1,40 @@
+@import "defaults"
+
+.alert
+  border-radius: $radius
+  display: block
+  font-weight: bold
+  padding: 15px
+  position: relative
+  margin: 30px auto
+
+  &.alert-notice
+    background: $alert-notice-background
+    border: 1px solid $alert-notice-border
+    color: $alert-notice-color
+
+  &.alert-error
+    background: $alert-error-background
+    border: 1px solid $alert-error-border
+    color: $alert-error-color
+
+  &.alert-success
+    background: $alert-success-background
+    border: 1px solid $alert-success-border
+    color: $alert-success-color
+
+  &.alert-info
+    background: $alert-info-background
+    border: 1px solid $alert-info-border
+    color: $alert-info-color
+
+  &.gone
+    display: none
+
+  .close
+    color: #CCC
+    font-size: 10px
+    position: absolute
+    right: 6px
+    text-decoration: none
+    top: 2px

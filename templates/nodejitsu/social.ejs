@@ -1,0 +1,13 @@
+<div class="social <%= layout %>">
+  <% if (~load.indexOf('facebook')) { %>
+  <div class="fb-share-button" data-href="<%= domain %>" data-type="button_count"></div>
+  <% } %>
+
+  <% if (~load.indexOf('hackernews')) { %>
+  <a href="http://news.ycombinator.com/submit" class="hn-share-button">Vote on HN</a>
+  <% } %>
+
+  <% if (~load.indexOf('twitter')) { %>
+  <a href="https://twitter.com/share" class="twitter-share-button" data-via="nodejitsu" data-url="<%= domain %>"></a>
+  <% } %>
+</div>

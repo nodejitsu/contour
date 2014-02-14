@@ -1,0 +1,51 @@
+<% if (!production) { %>
+<script>
+  !function(l,i,v,e){
+    e=l.createElement(i);v=l.getElementsByTagName(i)[0];e.async=true;
+    v.parentNode.insertBefore(e,v);
+    e.src="http://localhost:8888/live/reload.js";
+  }(document,"script");
+</script>
+<% } %>
+
+<script
+  id="loader"
+  data-load="<%- production ? load.map(app.versions).join(',') : load.join(',') %>"
+  data-plain="<%- plain.concat(external).join(',') %>"
+  data-apps="<%- apps.concat(custom).join(',') %>">
+// Load our JavaScript files
+!function loader(l,o,a,d,e,r) {
+  d = l.getElementsByTagName(o)[0];
+  a = [];
+
+  // Append extra files that need to be loaded
+  e = l.getElementById('loader');
+  a = a.concat(
+    e.getAttribute('data-load').split(','),
+    e.getAttribute('data-plain').split(',')
+  ).filter(Boolean);
+  e = r = a.length;
+  while (r--) {
+    !function (w,t,f) {
+      t = l.createElement(o);
+      t.async = true;
+      d.parentNode.insertBefore(t, d);
+
+      t.onload = t.onerror = t.onreadystatechange = function () {
+        if ((t.readyState && !(/^c|loade/.test(t.readyState))) || t.loaded) return;
+        t.loaded = e--;
+
+        // All files are loaded
+        if (!e) {
+          f = l.createEvent('CustomEvent');
+          f.initCustomEvent('cortex', false, false, null);
+          l.dispatchEvent(f);
+          document.documentElement.className += ' cortex-loaded';
+        }
+      };
+
+      t.src = w;
+    }(a[r].replace(/\[type\]/, <%- production %> ? 'min' : 'dev'));
+  }
+}(document, 'script');
+</script>

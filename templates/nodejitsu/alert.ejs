@@ -1,0 +1,4 @@
+<p class="alert alert-<%= type %><%= locals.class ? ' ' + locals.class : '' %>">
+  <% if (closable) { %><a href="#close" class="close"><s class="ss-icon ss-delete"></s></a><% } %>
+  <%- text %>
+</p>

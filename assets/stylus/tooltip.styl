@@ -1,0 +1,39 @@
+@import "mixins/arrow"
+
+// Slightly opaque blue background
+$color = rgba(71, 137, 172, .8)
+
+.tooltip
+  background: $color
+  border-radius: 5px
+  color: #FFF
+  display: block
+  max-width: 300px
+  max-height: 300px
+  padding: 10px
+  position: absolute
+  z-index: 1000
+
+  &.right
+    arrow('left', 50%, 6px, $color, transparent, 1px)
+
+    &:before
+      margin-top: -6px
+
+  &.left
+    arrow('right', 50%, 6px, $color, transparent, 1px)
+
+    &:before
+      margin-top: -6px
+
+  &.bottom
+    arrow('top', 50%, 6px, $color, transparent, 1px)
+
+    &:before
+      margin-left: -6px
+
+  &.top
+    arrow('bottom', 50%, 6px, $color, transparent, 1px)
+
+    &:before
+      margin-left: -6px

@@ -1,0 +1,92 @@
+<section class="navigation" id="navigation">
+  <nav class="row">
+    <h1>
+      <a href="/" class="logo" title="Back to the homepage">Nodejitsu</a>
+    </h1>
+    <a href="#navigation" class="mobile btn ss-rows"></a>
+
+    <%
+      navigation.forEach(function generate(menu) {
+        var active = menu.root || menu.href.split('/').filter(String).shift();
+    %>
+    <a href="<%= menu.href %>" <%- ~root.indexOf(active) ? 'class="active"' : '' %>>
+      <%= menu.name %>
+    </a>
+    <% }) %>
+
+    <% if (login) { %>
+    <a href="#" class="login right btn" title="Login with your credentials">
+      <s class="ss-lock" role="presentation"></s>
+      Login
+    </a>
+    <% } %>
+
+    <% if (signup) { %>
+    <%-
+      app.button({
+        href: '/signup',
+        text: '<s class="ss-icon ss-uploadcloud"></s> sign up',
+        class: 'right sign'
+      })
+    %>
+    <% } %>
+
+    <% if (logout) { %>
+    <a href="/logout" class="login right btn" title="Logout">
+      <s class="ss-unlock" role="presentation"></s>
+      Logout
+    </a>
+    <% } %>
+  </nav>
+</section>
+
+<% if (login) { %>
+<div class="lightbox gone"></div>
+
+<section class="modal box gone">
+  <h3>
+    Gimme your credentials
+    <a href="#" class="close ss-delete"></a>
+  </h3>
+
+  <p>Log in below to your Nodejitsu account and start rocking.</p>
+
+  <%- app.alert({ type: 'notice', class: 'error gone' }) %>
+  <form method="POST" action="/signin">
+    <label>
+      Username
+      <input name="username" placeholder="username" autofocus="autofocus" />
+    </label>
+
+    <label>
+      Password
+      <input name="password" placeholder="password" type="password" />
+    </label>
+
+    <%- app.submit({ type: 'login' }) %>
+
+    <a href="#" class="forgotten">Forgot password?</a>
+  </form>
+</section>
+
+<script type="plates/cortex" id="plates-forgot">
+  <h3>
+    Forgot your password?
+    <a href="#" class="close ss-delete"></a>
+  </h3>
+
+  <p>Tell us your username and we will reset it for you.</p>
+
+  <%- app.alert({ type: 'notice', class: 'error' }) %>
+  <%- app.alert({ type: 'success', class: 'success' }) %>
+
+  <form method="POST" action="/forgot">
+    <label>
+      Username
+      <input name="username" placeholder="username" autofocus="autofocus" />
+    </label>
+
+    <%- app.submit({ type: 'password' }) %>
+  </form>
+</script>
+<% } %>

@@ -1,0 +1,51 @@
+/**
+ * Create an arrow on a side of the element using before and after pseudo selectors.
+ *
+ * Example: arrow('right', 20px, 15px, $grey4, #FFF, 1) display an arrow to the right
+ * of the element 20 pixels from the top. The border is grey colored and 1 pixel wide.
+ * If the background color matches the parents color it will look like the arrow
+ * originates from the parent.
+ *
+ * Works in all major browser, but IE 6 and 7.
+ *
+ * @param string side which side to show the star
+ * @param integer offset from the top or left dependant on side (pixels)
+ * @param integer size of arrow (pixels)
+ * @param string border color
+ * @param string background color
+ * @param integer width of the border
+ * @return markup for attached to parent
+ */
+arrow(side, offset, size, border, background, width)
+  // Transpose the sides, right arrow requires left border etc.
+  if side is 'right'
+    side = 'left'
+    pos = left 100% top 0
+  else if side is 'left'
+    side = 'right'
+    pos = right 100% top 0
+  else if side is 'top'
+    side = 'bottom'
+    pos = left 0 bottom 100%
+  else if side is 'bottom'
+    side = 'top'
+    pos = left 0 top 100%
+
+  sides = side is 'left' or side is 'right' ? 1 : 0
+
+  &:before
+  &:after
+    absolute: pos
+    height: 0
+    width: 0
+    content: ' '
+
+  &:before
+    {sides ? 'top' : 'left'}: offset
+    border: size solid transparent
+    border-{side}-color: border
+
+  &:after
+    {sides ? 'top' : 'left'}: offset
+    border: (size - width) solid transparent
+    border-{side}-color: background

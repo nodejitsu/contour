@@ -1,0 +1,146 @@
+@import "defaults"
+
+/**
+ * The 1140 grid system is based on the grid system from cssgrid - downloaded
+ * at 25 July 2012.
+ *
+ * - http://cssgrid.net
+ * - https://github.com/andytlr/cssgrid
+ *
+ * It includes the following files:
+ *
+ * - 1140.css
+ * - mobile.css
+ */
+
+.container
+  padding-left: 20px
+  padding-right: 20px
+  overflow-x: hidden
+
+.row
+  margin: 0 auto
+  max-width: 1140px
+  overflow: hidden
+  width: 100%
+
+  .onecol
+    width: 4.85%
+
+  .twocol
+    width: 13.45%
+
+  .threecol
+    width: 22.05%
+
+  .fourcol
+    width: 30.75%
+
+  .fivecol
+    width: 39.45%
+
+  .sixcol
+    width: 48%
+
+  .sevencol
+    width: 56.75%
+
+  .eightcol
+    width: 65.4%
+
+  .ninecol
+    width: 74.05%
+
+  .tencol
+    width: 82.7%
+
+  .elevencol
+    width: 91.35%
+
+  .twelvecol
+    float: left
+    width: 100%
+
+.onecol
+.twocol
+.threecol
+.fourcol
+.fivecol
+.sixcol
+.sevencol
+.eightcol
+.ninecol
+.tencol
+.elevencol
+  float: left
+  margin-right: 3.8%
+  min-height: 1px
+
+.last
+  margin-right: 0px
+
+img
+object
+embed
+  max-width: 100%
+
+img
+  height: auto
+
+/* Mobile */
+@media handheld, only screen and (max-width: 767px)
+  body
+    font-size: 16px
+    text-size-adjust: none
+
+  .row
+  body
+  .container
+    margin-left: 0
+    margin-right: 0
+    padding-left: 0
+    padding-right: 0
+    width: 100%
+
+  .row .row
+    .onecol
+    .twocol
+    .threecol
+    .fourcol
+    .fivecol
+    .sixcol
+    .sevencol
+    .eightcol
+    .ninecol
+    .tencol
+    .elevencol
+    .twelvecol
+      float: none
+      margin-left: 0
+      margin-right: 0
+      padding-left: 0
+      padding-right: 0
+      width: auto
+
+  .partial
+    padding: 0 20px
+
+  .row
+    .onecol
+    .twocol
+    .threecol
+    .fourcol
+    .fivecol
+    .sixcol
+    .sevencol
+    .eightcol
+    .ninecol
+    .tencol
+    .elevencol
+    .twelvecol
+      float: none
+      margin-left: 0
+      margin-right: 0
+      padding-left: 20px
+      padding-right: 20px
+      width: auto
