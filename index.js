@@ -22,8 +22,7 @@ var async = require('async')
 //
 var defaults = require('./defaults')
   , template = __dirname + '/templates'
-  , Assets = require('./assets')
-  , env = process.env.NODE_ENV || 'development';
+  , Assets = require('./assets');
 
 /**
  * Scaffold will register several default HTML5 templates of Nodejitsu. These
@@ -45,7 +44,8 @@ function Scaffold(origin, options) {
 
   // Store options locally and force monitoring if not explicitly cancelled.
   var store = options.store
-    , monitor = env === 'development' && store;
+    , env = process.env.NODE_ENV || 'development'
+    , monitor = (env === 'development' || env === 'testing') && store;
 
   // Check if we got a proper path to userland templates.
   if (!origin || !fs.existsSync(origin)) {
@@ -368,7 +368,7 @@ Scaffold.prototype.supplier = function supplier(type, render, data, incl) {
 
       // Include copied defaults to prevent polution of multiple inclusions.
       data = util.mixin(copy, data || {}, this._queue.discharge(type));
-      data.production = env === 'production';
+      data.production = process.env.NODE_ENV === 'production';
     }
 
     // Notify an native Nodejitsu-app template was included.
@@ -385,7 +385,7 @@ Scaffold.prototype.supplier = function supplier(type, render, data, incl) {
     Object.keys(data.attributes).forEach(function loopAttributes(selector) {
       var attr = data.attributes[selector];
       Object.keys(attr).forEach(function loopDataKeys(key) {
-        $(selector).data(key, attr[key]);
+        $(selector).attr('data-' + key, attr[key]);
       });
     });
 

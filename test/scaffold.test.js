@@ -14,7 +14,7 @@ describe('scaffold', function () {
 
   it('imports custom Square configuration', function (done) {
     // First store our import relative to /tmp/square.json else eson can't handle it
-    fs.createReadStream('test/fixtures/import.json')
+    fs.createReadStream(__dirname + '/fixtures/import.json')
       .pipe(fs.createWriteStream('/tmp/import.json'))
       .on('close', function () {
 
@@ -53,7 +53,7 @@ describe('scaffold', function () {
 
   it('imports allows multiple custom Square configuration as array', function (done) {
     // First store our import relative to /tmp/square.json else eson can't handle it
-    fs.createReadStream('test/fixtures/import.json')
+    fs.createReadStream(__dirname + '/fixtures/import.json')
       .pipe(fs.createWriteStream('/tmp/import.json'))
       .on('close', function () {
 
@@ -72,18 +72,17 @@ describe('scaffold', function () {
     });
   });
 
-
   describe('Constructor', function () {
-    var key = path.resolve('scaffold/index.js'),
-        scaffold,
-        monitor;
+    var key = path.resolve('scaffold/index.js')
+      , scaffold
+      , monitor;
 
     // Required to allow one test to change NODE_ENV to production
     beforeEach(function () {
       delete require.cache[key];
       process.env.NODE_ENV = 'testing';
 
-      Scaffold = require('../scaffold');
+      Scaffold = require('../');
       monitor = sinon.stub(Scaffold.prototype, 'monitor');
       scaffold = new Scaffold('./', { store: file });
     });
@@ -107,7 +106,6 @@ describe('scaffold', function () {
     it('will not call #monitor if environment is set to production', function () {
       delete require.cache[key];
       process.env.NODE_ENV = 'production';
-      Scaffold = require('../scaffold');
       monitor.restore();
       monitor = sinon.stub(Scaffold.prototype, 'monitor');
 
@@ -121,7 +119,7 @@ describe('scaffold', function () {
     });
 
     it('creates app methods by templates names and chosen brand', function () {
-      var files = fs.readdirSync('scaffold/templates/nodejitsu');
+      var files = fs.readdirSync('templates/nodejitsu');
 
       files.forEach(function checkFunction(file) {
         expect(scaffold.app).to.have.property(path.basename(file, '.ejs'));
@@ -130,7 +128,7 @@ describe('scaffold', function () {
 
     it('switching brand will load alternate templates', function () {
       var brand = 'opsmezzo',
-          files = fs.readdirSync('scaffold/templates/' + brand);
+          files = fs.readdirSync('templates/' + brand);
 
       scaffold = new Scaffold('./', { store: file, brand: brand });
 
@@ -156,7 +154,7 @@ describe('scaffold', function () {
           });
 
       expect(scaffold._options).to.have.property('brand', brand);
-      expect(scaffold._options).to.have.property('template', path.resolve('scaffold/templates', brand));
+      expect(scaffold._options).to.have.property('template', path.resolve('templates', brand));
       expect(scaffold._options).to.have.property('store', file);
       expect(scaffold._options).to.have.property('output', output);
     });
@@ -168,7 +166,7 @@ describe('scaffold', function () {
 
   describe('#addFile', function () {
     var scaffold = new Scaffold('./', { store: file });
-    scaffold.addFile('../../../test/fixtures/scaffold/addFile.ejs');
+    scaffold.addFile('../../test/fixtures/scaffold/addFile.ejs');
 
     it('uses filename as function name', function () {
       expect(scaffold.app).to.have.property('addFile');
@@ -180,7 +178,7 @@ describe('scaffold', function () {
     });
 
     it('does not store compiled template of custom inclusion', function () {
-      scaffold.addFile('../../../test/fixtures/scaffold/main.ejs', true);
+      scaffold.addFile('../../test/fixtures/scaffold/main.ejs', true);
 
       expect(scaffold.app).to.not.have.property('main');
       expect(scaffold.app).to.have.property('addFile');
@@ -189,7 +187,7 @@ describe('scaffold', function () {
     it('returns early if the compiled template was already generated', function () {
       var compile = sinon.spy(ejs, 'compile');
 
-      scaffold.addFile('../../../test/fixtures/scaffold/addFile.ejs');
+      scaffold.addFile('../../test/fixtures/scaffold/addFile.ejs');
       expect(compile).to.not.be.called;
 
       compile.restore();
@@ -198,7 +196,7 @@ describe('scaffold', function () {
     it('does not return early if the template is custom', function () {
       var compile = sinon.spy(ejs, 'compile');
 
-      scaffold.addFile('../../../test/fixtures/scaffold/main.ejs', true);
+      scaffold.addFile('../../test/fixtures/scaffold/main.ejs', true);
       expect(compile).to.be.calledOnce;
 
       compile.restore();
@@ -207,7 +205,7 @@ describe('scaffold', function () {
 
   describe('#supplier', function () {
     var scaffold = new Scaffold('./test/fixtures/scaffold', { store: file }),
-        fn = ejs.compile(fs.readFileSync('scaffold/templates/nodejitsu/submit.ejs', 'utf-8'));
+        fn = ejs.compile(fs.readFileSync(__dirname + '/../templates/nodejitsu/submit.ejs', 'utf-8'));
 
     it('calls compiled ejs function and merges in default data', function () {
       var called = false,
@@ -220,13 +218,13 @@ describe('scaffold', function () {
     });
 
     it('always adds data.app so nested app#template calls are possible', function () {
-      scaffold.addFile('../../../test/fixtures/scaffold/chainclude.ejs');
+      scaffold.addFile('../../test/fixtures/scaffold/chainclude.ejs');
       expect(scaffold.app.chainclude({})).to.equal('<strong>Some small test template</strong>\n\n');
     });
 
     it('calls hook if supplied to defaults, cannot be overwritten', function () {
       var test = false,
-          social = ejs.compile(fs.readFileSync('scaffold/templates/nodejitsu/social.ejs', 'utf-8')),
+          social = ejs.compile(fs.readFileSync('templates/nodejitsu/social.ejs', 'utf-8')),
           hook = sinon.spy(scaffold._options.defaults.social, 'hook');
 
       scaffold.supplier('social', social, { hook: function () { test = true; }});
@@ -264,7 +262,7 @@ describe('scaffold', function () {
       });
 
       expect(html).to.equal(
-        '<button data-type="test" type="submit" name="submit-btn" class="call-to btn">\n  Submit\n</button>\n'
+        '<button type="submit" name="submit-btn" class="call-to btn" data-type="test">\n  Submit\n</button>\n'
       );
     });
   });
@@ -298,7 +296,7 @@ describe('scaffold', function () {
 
     it('returns file content', function () {
       add.restore();
-      expect(scaffold.include(dir, file)).to.equal('<h2>Some header</h2>\n<p>and content to wrap in a paragraph</p>\n\n');
+      expect(scaffold.include(dir, file)).to.equal('<h2 id="some-header">Some header</h2>\n<p>and content to wrap in a paragraph</p>\n\n');
     });
   });
 
@@ -307,7 +305,7 @@ describe('scaffold', function () {
       var scaffold = new Scaffold('./test/fixtures/scaffold'),
           inc = sinon.spy(scaffold.app, 'include');
 
-      scaffold.addFile('../../../test/fixtures/scaffold/main.ejs');
+      scaffold.addFile('../../test/fixtures/scaffold/main.ejs');
       scaffold.app.main({});
       expect(inc).to.be.calledOnce;
 
@@ -316,10 +314,10 @@ describe('scaffold', function () {
 
     it('returns file content', function () {
       var scaffold = new Scaffold('./test/fixtures/scaffold');
-      scaffold.addFile('../../../test/fixtures/scaffold/main.ejs');
+      scaffold.addFile('../../test/fixtures/scaffold/main.ejs');
 
       expect(scaffold.app.main({})).to.equal(
-        '<h2>Some header</h2>\n<p>and content to wrap in a paragraph</p>\n\n'
+        '<h2 id="some-header">Some header</h2>\n<p>and content to wrap in a paragraph</p>\n\n'
       );
     });
   });
@@ -339,7 +337,7 @@ describe('scaffold', function () {
           inc = sinon.spy(fs, 'readFileSync');
 
       scaffold.getFileContent(main);
-      scaffold.getFileContent(main);
+      scaffold.getFileContent(main, true);
 
       expect(inc).to.be.calledOnce;
       inc.restore();
@@ -421,7 +419,7 @@ describe('scaffold', function () {
 
       it('is initialized to localhost if development', function () {
         // UA-24971485-6 is the localhost dev account in GA.
-        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12'] }, production: false });
+        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12'] }});
         expect(result).to.include("ga.getByName('jitsu-6').send");
         expect(result).to.include("'UA-24971485-6'");
       });
@@ -429,7 +427,6 @@ describe('scaffold', function () {
       it('that initializes segment.io to dev account if development', function () {
         // with segment.io GA is not added literally.
         var result = scaffold.app.analytics({
-          production: false,
           ids: {
             ga: ['UA-123823-12', 'UA-123823-1'],
             segment: {key: 'ajk1230l', ga: 'UA-123823-12'}
@@ -441,23 +438,37 @@ describe('scaffold', function () {
       });
 
       it('is initialized to nodejitsu.com by default if production', function () {
-        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12'] }, production: true });
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
+        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12'] }});
+
         expect(result).to.include("cookieDomain: 'nodejitsu.com'");
         expect(result).to.include("ga.getByName('jitsu-12').send");
         expect(result).to.include("'UA-123823-12'");
+
+        process.env.NODE_ENV = env;
       });
 
       it('can be initialized with multiple trackers', function () {
-        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12', 'UA-123823-1'] }, production: true});
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
+        var result = scaffold.app.analytics({ ids: { ga: ['UA-123823-12', 'UA-123823-1'] }});
+
         expect(result).to.include("ga.getByName('jitsu-1').send");
         expect(result).to.include("ga.getByName('jitsu-12').send");
         expect(result).to.include("'UA-123823-1'");
         expect(result).to.include("'UA-123823-12'");
+
+        process.env.NODE_ENV = env;
       });
 
       it('will prioritize segment.io over google analytics', function () {
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
         var result = scaffold.app.analytics({
-          production: true,
           ids: {
             ga: ['UA-123823-12', 'UA-123823-1'],
             segment: {key: 'ajk1230l', ga: 'UA-123823-12'}
@@ -468,11 +479,15 @@ describe('scaffold', function () {
         expect(result).to.include("'UA-123823-1'");
         expect(result).to.include('analytics.load("ajk1230l");');
         expect(result).to.include('"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js"');
+
+        process.env.NODE_ENV = env;
       });
 
       it('will wrap GA in ready call of segment.io if the GA ID is unique', function () {
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
         var result = scaffold.app.analytics({
-          production: true,
           ids: {
             ga: ['UA-123823-12'],
             segment: {key: 'ajk1230l', ga: 'UA-123823-3'}
@@ -484,9 +499,14 @@ describe('scaffold', function () {
         expect(result).to.include("analytics.ready(function ready() {");
         expect(result).to.not.include('//www.google-analytics.com/analytics.js');
         expect(result).to.include('"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js"');
+
+        process.env.NODE_ENV = env;
       });
 
       it('will also load google analytics through segment.io if tracker has mutliple IDs', function () {
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
         var result = scaffold.app.analytics({
           production: true,
           ids: {
@@ -500,11 +520,15 @@ describe('scaffold', function () {
         expect(result).to.include("analytics.ready(function ready() {");
         expect(result).to.not.include('//www.google-analytics.com/analytics.js');
         expect(result).to.include('"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js"');
+
+        process.env.NODE_ENV = env;
       });
 
       it('will ignore the tracker account that is deferred to segment.io', function () {
+        var env = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+
         var result = scaffold.app.analytics({
-          production: true,
           ids: {
             ga: ['UA-123823-12', 'UA-123823-1'],
             segment: {key: 'ajk1230l', ga: 'UA-123823-12'}
@@ -515,6 +539,8 @@ describe('scaffold', function () {
         expect(result).to.include('"ga": {\n      "enabled": true,');
         expect(result).to.not.include("ga.getByName('jitsu-12').send");
         expect(result).to.not.include("'UA-123823-12'");
+
+        process.env.NODE_ENV = env;
       });
     });
   });
