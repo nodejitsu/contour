@@ -1,12 +1,15 @@
 describe('scaffold', function () {
   'use strict';
 
-  var Scaffold = require('../index'),
-      fs = require('fs'),
-      ejs = require('ejs'),
-      path = require('path'),
-      async = require('async'),
-      file = '/tmp/square.json';
+  var Scaffold = require('../index')
+    , Square = require('square')
+    , common = require('./common')
+    , expect = common.expect
+    , sinon = common.sinon
+    , fs = require('fs')
+    , ejs = require('ejs')
+    , path = require('path')
+    , async = require('async');
 
   it('is exposed as constructor', function () {
     expect(Scaffold).to.be.a('function');
@@ -20,21 +23,27 @@ describe('scaffold', function () {
 
       var scaffold = new Scaffold('./test/fixtures/scaffold', {
         store: '/tmp/custom.json',
-        import: 'import.json'
+        import: 'import.json',
+        monitor: true
       });
 
-      scaffold.on('monitoring', function () {
+      setTimeout(function () {
         var result = scaffold._square.package.configuration.dist;
         expect(result).to.have.property('dev', 'test');
         expect(result).to.have.property('min', 'test');
 
-        fs.unlink('/tmp/custom.json', done);
-      });
+        scaffold.live.adaptable.once('close', function () {
+          scaffold.live.destroy();
+          fs.unlink('/tmp/custom.json', done);
+        });
+
+        scaffold.live.adaptable.close();
+      }, 300);
     });
   });
 
   it('provides a debouncer for deferred calls to refresh', function (done) {
-    var scaffold = new Scaffold('./', { store: file }),
+    var scaffold = new Scaffold('./', { store: common.file }),
         i, timer, fn = scaffold.debounce(scaffold.emit.bind(scaffold, 'debounce'), 100);
 
     function loop() {
@@ -59,16 +68,22 @@ describe('scaffold', function () {
 
       var scaffold = new Scaffold('./test/fixtures/scaffold', {
         store: '/tmp/custom.json',
-        import: [ 'import.json', 'import.json']
+        import: [ 'import.json', 'import.json' ],
+        monitor: true
       });
 
-      scaffold.on('monitoring', function () {
+      setTimeout(function () {
         var result = scaffold._square.package.configuration.dist;
         expect(result).to.have.property('dev', 'test');
         expect(result).to.have.property('min', 'test');
 
-        fs.unlink('/tmp/custom.json', done);
-      });
+        scaffold.live.adaptable.once('close', function () {
+          scaffold.live.destroy();
+          fs.unlink('/tmp/custom.json', done);
+        });
+
+        scaffold.live.adaptable.close();
+      }, 300);
     });
   });
 
@@ -84,11 +99,12 @@ describe('scaffold', function () {
 
       Scaffold = require('../');
       monitor = sinon.stub(Scaffold.prototype, 'monitor');
-      scaffold = new Scaffold('./', { store: file });
+      scaffold = new Scaffold('./', { store: common.file, monitor: true });
     });
 
     afterEach(function () {
       monitor.restore();
+      scaffold = null;
     });
 
     it('requires base path to templates of project', function () {
@@ -105,13 +121,16 @@ describe('scaffold', function () {
 
     it('will not call #monitor if environment is set to production', function () {
       delete require.cache[key];
+      var env = process.env.NODE_ENV;
       process.env.NODE_ENV = 'production';
+
       monitor.restore();
       monitor = sinon.stub(Scaffold.prototype, 'monitor');
 
-      var scaffold = new Scaffold('./', { store: file });
+      var scaffold = new Scaffold('./', { store: common.file });
 
       expect(monitor.called).to.be.false;
+      process.env.NODE_ENV = env;
     });
 
     it('will construct and expose square if monitoring', function () {
@@ -130,7 +149,7 @@ describe('scaffold', function () {
       var brand = 'opsmezzo',
           files = fs.readdirSync('templates/' + brand);
 
-      scaffold = new Scaffold('./', { store: file, brand: brand });
+      scaffold = new Scaffold('./', { store: common.file, brand: brand });
 
       files.forEach(function checkFunction(file) {
         expect(scaffold.app).to.have.property(path.basename(file, '.ejs'));
@@ -147,10 +166,12 @@ describe('scaffold', function () {
     it('exposes options by property', function () {
       var brand = 'opsmezzo',
           output = '/tmp',
+          file = common.file,
           scaffold = new Scaffold('./', {
             store: file,
             brand: brand,
-            output: output
+            output: output,
+            monitor: true
           });
 
       expect(scaffold._options).to.have.property('brand', brand);
@@ -160,12 +181,12 @@ describe('scaffold', function () {
     });
 
     it('Square output directory defaults to dirname of store', function () {
-      expect(scaffold._options).to.have.property('output', path.dirname(file));
+      expect(scaffold._options).to.have.property('output', path.dirname(common.file));
     });
   });
 
   describe('#addFile', function () {
-    var scaffold = new Scaffold('./', { store: file });
+    var scaffold = new Scaffold('./', { store: common.file });
     scaffold.addFile('../../test/fixtures/scaffold/addFile.ejs');
 
     it('uses filename as function name', function () {
@@ -204,12 +225,11 @@ describe('scaffold', function () {
   });
 
   describe('#supplier', function () {
-    var scaffold = new Scaffold('./test/fixtures/scaffold', { store: file }),
+    var scaffold = new Scaffold('./test/fixtures/scaffold', { store: common.file }),
         fn = ejs.compile(fs.readFileSync(__dirname + '/../templates/nodejitsu/submit.ejs', 'utf-8'));
 
     it('calls compiled ejs function and merges in default data', function () {
       var called = false,
-          render = sinon.spy(fn),
           data = scaffold.supplier('submit', function (data) { called = true; return data; }, {});
 
       expect(called).to.be.true;
@@ -344,66 +364,75 @@ describe('scaffold', function () {
     });
   });
 
-
   describe('#monitor', function () {
-    var scaffold = new Scaffold('./test/fixtures/scaffold', { store: file }),
-        waterfall;
+    var scaffold, file;
 
     beforeEach(function () {
-      waterfall = sinon.stub(async, 'waterfall');
+      file = common.file;
+      scaffold = new Scaffold('./test/fixtures/scaffold', { store: file });
+
+      scaffold._square = new Square({ 'log level': 2, comments: false });
+      scaffold._options = {
+        dist: 'test.{type}.{ext}',
+        store: file,
+        output: '/tmp'
+      };
     });
 
     afterEach(function () {
-      waterfall.restore();
+      file = null;
+      scaffold = null;
     });
 
-    it('initializes square scaffold and calls configuration', function () {
+    it('initializes square scaffold and calls configuration', function (done) {
       var square = sinon.spy(scaffold._square.scaffold, 'init'),
           conf = sinon.spy(scaffold._square.scaffold, 'configuration');
 
+      scaffold.once('monitoring', function () {
+        expect(square).to.be.calledOnce;
+        expect(square.calledWith(file)).to.be.true;
+        expect(square.returned(scaffold._square.scaffold)).to.be.true;
+        expect(conf).to.be.calledOnce;
+        expect(conf.calledWith({
+          storage: ['disk'],
+          plugins: { minify: {} },
+          dist: path.resolve(path.dirname(file), 'test.{type}.{ext}')
+        }));
+
+        square.restore();
+        conf.restore();
+        done();
+      });
+
       scaffold.monitor();
-
-      expect(square).to.be.calledOnce;
-      expect(square.calledWith(file)).to.be.true;
-      expect(square.returned(scaffold._square.scaffold)).to.be.true;
-      expect(conf).to.be.calledOnce;
-      expect(conf.calledWith({
-        storage: ['disk'],
-        plugins: { minify: {} },
-        dist: path.resolve(path.dirname(file), '{ext}/jitsu.{type}.{ext}')
-      }));
-
-      square.restore();
-      conf.restore();
     });
 
-    it('calls Square parse and constructs Watcher', function () {
+    it('calls Square parse and constructs Watcher', function (done) {
       var parse = sinon.stub(scaffold._square, 'parse'),
           watch = sinon.stub(scaffold._square, 'Watcher');
 
-      waterfall.callsArg(1);
+      scaffold.once('monitoring', function () {
+        expect(watch.calledWithNew()).to.be.true;
+        expect(parse).to.be.calledOnce;
+        expect(parse.calledWith(file)).to.be.true;
+
+        parse.restore();
+        watch.restore();
+        done();
+      });
+
       scaffold.monitor();
-
-      expect(watch.calledWithNew()).to.be.true;
-      expect(parse).to.be.calledOnce;
-      expect(parse.calledWith(file)).to.be.true;
-
-      parse.restore();
-      watch.restore();
     });
 
-    it('starts listening to homegrown and SIGINT emits', function () {
-      var on = sinon.spy(scaffold, 'on'),
-          once = sinon.spy(process, 'once');
+    it('starts listening to homegrown and SIGINT emits', function (done) {
+      scaffold.once('monitoring', function () {
+        expect(process._events).to.have.property('SIGINT');
+        expect(process._events.SIGINT).to.be.a('function');
+        expect(process._events.SIGINT).to.have.property('listener');
+        done();
+      });
 
-      waterfall.callsArg(1);
       scaffold.monitor();
-
-      expect(on).to.be.calledOnce;
-      expect(once).to.be.calledOnce;
-
-      on.restore();
-      once.restore();
     });
   });
 

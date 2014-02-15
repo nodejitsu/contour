@@ -33,6 +33,8 @@ var defaults = require('./defaults')
  *  - store {String} full path to store Square configuration
  *  - output {String} directory to store output of Square, e.g. compiled CSS/JS
  *  - import {String|Array} custom Square configuration to include in the build
+ *  - dist {String} distribution filenames of generated CSS/JS
+ *  - monitor {Boolean} force monitoring if true
  *
  * @Constructor
  * @param {String} origin required, absolute path to templates
@@ -45,7 +47,7 @@ function Scaffold(origin, options) {
   // Store options locally and force monitoring if not explicitly cancelled.
   var store = options.store
     , env = process.env.NODE_ENV || 'development'
-    , monitor = (env === 'development' || env === 'testing') && store;
+    , monitor = options.monitor || (env === 'development' && store);
 
   // Check if we got a proper path to userland templates.
   if (!origin || !fs.existsSync(origin)) {
@@ -95,6 +97,7 @@ function Scaffold(origin, options) {
     var Square = require('square');
 
     this._options.store = store;
+    this._options.dist = options.dist || '{ext}/jitsu.{type}.{ext}';
     this._options.import = options.import;
     this._options.output = options.output || path.dirname(store);
     this._options.resources = path.resolve(__dirname, 'assets');
@@ -182,8 +185,7 @@ Scaffold.prototype.monitor = function monitor() {
     , extend = this._options.import
     , self = this
     , save
-    , config
-    , live;
+    , config;
 
   /**
    * Add assets to the Square configuration.
@@ -228,11 +230,24 @@ Scaffold.prototype.monitor = function monitor() {
     return callback ? process.nextTick(callback) : added;
   }
 
+  /**
+   * On exists make sure we save the file.
+   *
+   * @api private
+   */
+  function finalize() {
+    self.live.destroy();
+    self._square.scaffold.save(function results(result) {
+      console.log(result);
+      process.exit();
+    });
+  }
+
   // Square configuration options.
   config = {
     storage: ['disk'],
     plugins: { minify: {} },
-    dist: path.resolve(this._options.output, '{ext}/jitsu.{type}.{ext}')
+    dist: path.resolve(this._options.output, this._options.dist)
   };
 
   // Check if custom build files were provided with additional assets.
@@ -258,12 +273,12 @@ Scaffold.prototype.monitor = function monitor() {
   // an initial setup and save this configuration before starting anything.
   async.waterfall([
     addAssets.bind(this, this.assets.defaults),
-    this._square.scaffold.save
+    this._square.scaffold.save.bind(this._square.scaffold)
   ], function initWatcher() {
     // Add default framework files to the configuration and set distribution.
     // After adding assets, start live monitoring and keep logging minimal.
     self._square.parse(file);
-    live = new self._square.Watcher(8888, true);
+    self.live = new self._square.Watcher(8888, true);
 
     // Notify the developer if the build file changed.
     self._square.on('parsed', function structChanged() {
@@ -276,8 +291,8 @@ Scaffold.prototype.monitor = function monitor() {
     });
 
     // Keep track if all CSS/JS assets are added to the configuration. If assets
-    // actually changed debounce the write function for a short timea
-    save = self.debounce(self._square.scaffold.save, 100);
+    // actually changed debounce the write function for a short time.
+    save = self.debounce(self._square.scaffold.save, 100).bind(self._square.scaffold);
     self.on('homegrown', function morph(files) {
       // Save latest version of configuration, this will trigger rebuilds and
       // reloading of the browser. Also it will ensure relative paths are
@@ -287,14 +302,8 @@ Scaffold.prototype.monitor = function monitor() {
 
     // On exit stop watching and destroy the watcher to prevent any rebuilds
     // from occuring, finally write and update the scaffolded configuration.
-    process.once('SIGINT', function finalize() {
-      live.destroy();
-
-      self._square.scaffold.save(function results(result) {
-        console.log(result);
-        process.exit();
-      });
-    });
+    // Before listening check if there are already registered SIGINT interrupts.
+    if (!process.listeners('SIGINT').length) process.once('SIGINT', finalize);
 
     // Notify external APIs that we are monitoring.
     self.emit('monitoring');
