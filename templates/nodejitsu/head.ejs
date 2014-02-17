@@ -30,5 +30,5 @@
   <% } %>
   <%- extension ? extension : '' %>
 </head>
-<body class="container">
+<body class="container<%- 'bodyClass' in locals ? ' ' + bodyClass : '' %>">
   <%- foss ? app.foss('object' === typeof foss ? foss : {}) : '' %>
