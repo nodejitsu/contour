@@ -25,7 +25,7 @@ var defaults = require('./defaults')
   , Assets = require('./assets');
 
 /**
- * Scaffold will register several default HTML5 templates of Nodejitsu. These
+ * Contour will register several default HTML5 templates of Nodejitsu. These
  * templates can used from inside views of other projets.
  *
  * Options can be supplied
@@ -41,7 +41,7 @@ var defaults = require('./defaults')
  * @param {Object} options optional, see above
  * @api public
  */
-function Scaffold(origin, options) {
+function Contour(origin, options) {
   options = options || {};
 
   // Store options locally and force monitoring if not explicitly cancelled.
@@ -111,7 +111,7 @@ function Scaffold(origin, options) {
   }
 }
 
-Scaffold.prototype.__proto__ = EventEmitter.prototype;
+Contour.prototype.__proto__ = EventEmitter.prototype;
 
 /**
  * Include a template, data will be run through #supplier.
@@ -123,7 +123,7 @@ Scaffold.prototype.__proto__ = EventEmitter.prototype;
  * @return {String}
  * @api public
  */
-Scaffold.prototype.include = function include(origin, filename, data, cache) {
+Contour.prototype.include = function include(origin, filename, data, cache) {
   if (!path.extname(filename)) {
     filename += '.ejs';
   }
@@ -140,7 +140,7 @@ Scaffold.prototype.include = function include(origin, filename, data, cache) {
  * @param {Number} wait milliseconds
  * @api private
  */
-Scaffold.prototype.debounce = function debounce(fn, wait) {
+Contour.prototype.debounce = function debounce(fn, wait) {
   var timeout;
 
   return function defer() {
@@ -170,12 +170,18 @@ Scaffold.prototype.debounce = function debounce(fn, wait) {
  * @return {String} markdown parsed content
  * @api public
  */
-Scaffold.prototype.markdown = function markdown() {
+Contour.prototype.markdown = function markdown() {
   return md(this.app.include.apply(this, arguments));
 };
 
-
-Scaffold.prototype.add = function add(n, file) {
+/**
+ * Reducer for list of files to add to the square configuration bundle.
+ *
+ * @param {Number} n
+ * @param {Object} file representation
+ * @api public
+ */
+Contour.prototype.add = function add(n, file) {
   var current = Object.keys(this._square.scaffold.get().bundle)
     , self = this;
 
@@ -213,7 +219,7 @@ Scaffold.prototype.add = function add(n, file) {
  *
  * @api public
  */
-Scaffold.prototype.monitor = function monitor() {
+Contour.prototype.monitor = function monitor() {
   var file = path.resolve(this._options.store)
     , extend = this._options.import
     , self = this
@@ -250,6 +256,15 @@ Scaffold.prototype.monitor = function monitor() {
   //
   this._square.scaffold.init(file);
 
+  //
+  // Default Square configuration options.
+  //
+  var config = {
+    storage: ['disk'],
+    plugins: { minify: {} },
+    dist: path.resolve(this._options.output, this._options.dist)
+  };
+
   // Check if custom build files were provided with additional assets.
   // These will be imported gracefully by Square.
   if (extend) {
@@ -259,7 +274,9 @@ Scaffold.prototype.monitor = function monitor() {
       var base = path.dirname(path.resolve(imported))
         , files = [];
 
-      imported = require(path.join(base, imported));
+      imported = require(path.join(path.dirname(file), imported));
+      config = util.mixin(config, imported.configuration);
+
       Object.keys(imported.bundle).forEach(function loopBundle(key) {
         imported.bundle[key]['pre:' + path.extname(key)] = {
           paths: self._options.resources
@@ -272,13 +289,11 @@ Scaffold.prototype.monitor = function monitor() {
     });
   }
 
+  //
   // Overwrite the default config constructed above with existing directives.
-  // config = util.mixin(config, this._square.scaffold.get().configuration);
-  this._square.scaffold.configuration({
-    storage: ['disk'],
-    plugins: { minify: {} },
-    dist: path.resolve(this._options.output, this._options.dist)
-  });
+  //
+  config = util.mixin(config, this._square.scaffold.get().configuration);
+  this._square.scaffold.configuration(config);
 
   // Find the path to assets inside Nodejitsu-app so Square has proper paths, do
   // an initial setup and save this configuration before starting anything.
@@ -331,7 +346,7 @@ Scaffold.prototype.monitor = function monitor() {
  * @return {Function} promise of type #supplier
  * @api public
  */
-Scaffold.prototype.addFile = function addFile(file, incl, cache) {
+Contour.prototype.addFile = function addFile(file, incl, cache) {
   var ref = this.app
     ,  type = path.basename(file)
     ,  compiled;
@@ -374,7 +389,7 @@ Scaffold.prototype.addFile = function addFile(file, incl, cache) {
  * @return {String} template content
  * @api private
  */
-Scaffold.prototype.supplier = function supplier(type, render, data, incl) {
+Contour.prototype.supplier = function supplier(type, render, data, incl) {
   var source = this._options.defaults
     , copy, html, $;
 
@@ -422,7 +437,7 @@ Scaffold.prototype.supplier = function supplier(type, render, data, incl) {
  * @return {String} file content
  * @api private
  */
-Scaffold.prototype.getFileContent = function getFileContent(file, cache) {
+Contour.prototype.getFileContent = function getFileContent(file, cache) {
   var store = this._storage;
 
   if (file in store && cache) return store[file];
@@ -432,4 +447,4 @@ Scaffold.prototype.getFileContent = function getFileContent(file, cache) {
 /**
  * Expose constructor.
  */
-module.exports = Scaffold;
+module.exports = Contour;
