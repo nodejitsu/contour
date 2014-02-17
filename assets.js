@@ -26,9 +26,8 @@ module.exports = function Assets(brand) {
   fs.readdirSync(__dirname + '/assets').forEach(function include(file) {
     if ('.js' !== path.extname(file)) return;
 
-    var value = require('./assets/' + file);
     Object.defineProperty(collection, path.basename(file, '.js'), {
-      value: value[collection.brand] || value.nodejitsu,
+      value: require('./assets/' + file)[collection.brand || 'nodejitsu'],
       writable: false
     });
   });

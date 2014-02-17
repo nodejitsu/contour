@@ -174,6 +174,39 @@ Scaffold.prototype.markdown = function markdown() {
   return md(this.app.include.apply(this, arguments));
 };
 
+
+Scaffold.prototype.add = function add(n, file) {
+  var current = Object.keys(this._square.scaffold.get().bundle)
+    , self = this;
+
+  /**
+   * Check for presence of file in current config by doing a
+   * loose check against the final part of the file path.
+   *
+   * @param {String} full current complete path of asset
+   * @api private
+   */
+  function check(full) {
+    return ~full.indexOf(file.source);
+  }
+
+  //
+  // Check for already included files, done against partial path
+  // to prevent duplicate inclusions via symlinked nodejitsu-app.
+  //
+  if(current.filter(check).length) return false;
+  file.source = path.resolve(file.base || self._options.resources, file.source);
+
+  //
+  // Update the configuration of the build file if required.
+  //
+  if (file.configuration && file.configuration.plugins) {
+    self._square.scaffold.plugins(file.configuration.plugins);
+  }
+
+  return self._square.scaffold.add(file) ? n + 1 : n;
+};
+
 /**
  * This will spin up square monitoring and scaffolding to provide
  * CSS and/or JS compiled and minified at the options.store location.
@@ -184,8 +217,7 @@ Scaffold.prototype.monitor = function monitor() {
   var file = path.resolve(this._options.store)
     , extend = this._options.import
     , self = this
-    , save
-    , config;
+    , save;
 
   /**
    * Add assets to the Square configuration.
@@ -195,38 +227,7 @@ Scaffold.prototype.monitor = function monitor() {
    * @api private
    */
   function addAssets(files, callback) {
-    var current = Object.keys(self._square.scaffold.get().bundle)
-      , added = 0;
-
-    files.forEach(function addFile(file) {
-      /**
-       * Check for presence of file in current config by doing a
-       * loose check against the final part of the file path.
-       *
-       * @param {String} full current complete path of asset
-       * @api private
-       */
-      function check(full) {
-        return ~full.indexOf(file.source);
-      }
-
-      //
-      // Check for already included files, done against partial path
-      // to prevent duplicate inclusions via symlinked nodejitsu-app.
-      //
-      if(current.filter(check).length) return false;
-      file.source = path.resolve(self._options.resources, file.source);
-
-      //
-      // Update the configuration of the build file if required.
-      //
-      if (file.configuration && file.configuration.plugins) {
-        self._square.scaffold.plugins(file.configuration.plugins);
-      }
-
-      if (self._square.scaffold.add(file)) added++;
-    });
-
+    var added = files.reduce(self.add.bind(self), 0);
     return callback ? process.nextTick(callback) : added;
   }
 
@@ -243,31 +244,41 @@ Scaffold.prototype.monitor = function monitor() {
     });
   }
 
-  // Square configuration options.
-  config = {
-    storage: ['disk'],
-    plugins: { minify: {} },
-    dist: path.resolve(this._options.output, this._options.dist)
-  };
+  //
+  // Scaffold a configuration file and pass it to the square parser. If file
+  // points to an actual scaffolded configuration that is loaded beforehand.
+  //
+  this._square.scaffold.init(file);
 
   // Check if custom build files were provided with additional assets.
   // These will be imported gracefully by Square.
   if (extend) {
     if (!Array.isArray(extend)) extend = [ extend ];
 
-    config.import = [];
     extend.forEach(function loopImports(imported) {
-      config.import.push('include ' + imported.replace(path.extname(imported), ''));
+      var base = path.dirname(path.resolve(imported))
+        , files = [];
+
+      imported = require(path.join(base, imported));
+      Object.keys(imported.bundle).forEach(function loopBundle(key) {
+        imported.bundle[key]['pre:' + path.extname(key)] = {
+          paths: self._options.resources
+        };
+
+        files.push({ meta: imported.bundle[key], source: key, base: base });
+      });
+
+      addAssets(files);
     });
   }
 
-  // Scaffold a configuration file and pass it to the square parser. If file
-  // points to an actual scaffolded configuration that is loaded beforehand.
-  this._square.scaffold.init(file);
-
   // Overwrite the default config constructed above with existing directives.
-  config = util.mixin(config, this._square.scaffold.get().configuration);
-  this._square.scaffold.configuration(config);
+  // config = util.mixin(config, this._square.scaffold.get().configuration);
+  this._square.scaffold.configuration({
+    storage: ['disk'],
+    plugins: { minify: {} },
+    dist: path.resolve(this._options.output, this._options.dist)
+  });
 
   // Find the path to assets inside Nodejitsu-app so Square has proper paths, do
   // an initial setup and save this configuration before starting anything.
