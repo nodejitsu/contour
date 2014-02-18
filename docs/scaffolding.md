@@ -659,13 +659,15 @@ The tooltip can be placed right, left, bottom or top of the initiator.
 - placement {String} reference to location: left, right, top, bottom
 - trigger {String} which event should trigger the tooltip: click, mouseover (default)
 - content {String} Content of the tooltip
+- color {String} background color, blue or grey
 
 ```js
 <%-
   app.tooltip({
     placement: 'left',
     trigger: 'mouseover'
-    content: 'Little description about the tooltip element'
+    content: 'Little description about the tooltip element',
+    color: 'grey'
   })
 %>
 ```
