@@ -276,6 +276,7 @@ nodejitsu.social = {
 //
 nodejitsu.tooltip = {
   placement: 'bottom',
+  color: 'blue',
   trigger: 'mouseover',
   content: '',
 

@@ -154,7 +154,10 @@ Cortex.app('Tooltip', Cortex.View.extend({
     //
     tooltip.id = "tooltip";
     tooltip.innerHTML = element.get('data-content');
-    tooltip.className = ['animated', 'tooltip', 'fadeIn', pos].filter(Boolean).join(' ');
+    tooltip.className = ['animated', 'tooltip', 'fadeIn', pos].concat(
+      element.get('data-color')
+    ).filter(Boolean).join(' ');
+
     document.body.appendChild(tooltip);
 
     //
