@@ -44,12 +44,14 @@ nodejitsu.head = {
    * @api private
    */
   hook: function canonical(data) {
-    data.canonical = [
-      'https://',
-      pkg.subdomain,
-      '.nodejitsu.com',
-      url.parse(data.canonical).pathname
-    ].join('');
+    if (!('canonical' in data)) {
+      data.canonical = [
+        'https://',
+        pkg.subdomain,
+        '.nodejitsu.com',
+        url.parse(data.canonical).pathname
+      ].join('');
+    }
   }
 };
 
