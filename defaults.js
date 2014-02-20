@@ -85,8 +85,7 @@ nodejitsu.loader = {
   plain: [],
   external: [],
   apps: [ 'login' ],
-  custom: [],
-  production: process.env.NODE_ENV === 'production'
+  custom: []
 };
 
 nodejitsu.footer = {
