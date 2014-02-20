@@ -10,7 +10,7 @@
 
 <script
   id="loader"
-  data-load="<%- production ? load.map(app.versions).join(',') : load.join(',') %>"
+  data-load="<%- load.join(',') %>"
   data-plain="<%- plain.concat(external).join(',') %>"
   data-apps="<%- apps.concat(custom).join(',') %>">
 // Load our JavaScript files
