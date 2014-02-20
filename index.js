@@ -403,7 +403,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
 
       // Include copied defaults to prevent polution of multiple inclusions.
       data = util.mixin(copy, data || {}, this._queue.discharge(type));
-      data.production = process.env.NODE_ENV === 'production';
+      if (!('production' in data)) data.production = process.env.NODE_ENV === 'production';
     }
 
     // Notify an native Nodejitsu-app template was included.
