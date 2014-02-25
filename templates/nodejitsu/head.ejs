@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Nodejitsu Inc.">
   <link rel="shortcut icon" href="<%= 'favicon' in locals ? favicon : '/favicon.png' %>">
-  <% (production ? stylesheets.map(app.versions) : stylesheets).forEach(function (sheet) { %>
+  <% stylesheets.forEach(function (sheet) { %>
   <link rel="stylesheet" href="<%= sheet %>">
   <% }) %>
   <link rel="canonical" href="<%= canonical %>">
