@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {

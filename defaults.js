@@ -126,7 +126,8 @@ nodejitsu.footer = {
     github: "nodejitsu"
   },
 
-  copyright: '&copy; Nodejitsu Inc. '+ (new Date()).getFullYear()
+  copyright: '&copy; Nodejitsu Inc. '+ (new Date()).getFullYear(),
+  credits: false
 };
 
 nodejitsu.sidebar = {
