@@ -278,9 +278,9 @@ Contour.prototype.monitor = function monitor() {
       config = util.mixin(config, imported.configuration);
 
       Object.keys(imported.bundle).forEach(function loopBundle(key) {
-        imported.bundle[key]['pre:' + path.extname(key).slice(1)] = {
-          paths: self._options.resources
-        };
+        var ext = 'pre:' + path.extname(key).slice(1);
+        imported.bundle[key][ext] = imported.bundle[key][ext] || {};
+        imported.bundle[key][ext].paths = self._options.resources;
 
         files.push({ meta: imported.bundle[key], source: key, base: base });
       });
