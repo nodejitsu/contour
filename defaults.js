@@ -329,7 +329,7 @@ nodejitsu.analytics = {
     //
     // Switch values based on environment, safe mode in development.
     //
-    if (process.env.NODE_ENV !== 'production') {
+    if (!data.production && process.env.NODE_ENV !== 'production') {
       data.domain = 'none';
       ids.ga = [ 'UA-24971485-6' ];
 
@@ -349,5 +349,7 @@ nodejitsu.analytics = {
     data.segment = 'segment' in ids;
     data.multi = data.segment && ids.ga.length;
     data.ga = data.multi || !data.segment;
+
+    this._queue.enlist('loader', { custom: [ 'analytics' ] });
   }
 };
