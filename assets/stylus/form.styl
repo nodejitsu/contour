@@ -1,5 +1,11 @@
 @import "defaults"
 
+.modal .spinner
+  background: url('/img/spinner.gif') no-repeat
+  display: inline-block
+  height: 16px
+  width: @height
+
 form
   &.fivecol
     margin: 80px auto
@@ -51,11 +57,6 @@ form
   .box
     padding: 30px
     width: 100%
-
-  .spinner
-    background-image: url($sprite-spinner);
-    background-position: 95% center
-    background-repeat: no-repeat
 
   .forgotten
     float: right
