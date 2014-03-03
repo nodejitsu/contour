@@ -93,7 +93,7 @@ Cortex.app('Login', Cortex.View.extend({
         .set('disabled', 'disabled')
         .set('innerHTML', 'Submitting');
 
-      username = username.addClass('spinner').set('readOnly', true).get('value');
+      username = username.set('readOnly', true).get('value');
 
       Cortex.request({
           url: '/forgot'
@@ -137,8 +137,12 @@ Cortex.app('Login', Cortex.View.extend({
         .set('disabled', 'disabled')
         .set('innerHTML', 'Logging in');
 
-      username = username.addClass('spinner').set('readOnly', true).get('value');
-      password = password.addClass('spinner').set('readOnly', true).get('value');
+      username = username.set('readOnly', true).get('value');
+      password = password.set('readOnly', true).get('value');
+
+      // Show the spinner.
+      $('.modal .close').addClass('gone');
+      $('.modal .spinner').removeClass('gone');
 
       Cortex.request({
           url: '/signin/verify'
@@ -205,9 +209,15 @@ Cortex.app('Login', Cortex.View.extend({
           template.className('success').remove();
         }
       } else if (data && data.error) {
+        // Hide the spinner and show the close button.
+        $('.modal .close').removeClass('gone');
+        $('.modal .spinner').addClass('gone');
+
         // Login request, but with data.. so the login failed
-        $('.modal input[name="username"], .modal input[name="password"]')
-          .removeClass('spinner').set('readOnly', false);
+        $('.modal input[name="username"], .modal input[name="password"]').set(
+          'readOnly',
+          false
+        );
 
         $('.modal button[type="submit"]')
           .removeClass('disabled loading')
