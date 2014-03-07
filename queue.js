@@ -3,7 +3,7 @@
 //
 // Required modules.
 //
-var mixin = require('utile').mixin;
+var merge = require('predefine').merge;
 
 /**
  * Queue constructor.
@@ -24,7 +24,7 @@ function Queue() {
  * @api public
  */
 Queue.prototype.enlist = function enlist(type, data) {
-  data = mixin((this.store[type] || {}), data);
+  data = merge((this.store[type] || {}), data);
   this.store[type] = data;
   return this;
 };

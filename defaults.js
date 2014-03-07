@@ -308,7 +308,17 @@ nodejitsu.creditcard = {
   months: [
     'January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'
-  ]
+  ],
+
+  /**
+   * Enlist the client-side JS app for execution.
+   *
+   * @param {Object} data reference to the data supplied to the template
+   * @api private
+   */
+  hook: function infect(data) {
+    this._queue.enlist('loader', { custom: [ 'creditcard' ] });
+  }
 };
 
 nodejitsu.analytics = {
