@@ -12,7 +12,7 @@ var EventEmitter = require('events').EventEmitter
  */
 var async = require('async')
   , ejs = require('ejs')
-  , util = require('utile')
+  , mixin = require('utile').mixin
   , cheerio = require('cheerio')
   , md = require('marked')
   , Queue = require('./queue');
@@ -72,7 +72,7 @@ function Contour(origin, options) {
   this._storage = {};
   this._options = {
     brand: this.assets.brand,
-    defaults: util.mixin(defaults.nodejitsu, defaults[this.assets.brand]),
+    defaults: mixin(defaults.nodejitsu, defaults[this.assets.brand]),
     template: path.resolve(template, this.assets.brand),
     fallback: path.resolve(template, 'nodejitsu')
   };
@@ -275,7 +275,7 @@ Contour.prototype.monitor = function monitor() {
         , files = [];
 
       imported = require(path.join(path.dirname(file), imported));
-      config = util.mixin(config, imported.configuration);
+      config = mixin(config, imported.configuration);
 
       Object.keys(imported.bundle).forEach(function loopBundle(key) {
         var ext = 'pre:' + path.extname(key).slice(1);
@@ -292,7 +292,7 @@ Contour.prototype.monitor = function monitor() {
   //
   // Overwrite the default config constructed above with existing directives.
   //
-  config = util.mixin(config, this._square.scaffold.get().configuration);
+  config = mixin(config, this._square.scaffold.get().configuration);
   this._square.scaffold.configuration(config);
 
   // Find the path to assets inside Nodejitsu-app so Square has proper paths, do
@@ -402,7 +402,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
       if (values.hook) values.hook.call(this, data || copy);
 
       // Include copied defaults to prevent polution of multiple inclusions.
-      data = util.mixin(copy, data || {}, this._queue.discharge(type));
+      data = mixin(copy, data || {}, this._queue.discharge(type));
       if (!('production' in data)) data.production = process.env.NODE_ENV === 'production';
     }
 
@@ -411,7 +411,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
   }
 
   // Always add reference to this.app again.
-  html = render.call(render, util.mixin(data || {}, { app: this.app }));
+  html = render.call(render, mixin(data || {}, { app: this.app }));
 
   // If required adjust element data-attributes.
   if (data && data.attributes) {
