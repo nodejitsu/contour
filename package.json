@@ -21,7 +21,9 @@
     "ejs": "~0.8.5",
     "marked": "~0.3.1",
     "predefine": "~0.0.2",
-    "utile": "~0.2.1"
+    "utile": "~0.2.1",
+    "pagelet": "~0.0.3",
+    "temper": "~0.1.4"
   },
   "devDependencies": {
     "mocha": "1.13.x",
