@@ -15,7 +15,7 @@ var async = require('async')
   , mixin = require('utile').mixin
   , cheerio = require('cheerio')
   , md = require('marked')
-  , Queue = require('./queue');
+  , queue = require('./queue');
 
 //
 // Defaults.
@@ -68,7 +68,7 @@ function Contour(origin, options) {
   this.assets = new Assets(options.brand);
 
   // Set options and provide fallbacks.
-  this._queue = new Queue;
+  this._queue = queue;
   this._storage = {};
   this._options = {
     brand: this.assets.brand,
@@ -402,7 +402,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
       if (values.hook) values.hook.call(this, data || copy);
 
       // Include copied defaults to prevent polution of multiple inclusions.
-      data = mixin(copy, data || {}, this._queue.discharge(type));
+      data = mixin(copy, data || {}, queue.discharge(type));
       if (!('production' in data)) data.production = process.env.NODE_ENV === 'production';
     }
 
