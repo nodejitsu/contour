@@ -4,7 +4,8 @@
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=testing ./node_modules/.bin/mocha $(find test -name '*.test.js')"
+    "test": "NODE_ENV=testing ./node_modules/.bin/mocha $(find test -name '*.test.js')",
+    "local": "zuul --phantom -- test/client.js"
   },
   "keywords": [
     "Front-end",
@@ -30,6 +31,8 @@
     "sinon": "1.7.x",
     "sinon-chai": "2.4.x",
     "pre-commit": "0.0.x",
+    "zuul": "~1.5.4",
+    "phantomjs": "~1.9.7",
     "square": "git://github.com/observing/square.git#development"
   },
   "publishConfig": {
