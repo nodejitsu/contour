@@ -5,7 +5,6 @@
 //
 module.exports = require('./pagelet').extend({
   name: 'navigation',
-  remove: true,
 
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
