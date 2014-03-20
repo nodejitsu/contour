@@ -69,7 +69,6 @@ module.exports = Pagelet.extend({
    * @api private
    */
   get: function get(done) {
-    this.initialize();
     done(undefined, mixin({}, this.data, this.queue.discharge(this.name)));
   },
 
@@ -81,6 +80,18 @@ module.exports = Pagelet.extend({
    */
   set: function set(data) {
     mixin(this.data, data);
+    return this;
+  },
+
+  /**
+   * Register provided helper with handlebars.
+   *
+   * @param {String} name registered name
+   * @param {Function} fn Handlebars helper
+   * @api public
+   */
+  use: function use(name, fn) {
+    this.temper.required.handlebars.registerHelper(name, fn);
     return this;
   },
 

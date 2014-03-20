@@ -5,6 +5,7 @@
 //
 module.exports = require('./pagelet').extend({
   name: 'navigation',
+  remove: true,
 
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
@@ -50,4 +51,31 @@ module.exports = require('./pagelet').extend({
     description: 'Responsive header navigation',
     weight: 899
   },
+
+  /**
+   * Handblebar helper to generate the navigation entries. The base is defined by
+   * the active page and should match the first part of the `href` route.
+   *
+   * @param {Object} options
+   * @api private
+   */
+  nav: function nav(options) {
+    var base = this.base;
+    return this.navigation.reduce(function reduce(menu, item) {
+      item.active = ~base.indexOf(item.base || item.href.split('/').filter(String).shift())
+        ? 'class="active"'
+        : '';
+
+      return menu + options.fn(item);
+    }, '');
+  },
+
+  /**
+   * Called after Pagelet construction, register handlebar helpers.
+   *
+   * @api private
+   */
+  initialize: function initialize() {
+    this.use('nav', this.nav);
+  }
 }).on(module);

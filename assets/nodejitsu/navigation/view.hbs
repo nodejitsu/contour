@@ -5,14 +5,11 @@
     </h1>
     <a href="#navigation" class="mobile btn ss-rows"></a>
 
-    <%
-      navigation.forEach(function generate(menu) {
-        var active = menu.root || menu.href.split('/').filter(String).shift();
-    %>
-    <a href="<%= menu.href %>" <%- ~root.indexOf(active) ? 'class="active"' : '' %>>
-      <%= menu.name %>
+    {{#nav}}
+    <a href="{{href}}"{{active}}>
+      {{name}}
     </a>
-    <% }) %>
+    {{/nav}}
 
     {{#login}}
     <section data-pagelet="login"></section>
