@@ -119,14 +119,6 @@ function Contour(origin, options) {
 fuse(Contour, require('events').EventEmitter);
 
 /**
- *
- * @return {[type]} [description]
- */
-Contour.readable('expose', function expose() {
-
-});
-
-/**
  * Include a template, data will be run through #supplier.
  *
  * @param {String} filename template

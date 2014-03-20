@@ -64,7 +64,7 @@ module.exports = require('./pagelet').extend({
     var base = this.base;
     return this.navigation.reduce(function reduce(menu, item) {
       item.active = ~base.indexOf(item.base || item.href.split('/').filter(String).shift())
-        ? 'class="active"'
+        ? ' class="active"'
         : '';
 
       return menu + options.fn(item);
