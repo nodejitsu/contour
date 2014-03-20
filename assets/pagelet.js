@@ -8,8 +8,26 @@ var queue = require('../queue')
   , mixin = require('utile').mixin;
 
 /**
+ * Set a specific branch. Used by temper to fetch all the proper assets.
+ *
+ * @param {String} brand
+ * @returns {Pagelet} fluent interface
+ * @api private
+ */
+Pagelet.brand = function define(brand) {
+  if (!brand) brand = 'nodejitsu';
+
+  this.prototype.view = this.prototype.view.replace('{{brand}}', brand);
+  this.prototype.css = this.prototype.css.replace('{{brand}}', brand);
+  this.prototype.js = this.prototype.js.replace('{{brand}}', brand);
+
+  return this;
+};
+
+/**
  * The mode the pagelet should be rendered in, if `true` then template
  * content is rendered without the containing pagelet.fragment from BigPipe.
+ * This method is attached to the prototype and will be usuable by an instance.
  *
  * @returns {Pagelet}
  * @api public

@@ -1,0 +1,25 @@
+<section class="navigation" id="navigation">
+  <nav class="row">
+    <h1>
+      <a href="/" class="logo" title="Back to the homepage">Nodejitsu</a>
+    </h1>
+    <a href="#navigation" class="mobile btn ss-rows"></a>
+
+    <%
+      navigation.forEach(function generate(menu) {
+        var active = menu.root || menu.href.split('/').filter(String).shift();
+    %>
+    <a href="<%= menu.href %>" <%- ~root.indexOf(active) ? 'class="active"' : '' %>>
+      <%= menu.name %>
+    </a>
+    <% }) %>
+
+    {{#login}}
+    <section data-pagelet="login"></section>
+    {{/login}}
+
+    {{#signup}}
+    <section data-pagelet="signup"></section>
+    {{/signup}}
+  </nav>
+</section>

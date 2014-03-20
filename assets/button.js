@@ -1,18 +1,43 @@
-//
-// Expose nodejitsu submit styles.
-//
-exports.nodejitsu = [
-  {
-    source: 'stylus/buttons.styl',
-    meta: {
-      description: 'Button styles',
-      weight: 898
-    }
-  }
-];
+'use strict';
 
 //
-// Expose opsmezzo submit styles
-// TODO: needs to be implemented
+// Expose the navigation Pagelet.
 //
-exports.opsmezzo = [];
+module.exports = require('./pagelet').extend({
+  name: 'button',
+
+  css: 'nodejitsu/button/base.styl',
+  view: 'nodejitsu/button/view.hbs',
+
+  //
+  // Default data for the login button, can be changed by using `set`. The
+  // collection
+  //
+  data: {
+    href: '',
+    type: 'plain',
+    collection: {
+      plain: {
+        class: 'btn',
+        text: 'Submit'
+      },
+      icon: {
+        class: 'btn-icon',
+        text: 'Default'
+      },
+      action: {
+        class: 'btn action',
+        text: 'Contact us'
+      }
+    }
+  },
+
+  //
+  // Used by Square to generate the configuration file. Weight will determine the
+  // relative placement with respect to other assets.
+  //
+  meta: {
+    description: 'Responsive header navigation',
+    weight: 899
+  },
+}).on(module);

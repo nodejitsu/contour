@@ -1,34 +1,37 @@
-//
-// Expose nodejitsu alert box styles.
-//
-exports.nodejitsu = [
-  {
-    source: 'stylus/alert.styl',
-    meta: {
-      description: 'Alert box styles',
-      weight: 888
-    }
-  },
-  {
-    source: 'js/alert.js',
-    configuration: {
-      plugins: {
-        wrap: {
-          header: '("Cortex" in this ? Cortex : (Cortex = [])).push("jitsu", function (Cortex) {',
-          footer: '$("#loader").get("apps").split(",").forEach(function (n) { Cortex.active.emit(n); });})',
-          leaks: false
-        }
-      }
-    },
-    meta: {
-     description: 'Makes alerts closable by the visitor',
-     weight: 997
-    }
-  }
-];
+'use strict';
 
 //
-// Expose opsmezzo alert box styles
-// TODO: needs to be implemented
+// Expose the alert Pagelet.
 //
-exports.opsmezzo = [];
+module.exports = require('./pagelet').extend({
+  name: 'alert',
+
+  js: 'nodejitsu/alert/base.js',
+  css: 'nodejitsu/alert/base.styl',
+  view: 'nodejitsu/alert/view.hbs',
+
+  //
+  // Default data for alert notificiation, can be changed by using `set`.
+  //
+  data: {
+    closable: false,
+    type: 'notice',
+    text: ''
+  },
+
+  //
+  // Used by Square to generate the configuration file. Weight will determine the
+  // relative placement with respect to other assets.
+  //
+  meta: {
+    description: 'Closable alerts in several different colors',
+    weight: 799
+  },
+
+  //
+  // Enlist the client side JS app Alert, which will be added if loader is called.
+  //
+  initialize: function initialize() {
+    if (this.data.closable) this.queue.enlist('loader', { custom: [ 'alert' ] });
+  }
+}).on(module);

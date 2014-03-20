@@ -45,7 +45,8 @@ function Contour(origin, options) {
   options = options || {};
 
   // Store options locally and force monitoring if not explicitly cancelled.
-  var store = options.store
+  var contour = this
+    , store = options.store
     , env = process.env.NODE_ENV || 'development'
     , monitor = options.monitor || (env === 'development' && store)
     , readable = Contour.predefine(this, Contour.predefine.READABLE);
@@ -60,26 +61,31 @@ function Contour(origin, options) {
     throw new Error('Provide path to store Square configuration');
   }
 
-  // Switch to required framework.
-  readable('assets', new Assets(options.brand));
+  //
+  // Add the pagelets of the required framework.
+  //
+  this.mixin(this, new Assets(options.brand));
 
   // Set options and provide fallbacks.
   readable('_queue', queue);
   readable('_origin', origin);
   readable('_storage', {});
   readable('_options', {
-    brand: this.assets.brand,
-    defaults: mixin(defaults.nodejitsu, defaults[this.assets.brand]),
-    template: path.resolve(template, this.assets.brand),
+    brand: this.brand,
+    defaults: mixin(defaults.nodejitsu, defaults[this.brand]),
+    template: path.resolve(template, this.brand),
     fallback: path.resolve(template, 'nodejitsu')
   });
 
-  // Get all default nodejitsu templates. These will be forcefully overwritten
+  //
+  // Get all default nodejitsu Pagelets. These will be forcefully overwritten
   // by a custom brand. It creates a fall back if the custom brand does not
   // require a different template.
-  fs.readdirSync(this._options.fallback).forEach(function prepareTemplates(file) {
-    this.addFile(file);
-  }.bind(this));
+  //
+  /*fs.readdirSync(assets).forEach(function preparePagelets(pagelet) {
+    console.log(pagelet);
+    pagelet = require(path.join(assets, pagelet));
+  });*/
 
   // Get all the templates, synced so another application does not
   // have to defer their whole initialization for nodejitsu-app.
@@ -90,7 +96,7 @@ function Contour(origin, options) {
   }
 
   // Start monitoring for included templates to automatically update Square.
-  if (!monitor) return;
+  /*if (monitor) return;
   var Square = require('square');
 
   this._options.store = store;
@@ -104,13 +110,21 @@ function Contour(origin, options) {
   // Don't include file origins in the files as these are different per developer.
   //
   readable('_square', new Square({ 'log level': 2, comments: false }));
-  this.monitor();
+  this.monitor();*/
 }
 
 //
 // Add EventEmitter and Predefine functionality.
 //
 fuse(Contour, require('events').EventEmitter);
+
+/**
+ *
+ * @return {[type]} [description]
+ */
+Contour.readable('expose', function expose() {
+
+});
 
 /**
  * Include a template, data will be run through #supplier.
