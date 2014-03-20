@@ -54,7 +54,8 @@ module.exports = require('./pagelet').extend({
 
   /**
    * Handblebar helper to generate the navigation entries. The base is defined by
-   * the active page and should match the first part of the `href` route.
+   * the active page and should match the first part of the `href` route or the
+   * provided menu entry `base`.
    *
    * @param {Object} options
    * @api private
