@@ -21,6 +21,10 @@ Pagelet.brand = function define(brand) {
   this.prototype.css = this.prototype.css.replace('{{brand}}', brand);
   this.prototype.js = this.prototype.js.replace('{{brand}}', brand);
 
+  this.prototype.dependencies = this.prototype.dependencies.map(function map(file) {
+    return file.replace('{{brand}}', brand);
+  });
+
   return this;
 };
 

@@ -1,0 +1,186 @@
+support-for-ie = true
+
+/**
+ * The grid configuration which is used in the 1140 grid system.
+ *
+ * $gutter-width = the width of a gutter.
+ * $column-width = the width of a single column.
+ */
+$gutter-width = 55px
+$column-width = 45px
+
+/**
+ * Content Delivery Module configuration.
+ *
+ * $cdn = The location of our CDN server
+ */
+$cdn = '//versions.nodejitsu.com/id:home'
+
+/**
+ * Sprite & image locations
+ *
+ * $sprite-grid = The size of 1 block in the sprite.psd grid
+ * $sprite-location = The actual sprite location
+ * $sprite-trusted = Trusted companies logos
+ * $sprite-carousel = Logos that we don't have in our fonts
+ */
+$sprite-location = $cdn '/img/sprite.png'
+$sprite-grid = 12px
+
+$sprite-trusted = $cdn '/img/trusted.png'
+$sprite-carousel = $cdn '/img/nodepm.png'
+$sprite-carousel-control = $cdn '/img/cloud.png';
+$sprite-spinner = $cdn '/img/spinner.gif';
+
+/**
+ * Colors
+ */
+// base
+$link = #4789AC
+$background = #FFFFFF
+$link-hover = darken($link, 50%)
+$divider = #EAEAEA
+$base-color = #444444
+$orange = #FFBA00
+
+// Gradient
+$lightgreyOuter = rgba(240, 240, 240, 0.2)
+$lightgreyInner = $background
+
+// breadcrumb
+$breadcrumb-inactive = #C1C1C1
+
+// hero block
+$hero-background = #025D8C
+$hero-highlight = #2674C2
+$hero-dropshadow = rgba(0, 0, 0, 0.4)
+$hero-color = #FFFFFF
+$hero-link = $orange
+
+// Box
+$box-bg-top = rgba(240, 240, 240, .2)
+$box-bg-mid = rgba(255, 255, 255, .2)
+$box-bg-bottom = rgba(240, 240, 240, .2)
+
+// Modal
+$modal-bg = rgba(0, 0, 0, .5)
+
+// Navigation
+$nav-box-shadow = rgba(0, 0, 0, .3)
+$nav-active-bg-top = rgba(255, 255, 255, .6)
+
+// active menu items
+$active-background = #E9F4FF
+$active-border = #CAE9F9
+
+// gallery
+$indicator = #75B6F4
+
+// datacenter
+$soon = #FF9200
+$available = #91B8CD
+$landfill = #C1E4F6
+
+// pills
+$pill-background = #EEF7FF
+$pill-color = #93B7CA
+
+// alerts
+$alert-notice-background = #FFF9D6
+$alert-notice-border = #FFE96E
+$alert-notice-color = #DAC344
+$alert-error-background = #F2DEDE
+$alert-error-border = #EED3D7
+$alert-error-color = #B94A48
+$alert-success-background =#DFF0D8
+$alert-success-border = #D6E9C6
+$alert-success-color = #468847
+$alert-info-background = #D9EDF7
+$alert-info-border = #BCE8F1
+$alert-info-color =#3A87AD
+
+// rss
+$rss = #FF7200
+
+// lists
+$list-checks = #9BDD81
+
+// cross delete
+$delete = #EA7C7C
+
+/**
+ * Typography
+ * NOTE The font stack is loaded from typekit
+ */
+$font-family = "proxima-nova-1","proxima-nova-2",sans-serif
+$h5-small = #A8A8A8
+$h2-pre-h3 = #7F7F7F
+
+/**
+ * Borders
+ */
+$radius = 3px
+$line = #ECECEC
+$outline = #E2E2E2
+
+/**
+ * Code block
+ * TODO change to molokai colors, will require prism.js adaptations.
+ */
+$code-background = #474747
+$code-characters = #F8F8F2
+$code-value = #AE81FF
+$code-property = #F92672
+$code-attribute = #E6DB74
+$code-string = #A6E22E
+$code-operator = $code-characters
+$code-keyword = $code-property
+$code-regex = #FD971F
+$code-comment = #778090
+$code-punctuation = $code-characters
+$inline-background = #F8F8F8
+$inline-border = $divider
+
+/**
+ * Labels
+ */
+$label-default = #B5D0DE
+$label-info = $link
+$label-success = #468847
+$label-important = #B94A48
+$label-warning = $orange
+
+$label-inverse = #DAEBF4
+$label-inverse-color = #78A8C2
+
+/**
+ * Buttons
+ */
+$btn-default-bg-top = rgba(255, 255, 255, .8)
+$btn-default-bg-bottom = #DCECF4
+$btn-default-border = #D7E3EA
+$btn-default-box-shadow = #BACDD9
+
+$btn-icon-text = #8F8F8F
+$btn-icon-bg-top = rgba(247, 247, 247, 1)
+$btn-icon-bg-bottom = #EFEFEF
+$btn-icon-border = #DDD
+
+$btn-action-text = #8F8F8F
+$btn-action-text-shadow = #DC8100
+$btn-action-bg-top = $orange
+$btn-action-bg-bottom = #FF9200
+$btn-action-bg-bottom-hover = #D27901
+$btn-action-box-shadow = #B86900
+$btn-action-box-shadow-hover = #894E00
+
+/**
+ * Form
+ */
+$input-box-shadow = rgba(0, 0, 0, 0.075)
+
+/**
+ * Table
+ */
+$header-bg-color = $pill-background
+$left-column-bg-color = #FDFDFD

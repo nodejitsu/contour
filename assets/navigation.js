@@ -12,6 +12,10 @@ module.exports = require('./pagelet').extend({
   css: '{{brand}}/navigation/base.styl',
   view: '{{brand}}/navigation/view.hbs',
 
+  dependencies: [
+    '{{brand}}/core.styl'
+  ],
+
   //
   // Both the login functionality and signup button are optional, see data.
   //
