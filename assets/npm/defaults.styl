@@ -1,0 +1,113 @@
+support-for-ie = true
+
+/**
+ * The grid configuration which is used in the 1140 grid system.
+ *
+ * $gutter-width = the width of a gutter.
+ * $column-width = the width of a single column.
+ */
+$gutter-width = 55px
+$column-width = 45px
+
+/**
+ * Content Delivery Module configuration.
+ *
+ * $cdn = The location of our CDN server
+ */
+$cdn = '//versions.nodejitsu.com/id:browsenpm'
+
+/**
+ * Sprite & image locations
+ *
+ * $sprite-grid = The size of 1 block in the sprite.psd grid
+ * $sprite-location = The actual sprite location
+ * $sprite-trusted = Trusted companies logos
+ * $sprite-carousel = Logos that we don't have in our fonts
+ */
+$sprite-location = $cdn '/img/sprite.png'
+$sprite-spinner = $cdn '/img/spinner.gif';
+$sprite-grid = 12px
+
+/**
+ * Colors
+ */
+
+// base
+$link = #347BC3
+$dark-gray = #665
+$background = #FFF
+$link-hover = darken($link, 50%)
+$divider = #B7B7B7
+$base-color = #000
+
+// Gradient
+$lightgreyOuter = rgba(240, 240, 240, 0.2)
+$lightgreyInner = $background
+
+// Navigation
+$nav-active-bg-top = rgba(255, 255, 255, .6)
+$active-background = #E9F4FF
+$active-border = #CAE9F9
+
+/**
+ * Typography
+ *
+ * NOTE: The font stack is loaded from typekit
+ */
+$font-family = "proxima-nova-1","proxima-nova-2",sans-serif
+
+/**
+ * Borders
+ */
+$radius = 3px
+$line = #ECECEC
+$outline = #E2E2E2
+
+/**
+ * Code block, will require prism.js to function correctly.
+ */
+$code-background = #474747
+$code-characters = #F8F8F2
+$code-value = #AE81FF
+$code-property = #F92672
+$code-attribute = #E6DB74
+$code-string = #A6E22E
+$code-operator = $code-characters
+$code-keyword = $code-property
+$code-regex = #FD971F
+$code-comment = #778090
+$code-punctuation = $code-characters
+$inline-background = #F8F8F8
+$inline-border = $divider
+
+/**
+ * Buttons
+ */
+$btn-default-bg-top = rgba(255, 255, 255, .8)
+$btn-default-bg-bottom = #DCECF4
+$btn-default-border = #D7E3EA
+$btn-default-box-shadow = #BACDD9
+
+$btn-icon-text = #8F8F8F
+$btn-icon-bg-top = rgba(247, 247, 247, 1)
+$btn-icon-bg-bottom = #EFEFEF
+$btn-icon-border = #DDD
+
+$btn-action-text = #8F8F8F
+$btn-action-text-shadow = #DC8100
+$btn-action-bg-top = $orange
+$btn-action-bg-bottom = #FF9200
+$btn-action-bg-bottom-hover = #D27901
+$btn-action-box-shadow = #B86900
+$btn-action-box-shadow-hover = #894E00
+
+/**
+ * Form
+ */
+$input-box-shadow = rgba(0, 0, 0, 0.075)
+
+/**
+ * Table
+ */
+$header-bg-color = $pill-background
+$left-column-bg-color = #FDFDFD
