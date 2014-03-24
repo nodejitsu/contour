@@ -22,7 +22,8 @@ var async = require('async')
 //
 var defaults = require('./defaults')
   , template = __dirname + '/templates'
-  , Assets = require('./assets');
+  , Assets = require('./assets')
+  , available = [ 'nodejitsu', 'npm' ];
 
 /**
  * Contour will register several default HTML5 templates of Nodejitsu. These
@@ -446,6 +447,23 @@ Contour.readable('getFileContent', function getFileContent(file, cache) {
   if (file in store && cache) return store[file];
   return store[file] = fs.readFileSync(file, 'utf-8');
 });
+
+/**
+ * Small helper function that exposes the core per brand.
+ *
+ * @param {String} brand available brands
+ * @return {String} path to the core stylus file
+ * @api public
+ */
+Contour.core = function core(brand) {
+  if (!~available.indexOf(brand)) return;
+  var base = path.join(__dirname, 'assets', brand);
+
+  return {
+    styl: path.join(base, 'core.styl'),
+    js: path.join(base, 'core.js')
+  };
+};
 
 /**
  * Expose constructor.

@@ -23,7 +23,7 @@ function Assets(brand) {
     , enumerable = Assets.predefine(this, { configurable: false });
 
   //
-  // Default framework to use.
+  // Default framework to use with reference to the path to core.styl.
   //
   readable('brand', brand = brand || 'nodejitsu');
 
