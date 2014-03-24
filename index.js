@@ -455,11 +455,12 @@ Contour.readable('getFileContent', function getFileContent(file, cache) {
  * @return {String} path to the core stylus file
  * @api public
  */
-Contour.core = function core(brand) {
+Contour.get = function get(brand) {
   if (!~available.indexOf(brand)) return;
   var base = path.join(__dirname, 'assets', brand);
 
   return {
+    defaults: path.join(base, 'defaults.styl'),
     styl: path.join(base, 'core.styl'),
     js: path.join(base, 'core.js')
   };
