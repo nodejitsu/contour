@@ -95,7 +95,7 @@ module.exports = Pagelet.extend({
    * @api public
    */
   use: function use(name, fn) {
-    this.temper.required.handlebars.registerHelper(name, fn);
+    this.temper.require('handlebars').registerHelper(name, fn);
     return this;
   },
 
