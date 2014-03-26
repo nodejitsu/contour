@@ -1,0 +1,35 @@
+@import "defaults"
+
+.pills
+  margin: 1.5em auto
+
+  a
+    border-right: 8px solid $red
+    display: inline-block
+    font-size: 18px
+    padding: 5px 0
+    margin-right: 0
+    outline: none
+    text-align: center
+    text-transform: uppercase
+
+    &.last
+      border-right: none
+
+    &.twocol
+      width: 12.45%
+
+    &.active
+      background-color: $pill-background
+      color: $pill-color
+
+    &:hover
+      text-decoration: none
+
+@media handheld, only screen and (max-width: 767px)
+  .pills a
+    border: none
+    display: block
+
+    &.twocol
+      width: auto
