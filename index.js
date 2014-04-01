@@ -3,26 +3,27 @@
 /**
  * Native modules.
  */
-var EventEmitter = require('events').EventEmitter
-  , path = require('path')
+var path = require('path')
   , fs = require('fs');
 
 /**
  * Third-party modules.
  */
 var async = require('async')
+  , fuse = require('fusing')
   , ejs = require('ejs')
   , mixin = require('utile').mixin
   , cheerio = require('cheerio')
   , md = require('marked')
-  , Queue = require('./queue');
+  , queue = require('./queue');
 
 //
 // Defaults.
 //
 var defaults = require('./defaults')
   , template = __dirname + '/templates'
-  , Assets = require('./assets');
+  , Assets = require('./assets')
+  , available = [ 'nodejitsu', 'npm' ];
 
 /**
  * Contour will register several default HTML5 templates of Nodejitsu. These
@@ -45,9 +46,11 @@ function Contour(origin, options) {
   options = options || {};
 
   // Store options locally and force monitoring if not explicitly cancelled.
-  var store = options.store
+  var contour = this
+    , store = options.store
     , env = process.env.NODE_ENV || 'development'
-    , monitor = options.monitor || (env === 'development' && store);
+    , monitor = options.monitor || (env === 'development' && store)
+    , readable = Contour.predefine(this, Contour.predefine.READABLE);
 
   // Check if we got a proper path to userland templates.
   if (!origin || !fs.existsSync(origin)) {
@@ -58,31 +61,32 @@ function Contour(origin, options) {
   if (monitor && !fs.existsSync(path.dirname(store))) {
     throw new Error('Provide path to store Square configuration');
   }
-  // Collection of suppliers, file inclusion and supplied origin.
-  this.app = {
-    include: this.include.bind(this, origin),
-    markdown: this.markdown.bind(this)
-  };
 
-  // Switch to required framework.
-  this.assets = new Assets(options.brand);
+  //
+  // Add the pagelets of the required framework.
+  //
+  this.mixin(this, new Assets(options.brand));
 
   // Set options and provide fallbacks.
-  this._queue = new Queue;
-  this._storage = {};
-  this._options = {
-    brand: this.assets.brand,
-    defaults: mixin(defaults.nodejitsu, defaults[this.assets.brand]),
-    template: path.resolve(template, this.assets.brand),
+  readable('_queue', queue);
+  readable('_origin', origin);
+  readable('_storage', {});
+  readable('_options', {
+    brand: this.brand,
+    defaults: mixin(defaults.nodejitsu, defaults[this.brand]),
+    template: path.resolve(template, this.brand),
     fallback: path.resolve(template, 'nodejitsu')
-  };
+  });
 
-  // Get all default nodejitsu templates. These will be forcefully overwritten
+  //
+  // Get all default nodejitsu Pagelets. These will be forcefully overwritten
   // by a custom brand. It creates a fall back if the custom brand does not
   // require a different template.
-  fs.readdirSync(this._options.fallback).forEach(function prepareTemplates(file) {
-    this.addFile(file);
-  }.bind(this));
+  //
+  /*fs.readdirSync(assets).forEach(function preparePagelets(pagelet) {
+    console.log(pagelet);
+    pagelet = require(path.join(assets, pagelet));
+  });*/
 
   // Get all the templates, synced so another application does not
   // have to defer their whole initialization for nodejitsu-app.
@@ -93,44 +97,45 @@ function Contour(origin, options) {
   }
 
   // Start monitoring for included templates to automatically update Square.
-  if (monitor) {
-    var Square = require('square');
+  /*if (monitor) return;
+  var Square = require('square');
 
-    this._options.store = store;
-    this._options.dist = options.dist || '{ext}/jitsu.{type}.{ext}';
-    this._options.import = options.import;
-    this._options.output = options.output || path.dirname(store);
-    this._options.resources = path.resolve(__dirname, 'assets');
+  this._options.store = store;
+  this._options.dist = options.dist || '{ext}/jitsu.{type}.{ext}';
+  this._options.import = options.import;
+  this._options.output = options.output || path.dirname(store);
+  this._options.resources = path.resolve(__dirname, 'assets');
 
-    //
-    // Initialize square with log level: error, so only important stuff is shown.
-    // Don't include file origins in the files as these are different per developer.
-    //
-    this._square = new Square({ 'log level': 2, comments: false });
-    this.monitor();
-  }
+  //
+  // Initialize square with log level: error, so only important stuff is shown.
+  // Don't include file origins in the files as these are different per developer.
+  //
+  readable('_square', new Square({ 'log level': 2, comments: false }));
+  this.monitor();*/
 }
 
-Contour.prototype.__proto__ = EventEmitter.prototype;
+//
+// Add EventEmitter and Predefine functionality.
+//
+fuse(Contour, require('events').EventEmitter);
 
 /**
  * Include a template, data will be run through #supplier.
  *
- * @param {String} origin base path of destinations app templates
  * @param {String} filename template
  * @param {Object} data additional data
  * @param {Boolean} cache cache the template compilation and lookup
  * @return {String}
  * @api public
  */
-Contour.prototype.include = function include(origin, filename, data, cache) {
+Contour.readable('include', function include(filename, data, cache) {
   if (!path.extname(filename)) {
     filename += '.ejs';
   }
 
-  filename = path.resolve(origin, filename);
+  filename = path.resolve(this._origin, filename);
   return this.addFile(filename, true, cache).call(this, data, true);
-};
+});
 
 /**
  * Debounce function to defer the call of the supplied `fn` with `wait` ms. The
@@ -140,7 +145,7 @@ Contour.prototype.include = function include(origin, filename, data, cache) {
  * @param {Number} wait milliseconds
  * @api private
  */
-Contour.prototype.debounce = function debounce(fn, wait) {
+Contour.readable('debounce', function debounce(fn, wait) {
   var timeout;
 
   return function defer() {
@@ -160,7 +165,7 @@ Contour.prototype.debounce = function debounce(fn, wait) {
     if (!timeout) timeout = setTimeout(later, wait);
     return result;
   };
-};
+});
 
 /**
  * Run included content through markdown after ejs has done its work.
@@ -170,9 +175,9 @@ Contour.prototype.debounce = function debounce(fn, wait) {
  * @return {String} markdown parsed content
  * @api public
  */
-Contour.prototype.markdown = function markdown() {
-  return md(this.app.include.apply(this, arguments));
-};
+Contour.readable('markdown', function markdown() {
+  return md(this.include.apply(this, arguments));
+});
 
 /**
  * Reducer for list of files to add to the square configuration bundle.
@@ -181,7 +186,7 @@ Contour.prototype.markdown = function markdown() {
  * @param {Object} file representation
  * @api public
  */
-Contour.prototype.add = function add(n, file) {
+Contour.readable('add', function add(n, file) {
   var current = Object.keys(this._square.scaffold.get().bundle)
     , self = this;
 
@@ -211,7 +216,7 @@ Contour.prototype.add = function add(n, file) {
   }
 
   return self._square.scaffold.add(file) ? n + 1 : n;
-};
+});
 
 /**
  * This will spin up square monitoring and scaffolding to provide
@@ -219,7 +224,7 @@ Contour.prototype.add = function add(n, file) {
  *
  * @api public
  */
-Contour.prototype.monitor = function monitor() {
+Contour.readable('monitor', function monitor() {
   var file = path.resolve(this._options.store)
     , extend = this._options.import
     , self = this
@@ -334,7 +339,7 @@ Contour.prototype.monitor = function monitor() {
     // Notify external APIs that we are monitoring.
     self.emit('monitoring');
   });
-};
+});
 
 /**
  * Add template composer to the stack. EJS will cache the compile internally, so
@@ -346,10 +351,9 @@ Contour.prototype.monitor = function monitor() {
  * @return {Function} promise of type #supplier
  * @api public
  */
-Contour.prototype.addFile = function addFile(file, incl, cache) {
-  var ref = this.app
-    ,  type = path.basename(file)
-    ,  compiled;
+Contour.readable('addFile', function addFile(file, incl, cache) {
+  var type = path.basename(file)
+    , compiled;
 
   // cache by default
   if (arguments.length !== 3) cache = true;
@@ -358,7 +362,7 @@ Contour.prototype.addFile = function addFile(file, incl, cache) {
   type = type.substr(0, type.lastIndexOf('.'));
 
   // Return early if we already compiled the template before.
-  if (!incl && type in ref) return ref[type];
+  if (!incl && type in this) return this[type];
 
   // Bind types to a supplier to privision data.
   file = path.resolve(this._options.template, file);
@@ -375,9 +379,9 @@ Contour.prototype.addFile = function addFile(file, incl, cache) {
   ));
 
   // Only add the compiled template to the stack if it is not a custom file.
-  if (!incl && cache) ref[type] = compiled;
+  if (!incl && cache) this[type] = compiled;
   return compiled;
-};
+});
 
 /**
  * Proxy each template type and merge in data.
@@ -389,7 +393,7 @@ Contour.prototype.addFile = function addFile(file, incl, cache) {
  * @return {String} template content
  * @api private
  */
-Contour.prototype.supplier = function supplier(type, render, data, incl) {
+Contour.readable('supplier', function supplier(type, render, data, incl) {
   var source = this._options.defaults
     , copy, html, $;
 
@@ -402,7 +406,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
       if (values.hook) values.hook.call(this, data || copy);
 
       // Include copied defaults to prevent polution of multiple inclusions.
-      data = mixin(copy, data || {}, this._queue.discharge(type));
+      data = mixin(copy, data || {}, queue.discharge(type));
       if (!('production' in data)) data.production = process.env.NODE_ENV === 'production';
     }
 
@@ -411,7 +415,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
   }
 
   // Always add reference to this.app again.
-  html = render.call(render, mixin(data || {}, { app: this.app }));
+  html = render.call(render, mixin(data || {}, { app: this }));
 
   // If required adjust element data-attributes.
   if (data && data.attributes) {
@@ -428,7 +432,7 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
   }
 
   return html;
-};
+});
 
 /**
  * Get the file content used by include and cache it to storage of the instance.
@@ -437,11 +441,29 @@ Contour.prototype.supplier = function supplier(type, render, data, incl) {
  * @return {String} file content
  * @api private
  */
-Contour.prototype.getFileContent = function getFileContent(file, cache) {
+Contour.readable('getFileContent', function getFileContent(file, cache) {
   var store = this._storage;
 
   if (file in store && cache) return store[file];
   return store[file] = fs.readFileSync(file, 'utf-8');
+});
+
+/**
+ * Small helper function that exposes the core per brand.
+ *
+ * @param {String} brand available brands
+ * @return {String} path to the core stylus file
+ * @api public
+ */
+Contour.get = function get(brand) {
+  if (!~available.indexOf(brand)) return;
+  var base = path.join(__dirname, 'assets', brand);
+
+  return {
+    defaults: path.join(base, 'defaults.styl'),
+    styl: path.join(base, 'core.styl'),
+    js: path.join(base, 'core.js')
+  };
 };
 
 /**

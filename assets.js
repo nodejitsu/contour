@@ -3,32 +3,46 @@
 //
 // Required modules.
 //
-var path = require('path')
+var fuse = require('fusing')
+  , path = require('path')
   , fs = require('fs');
+
+//
+// Base path for assets.
+//
+var assets = path.join(__dirname, 'assets');
 
 /**
  * Create new collection of assets from a specific brand.
  *
- * @param {String} brand ndodejitsu brand of your liking
+ * @param {String} brand nodejitsu by default.
  * @api public
  */
-module.exports = function Assets(brand) {
-  var collection = this;
+function Assets(brand) {
+  var readable = Assets.predefine(this, Assets.predefine.READABLE)
+    , enumerable = Assets.predefine(this, { configurable: false });
 
   //
-  // Default framework to use.
+  // Default framework to use with reference to the path to core.styl.
   //
-  collection.brand = brand || 'nodejitsu';
+  readable('brand', brand = brand || 'nodejitsu');
 
   //
   // Load all assets of the branch.
   //
-  fs.readdirSync(__dirname + '/assets').forEach(function include(file) {
-    if ('.js' !== path.extname(file)) return;
+  fs.readdirSync(assets).forEach(function include(pagelet) {
+    if ('.js' !== path.extname(pagelet) || ~pagelet.indexOf('pagelet')) return;
 
-    Object.defineProperty(collection, path.basename(file, '.js'), {
-      value: require('./assets/' + file)[collection.brand || 'nodejitsu'],
-      writable: false
-    });
+    enumerable(path.basename(pagelet, '.js'), {
+      enumerable: true,
+      get: function get() {
+        return (require(path.join(assets, pagelet))).brand(brand);
+      }
+    }, true);
   });
-};
+}
+
+//
+// Expose the collection.
+//
+module.exports = fuse(Assets);

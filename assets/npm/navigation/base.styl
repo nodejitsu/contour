@@ -1,14 +1,13 @@
-@import "defaults"
-@import "mixins/sprite"
+@import "../defaults"
+@import "../../base/mixins/sprite"
 
 // The navigation bar has a fixed height
-$height = 96px
+$height = 40px
 
 .navigation
   background: $background
   border-bottom: 1px solid $divider
-  box-shadow: 0 -3px 10px $nav-box-shadow, inset 0 0 1px $nav-box-shadow
-  font-size: 16px
+  font-size: 18px
   font-weight: bold
   height: $height
   margin: 0 -20px
@@ -18,29 +17,34 @@ $height = 96px
   // box-shadow must be dropped upon them
   z-index: 1
 
-  // We need to apply the padding to the row, or we will break the responsiveness of
-  // our faux-column sidebars
   .row
-    padding: 0 20px
-    height: $height - 2 // Max nav height (required for IE9) to show bottom border
+    overflow: visible
+    position: relative
+
+    &:before
+      absolute: top 0 left -60px
+      background-image: url($sprite-location)
+      background-repeat: no-repeat
+      display: block
+      content: ''
+      text-indent: -9999
+      sprite(0, 3, $height)
 
   h1
     display: block
     float: left
     margin: 0
     overflow: hidden
-    width: 177px
+    width: 40px
 
   .logo
-    background: #FFF url($sprite-location) no-repeat 0 25px
-    background-size: 90% auto
+    background-image: url($sprite-location)
+    background-repeat: no-repeat
     float: left
     height: $height
     margin: 1px 0 0
     text-indent: -9999px
-    // make sure that the width is same with as the <aside> in the regular pages so
-    // the divider aligns with their divider
-    width: 177px
+    sprite(0, 0)
 
   .active
     background-color: $active-background
@@ -48,12 +52,11 @@ $height = 96px
     border: 1px solid $active-border
 
   a
-    color: $link
+    color: $dark-gray
     display: inline-block
     padding: 0 20px
     position: relative
     text-decoration: none
-    text-transform: uppercase
     outline: none
 
     // Make the menu items the same height as the bar, so we have bigger click area
@@ -67,11 +70,8 @@ $height = 96px
     &:not(.login):not(.mobile)
       margin-right: 5px
 
-    &:nth-child(3)
-      border-left: 1px solid $divider
-
     &:hover
-      color: $link-hover
+      color: lighten($dark-gray, 30%)
 
   h1 a:not(.login):not(.mobile):not(.sign)
     height: $height - 3
@@ -89,35 +89,9 @@ $height = 96px
     s
       font-size: 70%
 
-@media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
-  .navigation
-    a.login
-      margin-right: 100px
-
-    a:not(.mobile):not(.logo):not(.login):not(.sign)
-      padding: 0 8px
-
-@media handheld, only screen and (max-width: 1120px) and (min-width: 767px)
-  .navigation
-    a:not(.mobile):not(.logo):not(.login):not(.sign)
-      font-size: 12px
-
-      &.active
-        line-height: 95px
-
-    a.sign
-    a.login
-      font-size: 10px
-      padding-left: 3px
-      padding-right: 3px
-
-      s
-        display: none
-
-@media handheld, only screen and (max-width: 910px) and (min-width: 767px)
-  .navigation
-    a.login
-      margin-right: 0px
+@media handheld, only screen and (max-width: 1200px)
+  .navigation .row
+    padding: 0 20px
 
 @media handheld, only screen and (max-width: 767px)
   // don't add the transitions until our webfonts are loaded as it will increase in size
@@ -125,22 +99,19 @@ $height = 96px
     transition: max-height 1s
 
   .navigation
-    max-height: 90px
     margin: 0 // corrects the -20px margin
-
-    h1
-      height: 92px
 
     .row
       height: auto
-      padding: 0 20px
 
     .mobile
       display: inline-block
-      padding: 8px 10px 2px
+      padding: 3px 6px
       position: absolute
+      height: 28px
+      width: 28px
       right: 20px
-      top: 30px
+      top: 4px
 
     h1
       float: none
@@ -153,20 +124,12 @@ $height = 96px
       float: left
       line-height: 18px
 
-      &:nth-child(3)
-        border-left: none
-
       &:not(.login):not(.sign)
         border-bottom: 1px solid $divider
         height: 59px
         float: none
         line-height: 60px
         margin: 0 -20px
-
-    a.sign
-    a.login
-      width: 44%
-      margin: 10px
 
   // by using :target we can change the menu's height, we need to use a fixed height
   // in order for it to animate nicely

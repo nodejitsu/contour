@@ -1,0 +1,174 @@
+@import "../defaults"
+
+// The navigation bar has a fixed height
+$height = 96px
+
+.navigation
+  background: $background
+  border-bottom: 1px solid $divider
+  box-shadow: 0 -3px 10px $nav-box-shadow, inset 0 0 1px $nav-box-shadow
+  font-size: 16px
+  font-weight: bold
+  height: $height
+  margin: 0 -20px
+  overflow: hidden
+  position: relative
+  // z-index is required to put the navbar above all other regular content as the
+  // box-shadow must be dropped upon them
+  z-index: 1
+
+  // We need to apply the padding to the row, or we will break the responsiveness of
+  // our faux-column sidebars
+  .row
+    padding: 0 20px
+    height: $height - 2 // Max nav height (required for IE9) to show bottom border
+
+  h1
+    display: block
+    float: left
+    margin: 0
+    overflow: hidden
+    width: 177px
+
+  .logo
+    background: #FFF url($sprite-location) no-repeat 0 25px
+    background-size: 90% auto
+    float: left
+    height: $height
+    margin: 1px 0 0
+    text-indent: -9999px
+    // make sure that the width is same with as the <aside> in the regular pages so
+    // the divider aligns with their divider
+    width: 177px
+
+  .active
+    background-color: $active-background
+    background-image: linear-gradient(top, $nav-active-bg-top, @background-color)
+    border: 1px solid $active-border
+
+  a
+    color: $link
+    display: inline-block
+    padding: 0 20px
+    position: relative
+    text-decoration: none
+    text-transform: uppercase
+    outline: none
+
+    // Make the menu items the same height as the bar, so we have bigger click area
+    // except for the login button as that will deform the button class it uses
+    &:not(.login):not(.mobile):not(.sign)
+      height: $height - 1 // substract 1px for the bottom border
+      float: left
+      line-height: $height
+
+    // Sign up button should have a little margin towards the login button
+    &:not(.login):not(.mobile)
+      margin-right: 5px
+
+    &:nth-child(3)
+      border-left: 1px solid $divider
+
+    &:hover
+      color: $link-hover
+
+  h1 a:not(.login):not(.mobile):not(.sign)
+    height: $height - 3
+
+  .mobile
+    display: none
+
+  .sign
+  .login
+    height: 32px
+    margin-top: 30px
+    padding: 5px 10px 2px
+    text-align: center
+
+    s
+      font-size: 70%
+
+@media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
+  .navigation
+    a.login
+      margin-right: 100px
+
+    a:not(.mobile):not(.logo):not(.login):not(.sign)
+      padding: 0 8px
+
+@media handheld, only screen and (max-width: 1120px) and (min-width: 767px)
+  .navigation
+    a:not(.mobile):not(.logo):not(.login):not(.sign)
+      font-size: 12px
+
+      &.active
+        line-height: 95px
+
+    a.sign
+    a.login
+      font-size: 10px
+      padding-left: 3px
+      padding-right: 3px
+
+      s
+        display: none
+
+@media handheld, only screen and (max-width: 910px) and (min-width: 767px)
+  .navigation
+    a.login
+      margin-right: 0px
+
+@media handheld, only screen and (max-width: 767px)
+  // don't add the transitions until our webfonts are loaded as it will increase in size
+  .wf-active .navigation
+    transition: max-height 1s
+
+  .navigation
+    max-height: 90px
+    margin: 0 // corrects the -20px margin
+
+    h1
+      height: 92px
+
+    .row
+      height: auto
+      padding: 0 20px
+
+    .mobile
+      display: inline-block
+      padding: 8px 10px 2px
+      position: absolute
+      right: 20px
+      top: 30px
+
+    h1
+      float: none
+
+    .logo
+      float: none
+
+    a:not(.mobile):not(.logo)
+      display: block
+      float: left
+      line-height: 18px
+
+      &:nth-child(3)
+        border-left: none
+
+      &:not(.login):not(.sign)
+        border-bottom: 1px solid $divider
+        height: 59px
+        float: none
+        line-height: 60px
+        margin: 0 -20px
+
+    a.sign
+    a.login
+      width: 44%
+      margin: 10px
+
+  // by using :target we can change the menu's height, we need to use a fixed height
+  // in order for it to animate nicely
+  #navigation:target
+    height: auto
+    max-height: 800px

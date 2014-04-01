@@ -1,16 +1,16 @@
 'use strict';
 
 //
-// Expose the footer Pagelet.
+// Expose the navigation Pagelet.
 //
 module.exports = require('./pagelet').extend({
-  name: 'footer',
+  name: 'navigation',
 
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //
-  css: '{{brand}}/footer/base.styl',
-  view: '{{brand}}/footer/view.hbs',
+  css: '{{brand}}/navigation/base.styl',
+  view: '{{brand}}/navigation/view.hbs',
 
   dependencies: [
     '{{brand}}/core.styl'
@@ -20,12 +20,30 @@ module.exports = require('./pagelet').extend({
   // Both the login functionality and signup button are optional, see data.
   //
   pagelets: {
+    login: require('./login'),
+    signup: require('./button').extend({
+      data: {
+        href: '/signup',
+        class: 'right sign',
+        text: '<s class="ss-icon ss-uploadcloud"></s> sign up'
+      }
+    })
   },
 
   //
-  // Default data for the footer, can be changed by using `set`.
+  // Default data for the navigation, can be changed by using `set`.
   //
   data: {
+    base: '',
+    login: false,
+    signup: false,
+    navigation: [
+      { name: 'Cloud', href: '/paas/' },
+      { name: 'Enterprise', href: '/enterprise/' },
+      { name: 'Docs', href: '/documentation/' },
+      { name: 'Support', href: '/support/' },
+      { name: 'Company', href: '/company/' }
+    ]
   },
 
   //
@@ -33,13 +51,14 @@ module.exports = require('./pagelet').extend({
   // relative placement with respect to other assets.
   //
   meta: {
-    description: 'Responsive footer element',
-    weight: 898
+    description: 'Responsive header navigation',
+    weight: 899
   },
 
   /**
-   * Handblebar helper to generate the navigation entries. The maximum number of
-   * columns that can be generated is 5.
+   * Handblebar helper to generate the navigation entries. The base is defined by
+   * the active page and should match the first part of the `href` route or the
+   * provided menu entry `base`.
    *
    * @param {Object} options
    * @api private

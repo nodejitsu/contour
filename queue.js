@@ -49,4 +49,4 @@ Queue.prototype.discharge = function discharge(type) {
 //
 // Expose the constructor
 //
-module.exports = Queue;
+module.exports = new Queue;

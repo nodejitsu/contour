@@ -1,10 +1,11 @@
 {
   "name": "contour",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=testing ./node_modules/.bin/mocha $(find test -name '*.test.js')"
+    "test": "NODE_ENV=testing ./node_modules/.bin/mocha $(find test -name '*.test.js')",
+    "local": "zuul --phantom -- test/client.js"
   },
   "keywords": [
     "Front-end",
@@ -18,10 +19,14 @@
     "async": "~0.2.10",
     "cheerio": "~0.13.1",
     "creditcard": "~0.1.1",
-    "ejs": "~0.8.5",
+    "ejs": "~1.0.0",
+    "fusing": "~0.0.3",
+    "handlebars": "~2.0.0",
     "marked": "~0.3.1",
     "predefine": "~0.0.2",
     "utile": "~0.2.1"
+    "utile": "~0.2.1",
+    "pagelet": "~0.2.0"
   },
   "devDependencies": {
     "mocha": "1.13.x",
@@ -29,6 +34,8 @@
     "sinon": "1.7.x",
     "sinon-chai": "2.4.x",
     "pre-commit": "0.0.x",
+    "zuul": "~1.5.4",
+    "phantomjs": "~1.9.7",
     "square": "git://github.com/observing/square.git#development"
   },
   "publishConfig": {
