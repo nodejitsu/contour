@@ -7,6 +7,10 @@
     "test": "NODE_ENV=testing ./node_modules/.bin/mocha $(find test -name '*.test.js')",
     "local": "zuul --phantom -- test/client.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/nodejitsu/contour.git"
+  },
   "keywords": [
     "Front-end",
     "scaffold",
