@@ -462,6 +462,7 @@ Contour.get = function get(brand) {
   return {
     defaults: path.join(base, 'defaults.styl'),
     styl: path.join(base, 'core.styl'),
+    grid: path.join(base, 'grid.styl'),
     js: path.join(base, 'core.js')
   };
 };
