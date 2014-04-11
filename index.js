@@ -459,13 +459,14 @@ Contour.get = function get(brand) {
   if (!~available.indexOf(brand)) return;
   var base = path.join(__dirname, 'assets', brand);
 
-  return {
-    defaults: path.join(base, 'defaults.styl'),
-    styl: path.join(base, 'core.styl'),
-    grid: path.join(base, 'grid.styl'),
-    js: path.join(base, 'core.js')
-  };
+  return fs.readdirSync(base).reduce(function reduce(memo, file) {
+    if ('.styl' !== path.extname(file)) return memo;
+
+    memo[path.basename(file, '.styl')] = path.join(base, file);
+    return memo;
+  }, { js: path.join(base, 'core.js') });
 };
+
 
 /**
  * Expose constructor.
