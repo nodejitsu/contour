@@ -13,7 +13,8 @@ module.exports = require('./pagelet').extend({
   view: '{{brand}}/navigation/view.hbs',
 
   dependencies: [
-    '{{brand}}/core.styl'
+    '{{brand}}/grid.styl',
+    '{{brand}}/typography.styl'
   ],
 
   //
