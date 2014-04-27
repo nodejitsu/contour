@@ -65,8 +65,13 @@ module.exports = require('./pagelet').extend({
    * @api private
    */
   nav: function nav(options) {
-    var base = this.base;
+    var targets = ['self', 'blank', 'parent', 'top'],
+        base    = this.base;
     return this.navigation.reduce(function reduce(menu, item) {
+      item.target = item.target && ~targets.indexOf(item.target)
+        ? ' target=_' + item.target
+        : '';
+
       item.active = ~base.indexOf(item.base || item.href.split('/').filter(String).shift())
         ? ' class="active"'
         : '';
