@@ -6,9 +6,9 @@
 module.exports = require('./pagelet').extend({
   name: 'alert',
 
-  js: 'nodejitsu/alert/base.js',
-  css: 'nodejitsu/alert/base.styl',
-  view: 'nodejitsu/alert/view.hbs',
+  js: [ '{{brand}}/alert/base.js' ],
+  css: [ '{{brand}}/alert/base.styl' ],
+  view: '{{brand}}/alert/view.hbs',
 
   //
   // Default data for alert notificiation, can be changed by using `set`.

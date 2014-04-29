@@ -6,9 +6,9 @@
 module.exports = require('./pagelet').extend({
   name: 'login',
 
-  js: 'nodejitsu/login/base.js',
-  css: 'nodejitsu/login/base.styl',
-  view: 'nodejitsu/login/view.hbs',
+  js: [ '{{brand}}/login/base.js' ],
+  css: [ '{{brand}}/login/base.styl' ],
+  view: '{{brand}}/login/view.hbs',
 
   pagelets: {
   },

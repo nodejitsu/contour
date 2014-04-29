@@ -6,8 +6,8 @@
 module.exports = require('./pagelet').extend({
   name: 'button',
 
-  css: 'nodejitsu/button/base.styl',
-  view: 'nodejitsu/button/view.hbs',
+  css: [ '{{brand}}/button/base.styl' ],
+  view: '{{brand}}/button/view.hbs',
 
   //
   // Default data for the login button, can be changed by using `set`. The

@@ -8,6 +8,19 @@ var queue = require('../queue')
   , mixin = require('utile').mixin;
 
 /**
+ * Return a mapping function with preset brand.
+ *
+ * @param {String} brand
+ * @returns {Function} mapper
+ * @api private
+ */
+function use(brand) {
+  return function branding(file) {
+    return file.replace('{{brand}}', brand);
+  };
+}
+
+/**
  * Set a specific branch. Used by temper to fetch all the proper assets.
  *
  * @param {String} brand
@@ -15,15 +28,20 @@ var queue = require('../queue')
  * @api private
  */
 Pagelet.brand = function define(brand) {
+  var prototype = this.prototype;
+
+  //
+  // Use nodejitsu as default brand.
+  //
   if (!brand) brand = 'nodejitsu';
+  prototype.view = prototype.view.replace('{{brand}}', brand);
 
-  this.prototype.view = this.prototype.view.replace('{{brand}}', brand);
-  this.prototype.css = this.prototype.css.replace('{{brand}}', brand);
-  this.prototype.js = this.prototype.js.replace('{{brand}}', brand);
-
-  this.prototype.dependencies = this.prototype.dependencies.map(function map(file) {
-    return file.replace('{{brand}}', brand);
-  });
+  //
+  // CSS and JS will be supplied as arrays, replace paths with brand.
+  //
+  if (prototype.css) prototype.css = prototype.css.map(use(brand));
+  if (prototype.js) prototype.js = prototype.js.map(use(brand));
+  prototype.dependencies = prototype.dependencies.map(use(brand));
 
   return this;
 };

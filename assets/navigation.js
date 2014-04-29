@@ -9,12 +9,14 @@ module.exports = require('./pagelet').extend({
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //
-  css: '{{brand}}/navigation/base.styl',
   view: '{{brand}}/navigation/view.hbs',
 
+  css: [
+    '{{brand}}/navigation/base.styl'
+  ],
+
   dependencies: [
-    '{{brand}}/grid.styl',
-    '{{brand}}/typography.styl'
+    '{{brand}}/core.styl',
   ],
 
   //
