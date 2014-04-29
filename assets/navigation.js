@@ -16,7 +16,9 @@ module.exports = require('./pagelet').extend({
   ],
 
   dependencies: [
-    '{{brand}}/core.styl',
+    '{{brand}}/grid.styl',
+    '{{brand}}/icons.styl',
+    '{{brand}}/typography.styl'
   ],
 
   //

@@ -13,7 +13,9 @@ module.exports = require('./pagelet').extend({
   view: '{{brand}}/footer/view.hbs',
 
   dependencies: [
-    '{{brand}}/core.styl'
+    '{{brand}}/grid.styl',
+    '{{brand}}/icons.styl',
+    '{{brand}}/typography.styl'
   ],
 
   //
