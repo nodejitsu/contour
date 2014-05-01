@@ -2,18 +2,19 @@
 @import "../../base/mixins/sprite"
 
 // The navigation bar has a fixed height
-$height = 40px
+$height = 30px
 
 .navigation
   font-family: $font-family
   background: $background
   border-bottom: 1px solid $divider
-  font-size: 18px
+  font-size: 14px
   font-weight: bold
   height: $height
   margin: 0 -20px
   overflow: hidden
   position: relative
+  text-transform: uppercase
   // z-index is required to put the navbar above all other regular content as the
   // box-shadow must be dropped upon them
   z-index: 1
@@ -53,9 +54,9 @@ $height = 40px
     border: 1px solid $active-border
 
   a
-    color: $dark-gray
+    color: $light-gray
     display: inline-block
-    padding: 0 20px
+    padding: 0 10px
     position: relative
     text-decoration: none
     outline: none
