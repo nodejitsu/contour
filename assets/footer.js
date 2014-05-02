@@ -21,13 +21,42 @@ module.exports = require('./pagelet').extend({
   //
   // Both the login functionality and signup button are optional, see data.
   //
-  pagelets: {
-  },
+  pagelets: {},
 
   //
   // Default data for the footer, can be changed by using `set`.
   //
   data: {
+    logo: true,
+    copyright: new Date().getFullYear() + ' - Design by Nodejitsu Inc.',
+    social: {
+      twitter: 'nodejitsu',
+      github: 'nodejitsu'
+    },
+
+    //
+    // List of navigation links per column.
+    //
+    navigation: [
+      {
+        name: 'Company',
+        links: [
+          { text: 'Nodejitsu.com', target: '_blank', href: 'https://www.nodejitsu.com/' }
+        ]
+      },
+      {
+        name: 'Community',
+        links: [
+          { text: 'Blog', target: '_blank', href: 'https://blog.nodejitsu.com/' }
+        ]
+      },
+      {
+        name: 'Resources',
+        links: [
+          { text: 'Service Status', target: '_blank', href: 'https://status.nodejitsu.com/' }
+        ]
+      }
+    ]
   },
 
   //
@@ -37,32 +66,5 @@ module.exports = require('./pagelet').extend({
   meta: {
     description: 'Responsive footer element',
     weight: 898
-  },
-
-  /**
-   * Handblebar helper to generate the navigation entries. The maximum number of
-   * columns that can be generated is 5.
-   *
-   * @param {Object} options
-   * @api private
-   */
-  nav: function nav(options) {
-    var base = this.base;
-    return this.navigation.reduce(function reduce(menu, item) {
-      item.active = ~base.indexOf(item.base || item.href.split('/').filter(String).shift())
-        ? ' class="active"'
-        : '';
-
-      return menu + options.fn(item);
-    }, '');
-  },
-
-  /**
-   * Called after Pagelet construction, register handlebar helpers.
-   *
-   * @api private
-   */
-  initialize: function initialize() {
-    this.use('nav', this.nav);
   }
 }).on(module);

@@ -1,0 +1,88 @@
+@import "../defaults"
+@import "../../base/mixins/sprite"
+
+// The content in the footer is lighter then the rest, yo
+$light-base = lighten($base-color, 50%)
+
+.logo
+  background-image: url($sprite-location)
+  background-repeat: no-repeat
+  display: inline-block
+  sprite(0, 6, 40px, 300px)
+
+.doormat
+  font-size: 13px
+  border-top: 1px solid $divider
+  margin: 0 -20px
+  padding: 20px
+
+  dl
+    margin-right: 0
+    border-right: 1px solid $divider
+
+    &:last-child
+      border-right: 0
+
+  dt
+    font-weight: bold
+    margin-bottom: 30px
+    text-transform: uppercase
+
+  dd
+    margin: 0
+    text-align: center
+
+    a
+      color: $light-base
+      font-weight: normal
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+  form
+    margin-bottom: 3em
+    position: relative
+
+    button
+      absolute: top -22px right 3px
+
+    input[type=email]
+      margin-right: 102px
+      padding-right: @margin-right
+
+.social
+  p
+    display: inline-block
+    float: right
+    margin-top: .8em
+
+  ul
+    display: inline-block
+    float: left
+    padding: 0
+
+  li
+    display: inline-block
+
+  a
+    color: lighten($base-color, 80%)
+    font-size: 25px
+    margin-right: 10px
+
+    &:hover
+    &:active
+      color: lighten($base-color, 30%)
+      text-decoration: none
+
+.copyright
+  color: $light-base
+  text-align: right
+
+@media handheld, only screen and (max-width: 767px)
+  .doormat
+    margin: 0
+
+    .twocol
+      float: left
+      width: 50%

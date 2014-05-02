@@ -2,7 +2,8 @@
 
 Front-end scaffolding framework.
 
-**Note: private for now, until ready for release**
+**Note: this project is in the middle of a major rewrite for both BigPipe and more
+general compatibility for other web frameworks**
 
 ## Installation
 

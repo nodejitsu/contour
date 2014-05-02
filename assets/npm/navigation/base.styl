@@ -24,7 +24,7 @@ $height = 30px
     position: relative
 
     &:before
-      absolute: top 0 left -60px
+      absolute: top 0 left -45px
       background-image: url($sprite-location)
       background-repeat: no-repeat
       display: block
@@ -54,7 +54,7 @@ $height = 30px
     border: 1px solid $active-border
 
   a
-    color: $light-gray
+    color: lighten($dark-gray, 30%)
     display: inline-block
     padding: 0 10px
     position: relative
@@ -73,7 +73,7 @@ $height = 30px
       margin-right: 5px
 
     &:hover
-      color: lighten($dark-gray, 30%)
+      color: $dark-gray
 
   h1 a:not(.login):not(.mobile):not(.sign)
     height: $height - 3

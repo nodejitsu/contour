@@ -68,9 +68,10 @@ module.exports = require('./pagelet').extend({
    * @param {Object} options
    * @api private
    */
-  nav: function nav(options) {
+  links: function links(options) {
     var targets = ['self', 'blank', 'parent', 'top'],
         base    = this.base;
+
     return this.navigation.reduce(function reduce(menu, item) {
       item.target = item.target && ~targets.indexOf(item.target)
         ? ' target=_' + item.target
@@ -90,6 +91,6 @@ module.exports = require('./pagelet').extend({
    * @api private
    */
   initialize: function initialize() {
-    this.use('nav', this.nav);
+    this.use('links', this.links);
   }
 }).on(module);

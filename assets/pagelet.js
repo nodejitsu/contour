@@ -113,12 +113,12 @@ module.exports = Pagelet.extend({
    * @api public
    */
   use: function use(name, fn) {
-    this.temper.require('handlebars').registerHelper(name, fn);
+    this.temper.require('handlebars').registerHelper(this.name + '-' + name, fn);
     return this;
   },
 
   /**
-   * Default init function to allow render can call it, can be overridden.
+   * Default init function to allow render to call it, can be overridden.
    *
    * @api private
    */

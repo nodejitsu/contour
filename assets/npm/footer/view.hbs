@@ -1,0 +1,48 @@
+<footer class="doormat">
+  <section class="row">
+    {{#logo}}
+    <div class="threecol">
+      <s class="logo" src="{{logo}}"></s>
+    </div>
+    {{/logo}}
+
+    <div class="sixcol nav">
+    {{#navigation}}
+      <dl class="threecol">
+        {{#links}}
+        <dd>
+          <a href="{{href}}" {{#target}}target="{{.}}"{{/target}}>
+            {{text}}
+          </a>
+        </dd>
+        {{/links}}
+      </dl>
+    {{/navigation}}
+    </div>
+
+    <div class="threecol last social">
+      {{#social}}
+      <ul>
+        <li>
+          <a
+            href="https://twitter.com/{{twitter}}"
+            class="ss-twitter ss-social-circle"
+            title="Follow @{{twitter}} on Twitter"
+            target="_blank">
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/{{github}}"
+            class="ss-octocat ss-social-circle"
+            title="Fork @{{github}} on Github"
+            target="_blank">
+          </a>
+        </li>
+      </ul>
+      {{/social}}
+
+      <p class="copyright">{{copyright}}</p>
+    </div>
+  </section>
+</footer>
