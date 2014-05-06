@@ -40,8 +40,5 @@
     "zuul": "~1.5.4",
     "phantomjs": "~1.9.7",
     "square": "git://github.com/observing/square.git#development"
-  },
-  "publishConfig": {
-    "registry": "https://us.registry.nodejitsu.com"
   }
 }
