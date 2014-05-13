@@ -65,7 +65,7 @@ require('./pagelet').extend({
   },
 
   /**
-   * Return the script based on the availability of keys in data. Segment.IO has
+   * Return the script based on the availability of keys in data. Segment.io has
    * priority by default. The service should handle GA loading.
    *
    * @returns {String} Loading script.
@@ -75,17 +75,37 @@ require('./pagelet').extend({
     var env = this.env
       , key = 'segment' in this[env] ? 'segment' : 'ga';
 
+    //
+    // Expose the used keys on the data object (depends on environment settings).
+    //
     return this.scripts[key]
       .replace('{{domain}}', this.domain)
       .replace('{{key}}', this[env][key]);
   },
 
   /**
+   * Render configuration object with the used keys depending on
+   * environment settings.
+   *
+   * @param {Object} options
+   * @returns {String} output
+   * @api private
+   */
+  keys: function keys(options) {
+    var stack = this[this.env];
+    return Object.keys(stack).map(function map(name) {
+      return options.fn({ name: name, value: stack[name] });
+    }).join(',');
+  },
+
+  /**
    * Called after Pagelet construction, register handlebar helpers.
+   * TODO find an easy way to set data without overriding initialize entirely.
    *
    * @api private
    */
   initialize: function initialize() {
     this.use('script', this.script);
+    this.use('keys', this.keys);
   }
 }).on(module);

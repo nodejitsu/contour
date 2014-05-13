@@ -1,8 +1,7 @@
 <script type="cerebral/cortex">
 {
   "tracking": {
-    {{#segment}}"segment": "{{.}}",{{/segment}}
-    {{#ga}}"ga": "{{.}}"{{/ga}}
+    {{#analytics-keys}}"{{name}}": "{{value}}"{{/analytics-keys}}
   }
 }
 </script>
