@@ -33,16 +33,25 @@ Pagelet.brand = function define(brand) {
   //
   // Use nodejitsu as default brand.
   //
-  if (!brand) brand = 'nodejitsu';
-  prototype.view = prototype.view.replace('{{brand}}', brand);
+  brand = use(brand ? brand : 'nodejitsu');
+  prototype.view = brand(prototype.view);
 
   //
   // CSS and JS will be supplied as arrays, replace paths with brand.
   //
-  if (prototype.css) prototype.css = prototype.css.map(use(brand));
-  if (prototype.js) prototype.js = prototype.js.map(use(brand));
-  prototype.dependencies = prototype.dependencies.map(use(brand));
+  if (prototype.css) {
+    prototype.css = Array.isArray(prototype.css)
+      ? prototype.css.map(brand)
+      : brand(prototype.css);
+  }
 
+  if (prototype.js) {
+    prototype.js = Array.isArray(prototype.js)
+      ? prototype.js.map(brand)
+      : brand(prototype.js);
+  }
+
+  prototype.dependencies = prototype.dependencies.map(brand);
   return this;
 };
 
@@ -61,6 +70,20 @@ Pagelet.readable('standalone', {
     return this;
   }
 }, true);
+
+/**
+ * Some Pagelets require JS that needs to be wrapped with a Cortex initialization
+ * script. This getter provides easy access to the content.
+ *
+ * @return {Object} parts of the Cortex load script.
+ * @api public
+ */
+Pagelet.readable('wrap', {
+  enumerable: false,
+  get: function wrap() {
+    return require('../static/wrap');
+  }
+});
 
 //
 // Add additional functionality and expose the extended Pagelet.

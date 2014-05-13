@@ -9,7 +9,7 @@ require('./pagelet').extend({
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //
-  css: [ '{{brand}}/footer/base.styl' ],
+  css: '{{brand}}/footer/base.styl',
   view: '{{brand}}/footer/view.hbs',
 
   dependencies: [

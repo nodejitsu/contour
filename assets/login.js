@@ -6,8 +6,8 @@
 require('./pagelet').extend({
   name: 'login',
 
-  js: [ '{{brand}}/login/base.js' ],
-  css: [ '{{brand}}/login/base.styl' ],
+  js: '{{brand}}/login/base.js',
+  css: '{{brand}}/login/base.styl',
   view: '{{brand}}/login/view.hbs',
 
   pagelets: {

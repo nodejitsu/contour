@@ -6,8 +6,8 @@
 require('./pagelet').extend({
   name: 'alert',
 
-  js: [ '{{brand}}/alert/base.js' ],
-  css: [ '{{brand}}/alert/base.styl' ],
+  js: '{{brand}}/alert/base.js',
+  css: '{{brand}}/alert/base.styl',
   view: '{{brand}}/alert/view.hbs',
 
   //

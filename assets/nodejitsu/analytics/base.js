@@ -32,8 +32,8 @@ Cortex.app('Analytics', Cortex.View.extend({
      * @api private
      */
   , track: function () {
-      if (this.tracking.segment.enabled) this.segment.apply(this, arguments);
-      if (this.tracking.ga.enabled) this.google.apply(this, arguments);
+      if ('segment' in this.tracking) this.segment.apply(this, arguments);
+      if ('ga' in this.tracking) this.google.apply(this, arguments);
     }
 
     /**
@@ -71,60 +71,14 @@ Cortex.app('Analytics', Cortex.View.extend({
      * @api private
      */
   , google: function google(e) {
-      var trackers = this.tracking.ga.tracker;
-      if (!trackers.length) return;
+      var tracker = this.tracking.ga;
+      if (!tracker) return;
 
       ga(function done() {
-        trackers.forEach(function loopTracker(tracker) {
-          ga.getByName(tracker).send.apply(
-            tracker,
-            [ 'event' ].concat($(e.element).get('track').split(';'))
-          );
-        });
-      });
-    }
-
-    /**
-     * Do some very special A/B testing magic.
-     *
-     * @api private
-     */
-  , initialize: function initialize() {
-      var query = (location.search || '').slice(1)
-        , search = {}
-        , qs = [];
-
-      Cortex.forEach(query.split('&'), function parse(item) {
-        var kv = item.split('=');
-        search[kv[0]] = kv[1];
-      });
-
-      //
-      // This fix is specificly for A/B tests
-      //
-      if (!search.utm_expid || !search.utm_referrer) return;
-      search.utm_referrer = escape(location.protocol +'//'+ location.host + location.pathname);
-
-      qs = Cortex.map(search, function compile(value, key) {
-        return key + '=' + value;
-      }).join('&');
-
-      $('a').each(function each(node) {
-        if (node.get('search')) return; // This href already has a search query
-
-        node.set('search', qs);
-      });
-
-      $('form').each(function each(node) {
-        var action = node.get('action') || '';
-
-        if (
-          !node.get('method')
-        || node.get('method').toLowerCase() === 'get'
-        || ~action.indexOf('?')
-        ) return;
-
-        node.set('action', action +'?'+ qs);
+        ga.getByName(tracker).send.apply(
+          tracker,
+          [ 'event' ].concat($(e.element).get('track').split(';'))
+        );
       });
     }
 }), { once: 'analytics' });

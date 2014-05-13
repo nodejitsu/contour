@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
@@ -27,9 +27,9 @@
     "fusing": "~0.2.1",
     "handlebars": "~2.0.0",
     "marked": "~0.3.1",
+    "pagelet": "~0.5.0",
     "predefine": "~0.1.1",
-    "utile": "~0.2.1",
-    "pagelet": "~0.5.0"
+    "utile": "~0.2.1"
   },
   "devDependencies": {
     "mocha": "1.18.x",

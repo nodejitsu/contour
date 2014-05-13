@@ -1,0 +1,4 @@
+{
+  "header": "(\"Cortex\" in this?Cortex:(Cortex=[])).push(\"jitsu\",function(Cortex){",
+  "footer": "$(\"#loader\").get(\"apps\").split(\",\").forEach(function(n){Cortex.active.emit(n);});})",
+}
