@@ -3,7 +3,7 @@
 //
 // Expose the navigation Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   name: 'button',
 
   css: [ '{{brand}}/button/base.styl' ],

@@ -1,9 +1,9 @@
 'use strict';
 
 //
-// Expose the navigation Pagelet.
+// Expose the login Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   name: 'login',
 
   js: [ '{{brand}}/login/base.js' ],

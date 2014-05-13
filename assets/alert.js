@@ -3,7 +3,7 @@
 //
 // Expose the alert Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   name: 'alert',
 
   js: [ '{{brand}}/alert/base.js' ],

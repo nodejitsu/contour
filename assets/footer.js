@@ -3,7 +3,7 @@
 //
 // Expose the footer Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   name: 'footer',
 
   //
