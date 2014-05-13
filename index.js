@@ -467,8 +467,12 @@ Contour.get = function get(brand) {
   }, { js: path.join(base, 'core.js') });
 };
 
+//
+// Proxy method to get.
+//
+Contour.readable('get', Contour.get);
 
-/**
- * Expose constructor.
- */
+//
+// Expose constructor.
+//
 module.exports = Contour;
