@@ -29,13 +29,25 @@ require('./pagelet').extend({
   // in HTML source code.
   //
   data: {
-    ga: 'UA-24971485-6',
-    segment: 'r63vj4bdi7',
+    development: {
+      segment: 'r63vj4bdi7',
+      ga: 'UA-24971485-6'
+    },
+    staging: {
+      segment: 'r63vj4bdi7',
+      ga: 'UA-24971485-6'
+    },
+    production: {
+      segment: '08scm95oit',
+      ga: 'UA-24971485-11'
+    },
+
+    domain: 'nodejitsu.com',
+    env: process.env.NODE_ENV || 'development',
 
     //
     // Snippets containing the scripts for both Segment.IO and Google Analytics.
     //
-    domain: 'nodejitsu.com',
     scripts: {
       segment: read(path.join(__dirname, '../static/segment.js'), 'utf-8'),
       ga: read(path.join(__dirname, '../static/ga.js'), 'utf-8'),
@@ -60,11 +72,12 @@ require('./pagelet').extend({
    * @api private
    */
   script: function script() {
-    var key = 'segment' in this ? 'segment' : 'ga';
+    var env = this.env
+      , key = 'segment' in this[env] ? 'segment' : 'ga';
 
     return this.scripts[key]
       .replace('{{domain}}', this.domain)
-      .replace('{{key}}', this[key]);
+      .replace('{{key}}', this[env][key]);
   },
 
   /**
