@@ -67,7 +67,7 @@ form
     display: inline-block
     text-align: center
 
-  label.checkbox
+  label.checkbo
   label.radio
     font-weight: normal
     vertical-align: top
@@ -102,13 +102,14 @@ form
           margin: 1px 0 0 3px
 
   label.radio
-    &:hover span:before
-      content: '●'
-      font-size: 14px
+    span:before
+      float: left
+      font-size: 10px
+      margin: 1px 0 0 3px
 
+    &:hover span:before
     input:checked + span:before
       content: '●'
-      font-size: 14px
 
     span
       border-radius: 50%
