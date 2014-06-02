@@ -27,5 +27,5 @@ require('./pagelet').extend({
   meta: {
     description: 'Login, forget password and logout functionality',
     weight: 898
-  },
+  }
 }).on(module);

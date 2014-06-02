@@ -1,14 +1,14 @@
 'use strict';
 
-/**
- * Native modules.
- */
+//
+// Native modules.
+//
 var path = require('path')
   , fs = require('fs');
 
-/**
- * Third-party modules.
- */
+//
+// Third-party modules.
+//
 var async = require('async')
   , fuse = require('fusing')
   , ejs = require('ejs')
@@ -36,31 +36,29 @@ var defaults = require('./defaults')
  *  - import {String|Array} custom Square configuration to include in the build
  *  - dist {String} distribution filenames of generated CSS/JS
  *  - monitor {Boolean} force monitoring if true
+ *  - origin {String|Array} absolute paths to templates, required for including
  *
  * @Constructor
- * @param {String} origin required, absolute path to templates
  * @param {Object} options optional, see above
  * @api public
  */
-function Contour(origin, options) {
+function Contour(options) {
   options = options || {};
 
+  //
   // Store options locally and force monitoring if not explicitly cancelled.
+  //
   var contour = this
     , store = options.store
     , env = process.env.NODE_ENV || 'development'
     , monitor = options.monitor || (env === 'development' && store)
-    , readable = Contour.predefine(this, Contour.predefine.READABLE);
+    , readable = Contour.predefine(this, Contour.predefine.READABLE)
+    , origin = options.origin || [];
 
-  // Check if we got a proper path to userland templates.
-  if (!origin || !fs.existsSync(origin)) {
-    throw new Error('Provide base path for your template inclusion');
-  }
-
-  // Check the path provided to options[store].
-  if (monitor && !fs.existsSync(path.dirname(store))) {
-    throw new Error('Provide path to store Square configuration');
-  }
+  //
+  // Providing multiple paths should be possible via origin.
+  //
+  if (!Array.isArray(options.origin)) origin = [ origin ];
 
   //
   // Add the pagelets of the required framework.
@@ -69,7 +67,7 @@ function Contour(origin, options) {
 
   // Set options and provide fallbacks.
   readable('_queue', queue);
-  readable('_origin', origin);
+  readable('_origin', origin || []);
   readable('_storage', {});
   readable('_options', {
     brand: this.brand,
@@ -133,7 +131,10 @@ Contour.readable('include', function include(filename, data, cache) {
     filename += '.ejs';
   }
 
-  filename = path.resolve(this._origin, filename);
+  filename = this._origin.find(function resolve(origin) {
+    return fs.existsSync(path.resolve(origin, filename));
+  });
+
   return this.addFile(filename, true, cache).call(this, data, true);
 });
 

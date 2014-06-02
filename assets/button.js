@@ -10,12 +10,9 @@ require('./pagelet').extend({
   view: '{{brand}}/button/view.hbs',
 
   //
-  // Default data for the login button, can be changed by using `set`. The
-  // collection
+  // Several default types of buttons with proper classes.
   //
-  data: {
-    href: '',
-    type: 'plain',
+  defaults: {
     collection: {
       plain: {
         class: 'btn',
@@ -33,11 +30,20 @@ require('./pagelet').extend({
   },
 
   //
+  // Default data for the login button, can be changed by using `set`.
+  //
+  data: {
+    href: '/',
+    type: 'plain',
+    text: 'click me'
+  },
+
+  //
   // Used by Square to generate the configuration file. Weight will determine the
   // relative placement with respect to other assets.
   //
   meta: {
     description: 'Responsive header navigation',
     weight: 899
-  },
+  }
 }).on(module);

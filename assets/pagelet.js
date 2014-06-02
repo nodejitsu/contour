@@ -108,13 +108,21 @@ module.exports = Pagelet.extend({
   data: {},
 
   /**
+   * Data that will be used for rendering but is unlikely to be changed.
+   *
+   * @type {Object}
+   * @api public
+   */
+  defaults: {},
+
+  /**
    * Enlist a client-side JS application event if closable alerts are required.
    *
    * @param {Function} done completion callback
    * @api private
    */
   get: function get(done) {
-    done(undefined, mixin({}, this.data, this.queue.discharge(this.name)));
+    done(undefined, mixin({}, this.data, this.defaults, this.queue.discharge(this.name)));
   },
 
   /**
