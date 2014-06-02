@@ -30,6 +30,10 @@ function use(brand) {
 Pagelet.brand = function define(brand) {
   var prototype = this.prototype;
 
+  if (prototype.pagelets) Object.keys(prototype.pagelets).forEach(function loop(name) {
+    prototype.pagelets[name].brand(brand);
+  });
+
   //
   // Use nodejitsu as default brand.
   //

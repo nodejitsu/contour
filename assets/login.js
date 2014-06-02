@@ -1,5 +1,7 @@
 'use strict';
 
+var submit = require('./submit');
+
 //
 // Expose the login Pagelet.
 //
@@ -7,10 +9,19 @@ require('./pagelet').extend({
   name: 'login',
 
   js: '{{brand}}/login/base.js',
-  css: '{{brand}}/login/base.styl',
   view: '{{brand}}/login/view.hbs',
 
   pagelets: {
+    login: submit.extend({
+      data: {
+        type: 'login'
+      }
+    }),
+    password: submit.extend({
+      data: {
+        type: 'password'
+      }
+    })
   },
 
   //

@@ -6,7 +6,7 @@
 require('./pagelet').extend({
   name: 'button',
 
-  css: '{{brand}}/button/base.styl',
+  css: 'base/buttons.styl',
   view: '{{brand}}/button/view.hbs',
 
   //
@@ -18,13 +18,21 @@ require('./pagelet').extend({
         class: 'btn',
         text: 'Submit'
       },
+      action: {
+        class: 'action',
+        text: 'Call to action'
+      },
+      login: {
+        class: 'action',
+        text: 'Log in'
+      },
+      password: {
+        class: 'action',
+        text: 'Reset password'
+      },
       icon: {
         class: 'btn-icon',
         text: 'Default'
-      },
-      action: {
-        class: 'btn action',
-        text: 'Contact us'
       }
     }
   },
@@ -34,16 +42,6 @@ require('./pagelet').extend({
   //
   data: {
     href: '/',
-    type: 'plain',
-    text: 'click me'
-  },
-
-  //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Responsive header navigation',
-    weight: 899
+    type: 'plain'
   }
 }).on(module);
