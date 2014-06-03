@@ -6,8 +6,6 @@ var submit = require('./submit');
 // Expose the login Pagelet.
 //
 require('./pagelet').extend({
-  name: 'login',
-
   js: '{{brand}}/login/base.js',
   view: '{{brand}}/login/view.hbs',
 

@@ -4,8 +4,6 @@
 // Expose the footer Pagelet.
 //
 require('./pagelet').extend({
-  name: 'footer',
-
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //

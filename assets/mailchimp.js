@@ -4,8 +4,6 @@
 // Expose the mailchimp Pagelet.
 //
 module.exports = require('./pagelet').extend({
-  name: 'mailchimp',
-
   css: '{{brand}}/mailchimp/base.styl',
   view: '{{brand}}/mailchimp/view.hbs',
 

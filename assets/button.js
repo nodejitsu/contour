@@ -4,8 +4,6 @@
 // Expose the navigation Pagelet.
 //
 require('./pagelet').extend({
-  name: 'button',
-
   css: 'base/buttons.styl',
   view: '{{brand}}/button/view.hbs',
 

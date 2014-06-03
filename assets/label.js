@@ -4,8 +4,6 @@
 // Expose the alert Pagelet.
 //
 module.exports = require('./pagelet').extend({
-  name: 'alert',
-
   js: [ '{{brand}}/alert/base.js' ],
   css: [ '{{brand}}/alert/base.styl' ],
   view: '{{brand}}/alert/view.hbs',

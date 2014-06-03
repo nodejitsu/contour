@@ -4,8 +4,6 @@
 // Expose the social Pagelet.
 //
 module.exports = require('./pagelet').extend({
-  name: 'social',
-
   css: '{{brand}}/social/base.styl',
   view: '{{brand}}/social/view.hbs',
 
