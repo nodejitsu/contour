@@ -10,7 +10,7 @@ require('./pagelet').extend({
   view: '{{brand}}/login/view.hbs',
 
   pagelets: {
-    login: submit.extend({
+    submit: submit.extend({
       data: {
         type: 'login'
       }
