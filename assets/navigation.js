@@ -35,8 +35,6 @@ module.exports = require('./pagelet').extend({
   //
   data: {
     base: '',
-    login: false,
-    signup: false,
     navigation: [
       { name: 'Cloud', href: '/paas/' },
       { name: 'Enterprise', href: '/enterprise/' },

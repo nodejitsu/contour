@@ -60,6 +60,16 @@ Pagelet.brand = function define(brand) {
 };
 
 /**
+ * Fetch some values of the Pagelets' original prototype.
+ *
+ * @param {String} key prototype key
+ * @return {Mixed} value
+ */
+Pagelet.fetch = function fetch(key) {
+  return this.prototype[key];
+};
+
+/**
  * The mode the pagelet should be rendered in, if `true` then template
  * content is rendered without the containing pagelet.fragment from BigPipe.
  * This method is attached to the prototype and will be usuable by an instance.
