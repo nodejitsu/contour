@@ -1,0 +1,59 @@
+@import "defaults"
+
+/**
+ * Code blocks wrapped in pre.
+ */
+pre
+  background: $code-background
+  border-radius: $radius
+  color: $code-characters
+  display: block
+  font-size: 12px
+  margin: 1.5em 0
+  padding: 1em 70px 1em 1.5em
+  position: relative
+
+  code
+    background: transparent
+    border: none
+    color: @color
+    display: inline-block
+    font-size: 14px
+    line-height: 21px
+    width: 100%
+
+  //
+  // Copy button markup
+  //
+  a
+    $btn-background = #FAFAFA
+
+    background-color: $btn-background
+    background-image: linear-gradient(bottom, #EFEFEF, $btn-background)
+    border-radius: $radius
+    border: 1px solid #DDDDDD
+    box-shadow: inset 0 2px 0 #FFF
+    color: #7F7F7F
+    cursor: pointer
+    display: inline-block
+    font-family: $font-family
+    font-weight: bold
+    padding: 2px 5px
+    position: absolute
+    right: 1em
+    text-align: center
+    text-decoration: none
+    text-transform: uppercase
+    top: 8px
+    width: 65px
+
+/**
+ * Inline code blocks without a parent <pre>.
+ */
+code
+  background: #F8F8F8
+  border-radius: $radius
+  border: 1px solid $inline-border
+  display: inline
+  font-size: 12px
+  padding: 0 5px
