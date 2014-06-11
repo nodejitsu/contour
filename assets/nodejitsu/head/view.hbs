@@ -1,0 +1,28 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge;chrome=1">
+  <title>{{title}} | Nodejitsu Inc.</title>
+  <meta name="description" content="{{description}}">
+  <meta name="keywords" content="{{keywords}}">
+  <meta name="robots" content="{{#if robots}}{{.}}{{else}}noindex,nofollow{{/if}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Nodejitsu Inc.">
+  <link rel="shortcut icon" href="{{#if favicon}}{{.}}{{else}}/favicon.png{{/if}}">
+  {{#stylesheets}}
+  <link rel="stylesheet" href="{{sheet}}">
+  {{/stylesheets}}
+  <link rel="canonical" href="{{canonical}}">
+  <script type="text/javascript" src="//use.typekit.net/gmp8svh.js"></script>
+  <script type="text/javascript">
+    try{ Typekit.load(); } catch (e) {}
+    document.documentElement.className = '';
+  </script>
+  {{#if optimizely}}
+  <script src="//cdn.optimizely.com/js/{{.}}.js"></script>
+  {{/if}}
+  {{{extension}}}
+</head>
+<body class="container {{bodyClass}}">
+  <div data-pagelet="foss"></div>
