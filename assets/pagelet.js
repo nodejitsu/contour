@@ -4,8 +4,7 @@
 // Required modules.
 //
 var queue = require('../queue')
-  , Pagelet = require('pagelet')
-  , mixin = require('utile').mixin;
+  , Pagelet = require('pagelet');
 
 /**
  * Return a mapping function with preset brand.
@@ -136,7 +135,7 @@ module.exports = Pagelet.extend({
    * @api private
    */
   get: function get(done) {
-    done(undefined, mixin({}, this.data, this.defaults, this.queue.discharge(this.name)));
+    done(undefined, this.mixin({}, this.data, this.defaults, this.queue.discharge(this.name)));
   },
 
   /**
@@ -146,7 +145,7 @@ module.exports = Pagelet.extend({
    * @api public
    */
   set: function set(data) {
-    mixin(this.data, data);
+    this.mixin(this.data, data);
     return this;
   },
 
