@@ -3,9 +3,9 @@
 //
 // Expose the alert Pagelet.
 //
-require('./pagelet').extend({
-  js: '{{brand}}/alert/base.js',
-  css: '{{brand}}/alert/base.styl',
+module.exports = require('./pagelet').extend({
+  js: [ '{{brand}}/alert/base.js' ],
+  css: [ '{{brand}}/alert/base.styl' ],
   view: '{{brand}}/alert/view.hbs',
 
   //

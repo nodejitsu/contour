@@ -3,12 +3,12 @@
   Login
 </a>
 
-<% if (logout) { %>
+{{#logout}}
 <a href="/logout" class="login right btn" title="Logout">
   <s class="ss-unlock" role="presentation"></s>
   Logout
 </a>
-<% } %>
+{{/logout}}
 
 <div class="lightbox gone"></div>
 
@@ -33,7 +33,7 @@
       <input name="password" placeholder="password" type="password" />
     </label>
 
-    <%- app.submit({ type: 'login' }) %>
+    <section data-pagelet="submit"></section>
 
     <a href="#" class="forgotten">Forgot password?</a>
   </form>
@@ -56,6 +56,6 @@
       <input name="username" placeholder="username" autofocus="autofocus" />
     </label>
 
-    <%- app.submit({ type: 'password' }) %>
+    <section data-pagelet="password"></section>
   </form>
 </script>

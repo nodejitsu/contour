@@ -30,6 +30,10 @@ function use(brand) {
 Pagelet.brand = function define(brand) {
   var prototype = this.prototype;
 
+  if (prototype.pagelets) Object.keys(prototype.pagelets).forEach(function loop(name) {
+    prototype.pagelets[name].brand(brand);
+  });
+
   //
   // Use nodejitsu as default brand.
   //
@@ -53,6 +57,16 @@ Pagelet.brand = function define(brand) {
 
   prototype.dependencies = prototype.dependencies.map(brand);
   return this;
+};
+
+/**
+ * Fetch some values of the Pagelets' original prototype.
+ *
+ * @param {String} key prototype key
+ * @return {Mixed} value
+ */
+Pagelet.fetch = function fetch(key) {
+  return this.prototype[key];
 };
 
 /**
@@ -108,13 +122,21 @@ module.exports = Pagelet.extend({
   data: {},
 
   /**
+   * Data that will be used for rendering but is unlikely to be changed.
+   *
+   * @type {Object}
+   * @api public
+   */
+  defaults: {},
+
+  /**
    * Enlist a client-side JS application event if closable alerts are required.
    *
    * @param {Function} done completion callback
    * @api private
    */
   get: function get(done) {
-    done(undefined, mixin({}, this.data, this.queue.discharge(this.name)));
+    done(undefined, mixin({}, this.data, this.defaults, this.queue.discharge(this.name)));
   },
 
   /**
@@ -138,12 +160,5 @@ module.exports = Pagelet.extend({
   use: function use(name, fn) {
     this.temper.require('handlebars').registerHelper(this.name + '-' + name, fn);
     return this;
-  },
-
-  /**
-   * Default init function to allow render to call it, can be overridden.
-   *
-   * @api private
-   */
-  initialize: function initialize() {}
+  }
 });

@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "description": "Example BigPipe implementation",
+  "main": "index.js",
+  "dependencies": {
+    "bigpipe": "*",
+    "handlebars": "*"
+  }
+}

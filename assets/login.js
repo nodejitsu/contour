@@ -1,16 +1,25 @@
 'use strict';
 
+var submit = require('./submit');
+
 //
 // Expose the login Pagelet.
 //
 require('./pagelet').extend({
-  name: 'login',
-
   js: '{{brand}}/login/base.js',
-  css: '{{brand}}/login/base.styl',
   view: '{{brand}}/login/view.hbs',
 
   pagelets: {
+    submit: submit.extend({
+      data: {
+        type: 'login'
+      }
+    }),
+    password: submit.extend({
+      data: {
+        type: 'password'
+      }
+    })
   },
 
   //
@@ -27,5 +36,5 @@ require('./pagelet').extend({
   meta: {
     description: 'Login, forget password and logout functionality',
     weight: 898
-  },
+  }
 }).on(module);

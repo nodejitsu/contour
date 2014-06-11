@@ -21,7 +21,7 @@ Cortex.app('Anchor', Cortex.View.extend({
      * @type {Object}
      */
   , delegate: {
-        'click': 'scroll'
+      'click': 'scroll'
     }
 
     /**

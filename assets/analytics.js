@@ -4,8 +4,6 @@
 // Expose the analytics Pagelet.
 //
 require('./pagelet').extend({
-  name: 'analytics',
-
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //

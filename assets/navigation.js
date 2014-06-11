@@ -4,8 +4,6 @@
 // Expose the navigation Pagelet.
 //
 module.exports = require('./pagelet').extend({
-  name: 'navigation',
-
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //
@@ -37,8 +35,6 @@ module.exports = require('./pagelet').extend({
   //
   data: {
     base: '',
-    login: false,
-    signup: false,
     navigation: [
       { name: 'Cloud', href: '/paas/' },
       { name: 'Enterprise', href: '/enterprise/' },

@@ -4,40 +4,42 @@
 // Expose the navigation Pagelet.
 //
 require('./pagelet').extend({
-  name: 'button',
-
-  css: '{{brand}}/button/base.styl',
+  css: 'base/buttons.styl',
   view: '{{brand}}/button/view.hbs',
 
   //
-  // Default data for the login button, can be changed by using `set`. The
-  // collection
+  // Several default types of buttons with proper classes.
   //
-  data: {
-    href: '',
-    type: 'plain',
+  defaults: {
     collection: {
       plain: {
         class: 'btn',
         text: 'Submit'
       },
+      action: {
+        class: 'action',
+        text: 'Call to action'
+      },
+      login: {
+        class: 'action',
+        text: 'Log in'
+      },
+      password: {
+        class: 'action',
+        text: 'Reset password'
+      },
       icon: {
         class: 'btn-icon',
         text: 'Default'
-      },
-      action: {
-        class: 'btn action',
-        text: 'Contact us'
       }
     }
   },
 
   //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
+  // Default data for the login button, can be changed by using `set`.
   //
-  meta: {
-    description: 'Responsive header navigation',
-    weight: 899
-  },
+  data: {
+    href: '/',
+    type: 'plain'
+  }
 }).on(module);
