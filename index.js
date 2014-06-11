@@ -12,7 +12,6 @@ var path = require('path')
 var async = require('async')
   , fuse = require('fusing')
   , ejs = require('ejs')
-  , mixin = require('utile').mixin
   , cheerio = require('cheerio')
   , md = require('marked')
   , queue = require('./queue');
@@ -71,7 +70,7 @@ function Contour(options) {
   readable('_storage', {});
   readable('_options', {
     brand: this.brand,
-    defaults: mixin(defaults.nodejitsu, defaults[this.brand]),
+    defaults: this.mixin(defaults.nodejitsu, defaults[this.brand]),
     template: path.resolve(template, this.brand),
     fallback: path.resolve(template, 'nodejitsu')
   });
@@ -281,7 +280,7 @@ Contour.readable('monitor', function monitor() {
         , files = [];
 
       imported = require(path.join(path.dirname(file), imported));
-      config = mixin(config, imported.configuration);
+      config = self.mixin(config, imported.configuration);
 
       Object.keys(imported.bundle).forEach(function loopBundle(key) {
         var ext = 'pre:' + path.extname(key).slice(1);
@@ -298,7 +297,7 @@ Contour.readable('monitor', function monitor() {
   //
   // Overwrite the default config constructed above with existing directives.
   //
-  config = mixin(config, this._square.scaffold.get().configuration);
+  config = self.mixin(config, this._square.scaffold.get().configuration);
   this._square.scaffold.configuration(config);
 
   // Find the path to assets inside Nodejitsu-app so Square has proper paths, do
@@ -407,7 +406,7 @@ Contour.readable('supplier', function supplier(type, render, data, incl) {
       if (values.hook) values.hook.call(this, data || copy);
 
       // Include copied defaults to prevent polution of multiple inclusions.
-      data = mixin(copy, data || {}, queue.discharge(type));
+      data = self.mixin(copy, data || {}, queue.discharge(type));
       if (!('production' in data)) data.production = process.env.NODE_ENV === 'production';
     }
 
@@ -416,7 +415,7 @@ Contour.readable('supplier', function supplier(type, render, data, incl) {
   }
 
   // Always add reference to this.app again.
-  html = render.call(render, mixin(data || {}, { app: this }));
+  html = render.call(render, self.mixin(data || {}, { app: this }));
 
   // If required adjust element data-attributes.
   if (data && data.attributes) {
