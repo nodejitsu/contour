@@ -44,15 +44,6 @@ module.exports = require('./pagelet').extend({
     ]
   },
 
-  //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Responsive header navigation',
-    weight: 899
-  },
-
   /**
    * Handblebar helper to generate the navigation entries. The base is defined by
    * the active page and should match the first part of the `href` route or the
