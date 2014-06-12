@@ -30,6 +30,7 @@ var defaults = require('./defaults')
  *
  * Options can be supplied
  *  - brand {String} framework or brand to use, e.g nodejitsu or opsmezzo
+ *  - mode {String} bigpipe or standalone, defaults to bigpipe
  *  - store {String} full path to store Square configuration
  *  - output {String} directory to store output of Square, e.g. compiled CSS/JS
  *  - import {String|Array} custom Square configuration to include in the build
@@ -62,7 +63,7 @@ function Contour(options) {
   //
   // Add the pagelets of the required framework.
   //
-  this.mixin(this, new Assets(options.brand));
+  this.mixin(this, new Assets(options.brand, options.mode || 'bigpipe'));
 
   // Set options and provide fallbacks.
   readable('_queue', queue);

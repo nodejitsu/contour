@@ -55,7 +55,7 @@ Pagelet.brand = function define(brand) {
   }
 
   prototype.dependencies = prototype.dependencies.map(brand);
-  return this;
+  return this.optimize();
 };
 
 /**
@@ -67,22 +67,6 @@ Pagelet.brand = function define(brand) {
 Pagelet.fetch = function fetch(key) {
   return this.prototype[key];
 };
-
-/**
- * The mode the pagelet should be rendered in, if `true` then template
- * content is rendered without the containing pagelet.fragment from BigPipe.
- * This method is attached to the prototype and will be usuable by an instance.
- *
- * @returns {Pagelet}
- * @api public
- */
-Pagelet.readable('standalone', {
-  enumerable: false,
-  get: function standalone() {
-    this.fragment = '{pagelet::template}';
-    return this;
-  }
-}, true);
 
 /**
  * Some Pagelets require JS that needs to be wrapped with a Cortex initialization
@@ -102,7 +86,19 @@ Pagelet.readable('wrap', {
 // Add additional functionality and expose the extended Pagelet.
 //
 module.exports = Pagelet.extend({
-  remove: true,
+  /**
+   * Set the render mode to standalone, this will return just template content.
+   * content is rendered without the containing pagelet.fragment from BigPipe.
+   * This method is attached to the prototype and will be usuable by an instance.
+   *
+   * @returns {Pagelet}
+   * @api public
+   */
+  get standalone() {
+    this.fragment = '{pagelet::template}';
+
+    return this;
+  },
 
   /**
    * Reference to the queue singleton.
@@ -129,13 +125,20 @@ module.exports = Pagelet.extend({
   defaults: {},
 
   /**
-   * Enlist a client-side JS application event if closable alerts are required.
+   * Provide data to the template render method. Can be called sync and async.
    *
    * @param {Function} done completion callback
    * @api private
    */
   get: function get(done) {
-    done(undefined, this.mixin({}, this.data, this.defaults, this.queue.discharge(this.name)));
+    var data = this.mixin(
+      this.data,
+      this.defaults,
+      this.queue.discharge(this.name)
+    );
+
+    if ('function' !== typeof done) return data;
+    done(undefined, data);
   },
 
   /**
