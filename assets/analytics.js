@@ -47,16 +47,6 @@ require('./pagelet').extend({
   //
   query: [ 'type', 'domain', 'key' ],
 
-  //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Initialize analytics trackers like GA and segment.io',
-    weight: 996,
-    wrap: true
-  },
-
   /**
    * Called after Pagelet construction, register handlebar helpers.
    *

@@ -18,15 +18,6 @@ require('./pagelet').extend({
   },
 
   //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Closable alerts in several different colors',
-    weight: 799
-  },
-
-  //
   // Enlist the client side JS app Alert, which will be added if loader is called.
   //
   initialize: function initialize() {
