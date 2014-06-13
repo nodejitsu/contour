@@ -4,10 +4,10 @@
   <title>{{title}} | Nodejitsu Inc.</title>
   <meta name="description" content="{{description}}">
   <meta name="keywords" content="{{keywords}}">
-  <meta name="robots" content="{{#if robots}}{{.}}{{else}}noindex,nofollow{{/if}}">
+  <meta name="robots" content="{{#if robots}}{{robots}}{{else}}noindex,nofollow{{/if}}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Nodejitsu Inc.">
-  <link rel="shortcut icon" href="{{#if favicon}}{{.}}{{else}}/favicon.png{{/if}}">
+  <link rel="shortcut icon" href="{{#if favicon}}{{favicon}}{{else}}/favicon.png{{/if}}">
   {{#stylesheets}}
   <link rel="stylesheet" href="{{sheet}}">
   {{/stylesheets}}
@@ -18,7 +18,7 @@
     document.documentElement.className = '';
   </script>
   {{#if optimizely}}
-  <script src="//cdn.optimizely.com/js/{{.}}.js"></script>
+  <script src="//cdn.optimizely.com/js/{{optimizely}}.js"></script>
   {{/if}}
   {{{extension}}}
 </head>

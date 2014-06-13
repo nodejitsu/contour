@@ -33,16 +33,10 @@ require('./pagelet').extend({
       + ' platform. We serve more than 25,000 developers and 1 million deployments'
   },
 
-  keywords: function keywords() {
-    // TODO return keywords.join(',')
-  },
-
   //
   // Enlist the client side JS app Alert, which will be added if loader is called.
   //
   initialize: function initialize() {
-    this.use('keywords', this.keywords);
-
     //
     // Always set a canonical reference on the data.
     //
