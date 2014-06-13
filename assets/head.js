@@ -23,7 +23,6 @@ require('./pagelet').extend({
   // Default data for alert notificiation, can be changed by using `set`.
   //
   defaults: {
-    foss: false,
     optimizely: false,
     extension: false,
     title: 'Node.js hosting, cloud products and services | Nodejitsu Inc.',

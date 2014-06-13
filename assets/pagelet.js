@@ -95,7 +95,7 @@ module.exports = Pagelet.extend({
    * @api public
    */
   get standalone() {
-    this.fragment = '{pagelet::template}';
+    this.fragment = '{pagelet:template}';
 
     return this;
   },
@@ -131,14 +131,11 @@ module.exports = Pagelet.extend({
    * @api private
    */
   get: function get(done) {
-    var data = this.mixin(
+    done(undefined, this.mixin(
       this.data,
       this.defaults,
       this.queue.discharge(this.name)
-    );
-
-    if ('function' !== typeof done) return data;
-    done(undefined, data);
+    ));
   },
 
   /**
@@ -148,7 +145,9 @@ module.exports = Pagelet.extend({
    * @api public
    */
   set: function set(data) {
+    if ('object' !== typeof data) return this;
     this.mixin(this.data, data);
+
     return this;
   },
 
