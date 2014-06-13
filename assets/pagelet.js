@@ -116,8 +116,8 @@ module.exports = Pagelet.extend({
    */
   get: function get(done) {
     done(undefined, this.mixin(
-      this.data,
       this.defaults,
+      this.data,
       this.queue.discharge(this.name)
     ));
   },

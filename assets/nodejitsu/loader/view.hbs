@@ -1,4 +1,4 @@
-<% if (!production) { %>
+{{#if development}}
 <script>
   !function(l,i,v,e){
     e=l.createElement(i);v=l.getElementsByTagName(i)[0];e.async=true;
@@ -6,13 +6,13 @@
     e.src="http://localhost:8888/live/reload.js";
   }(document,"script");
 </script>
-<% } %>
+{{/if}}
 
 <script
   id="loader"
-  data-load="<%- load.join(',') %>"
-  data-plain="<%- plain.concat(external).join(',') %>"
-  data-apps="<%- apps.concat(custom).join(',') %>">
+  data-load="{{load}}"
+  data-plain="{{plain}}"
+  data-apps="{{apps}}">
 // Load our JavaScript files
 !function loader(l,o,a,d,e,r) {
   d = l.getElementsByTagName(o)[0];
@@ -45,7 +45,7 @@
       };
 
       t.src = w;
-    }(a[r].replace(/\[type\]/, <%- production %> ? 'min' : 'dev'));
+    }(a[r].replace(/\[type\]/, {{#if development}}min{{else}}dev{{/if}}));
   }
 }(document, 'script');
 </script>

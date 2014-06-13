@@ -10,7 +10,7 @@ require('./pagelet').extend({
   //
   // Default background color for foss banner.
   //
-  data: {
+  defaults: {
     color: 'orange'
   }
 }).on(module);

@@ -33,7 +33,7 @@ module.exports = require('./pagelet').extend({
   //
   // Default data for the navigation, can be changed by using `set`.
   //
-  data: {
+  defaults: {
     base: '',
     navigation: [
       { name: 'Cloud', href: '/paas/' },
