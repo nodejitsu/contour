@@ -8,9 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Nodejitsu Inc.">
   <link rel="shortcut icon" href="{{#if favicon}}{{favicon}}{{else}}/favicon.png{{/if}}">
-  {{#stylesheets}}
-  <link rel="stylesheet" href="{{sheet}}">
-  {{/stylesheets}}
+  {{#head-stylesheets}}
+  <link rel="stylesheet" href="{{.}}">
+  {{/head-stylesheets}}
   <link rel="canonical" href="{{canonical}}">
   <script type="text/javascript" src="//use.typekit.net/gmp8svh.js"></script>
   <script type="text/javascript">

@@ -85,6 +85,14 @@ Pagelet.readable('wrap', {
 //
 module.exports = Pagelet.extend({
   /**
+   * Set empty name, such that recursive Pagelets will have their name properly set
+   * to the key of the object that references them.
+   *
+   * @type {String}
+   */
+  name: '',
+
+  /**
    * Reference to the queue singleton.
    *
    * @type {Queue}
@@ -138,12 +146,27 @@ module.exports = Pagelet.extend({
   /**
    * Register provided helper with handlebars.
    *
-   * @param {String} name registered name
+   * @param {String} namespace Name of the Pagelet the helper was registered from.
+   * @param {String} name Registered name
    * @param {Function} fn Handlebars helper
    * @api public
    */
-  use: function use(name, fn) {
-    this.temper.require('handlebars').registerHelper(this.name + '-' + name, fn);
+  use: function use(namespace, name, fn) {
+    this.temper.require('handlebars').registerHelper(
+      this.name || namespace + '-' + name,
+      fn
+    );
+
+    return this;
+  },
+
+  /**
+   * Give the default pagelet an empty initialize, so its always callable.
+   *
+   * @returns {Pagelet}
+   * @api public
+   */
+  initialize: function initialize() {
     return this;
   }
 });

@@ -66,5 +66,7 @@ require('./pagelet').extend({
     this.js = this.js.filter(function filter(file) {
       return ~file.indexOf('js/analytics') || ~file.indexOf('static/' + data.type);
     });
+
+    return this;
   }
 }).on(module);

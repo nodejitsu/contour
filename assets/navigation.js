@@ -50,6 +50,7 @@ module.exports = require('./pagelet').extend({
    * provided menu entry `base`.
    *
    * @param {Object} options
+   * @return {String} generated template
    * @api private
    */
   links: function links(options) {
@@ -75,6 +76,6 @@ module.exports = require('./pagelet').extend({
    * @api private
    */
   initialize: function initialize() {
-    this.use('links', this.links);
+    return this.use('navigation', 'links', this.links);
   }
 }).on(module);

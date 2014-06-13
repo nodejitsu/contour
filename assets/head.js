@@ -33,10 +33,29 @@ require('./pagelet').extend({
       + ' platform. We serve more than 25,000 developers and 1 million deployments'
   },
 
-  //
-  // Enlist the client side JS app Alert, which will be added if loader is called.
-  //
+  /**
+   * Handlebars helper that will iterate over the stylesheets in the data.
+   *
+   * @param {Object} options
+   * @return {String} generated template
+   * @api private
+   */
+  stylesheets: function stylesheets(options) {
+    return this.stylesheets.reduce(function reduce(links, sheet) {
+      return links + options.fn(sheet);
+    }, '');
+  },
+
+  /**
+   * Set a canonical if none is provided via extended data and provide a stylsheet
+   * link helper.
+   *
+   * @Constructor
+   * @api public
+   */
   initialize: function initialize() {
+    this.use('head', 'stylesheets', this.stylesheets);
+
     //
     // Always set a canonical reference on the data.
     //
@@ -45,8 +64,10 @@ require('./pagelet').extend({
         'https://',
         pkg.subdomain,
         '.nodejitsu.com',
-        url.parse(this.data.canonical).pathname
+        url.parse(this.defaults.canonical).pathname
       ].join('');
     }
+
+    return this;
   }
 }).on(module);
