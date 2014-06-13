@@ -23,12 +23,14 @@ function use(brand) {
  * Set a specific branch. Used by temper to fetch all the proper assets.
  *
  * @param {String} brand
+ * @param {Boolean} standalone, force pagelet to standalone mode
  * @returns {Pagelet} fluent interface
  * @api private
  */
-Pagelet.brand = function define(brand) {
+Pagelet.brand = function define(brand, standalone) {
   var prototype = this.prototype;
 
+  if (standalone) prototype.fragment = '{pagelet:template}';
   if (prototype.pagelets) Object.keys(prototype.pagelets).forEach(function loop(name) {
     prototype.pagelets[name].brand(brand);
   });
@@ -42,17 +44,13 @@ Pagelet.brand = function define(brand) {
   //
   // CSS and JS will be supplied as arrays, replace paths with brand.
   //
-  if (prototype.css) {
-    prototype.css = Array.isArray(prototype.css)
-      ? prototype.css.map(brand)
-      : brand(prototype.css);
-  }
+  if (prototype.css) prototype.css = Array.isArray(prototype.css)
+    ? prototype.css.map(brand)
+    : brand(prototype.css);
 
-  if (prototype.js) {
-    prototype.js = Array.isArray(prototype.js)
-      ? prototype.js.map(brand)
-      : brand(prototype.js);
-  }
+  if (prototype.js) prototype.js = Array.isArray(prototype.js)
+    ? prototype.js.map(brand)
+    : brand(prototype.js);
 
   prototype.dependencies = prototype.dependencies.map(brand);
   return this.optimize();
@@ -86,20 +84,6 @@ Pagelet.readable('wrap', {
 // Add additional functionality and expose the extended Pagelet.
 //
 module.exports = Pagelet.extend({
-  /**
-   * Set the render mode to standalone, this will return just template content.
-   * content is rendered without the containing pagelet.fragment from BigPipe.
-   * This method is attached to the prototype and will be usuable by an instance.
-   *
-   * @returns {Pagelet}
-   * @api public
-   */
-  get standalone() {
-    this.fragment = '{pagelet:template}';
-
-    return this;
-  },
-
   /**
    * Reference to the queue singleton.
    *

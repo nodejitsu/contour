@@ -41,16 +41,14 @@ function Assets(brand, mode) {
     if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
 
     var name = path.basename(file, '.js');
-    self.stack[name] = require(path.join(assets, file)).brand(brand);
+    self.stack[name] = require(path.join(assets, file)).brand(brand, mode === 'standalone');
 
     //
     // Create getter for each pagelet in assets.
     //
     enumerable(name, {
       enumerable: true,
-      value: mode === 'bigpipe'
-        ? self.stack[name]
-        : (new self.stack[name]).standalone
+      value: self.stack[name]
     }, true);
   });
 }
