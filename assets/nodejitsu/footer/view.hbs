@@ -15,41 +15,16 @@
     </dl>
     <% } %>
 
-    <% if (mailinglist || social) { %>
-    <dl class="newsletter twocol right">
-      <% if (mailinglist) { %>
-      <dt>Stay connected, join our mailing list</dt>
-      <dd>
-        <form action="<%- mailinglist.action -%>" method="POST">
-          <input type="hidden" name="u" value="<%- mailinglist.u -%>">
-          <input type="hidden" name="id" value="<%- mailinglist.id -%>">
-          <input type="email" autocapitalize="off" autocorrect="off" placeholder="Your e-mail address" name="MERGE0" required>
-          <%- app.submit({ type: 'icon', class: 'right', text: 'subscribe' }) %>
-        </form>
-      </dd>
-      <% } if (social) { %>
-      <dd>
-        <ul class="social">
-          <% if (social.twitter) { %>
-          <li>
-            <a href="https://twitter.com/<%- social.twitter -%>" class="ss-twitter ss-social-circle" title="Follow @<%- social.twitter -%> on Twitter"></a>
-          </li>
-          <% } if (social.github) { %>
-          <li>
-            <a href="https://github.com/<%- social.github -%>" class="ss-octocat ss-social-circle" title="Fork @<%- social.github -%> on Github"></a>
-          </li>
-          <% } %>
-          <li class="copyright right">
-            <%- copyright %>
-          </li>
-        </ul>
-      </dd>
-      <% } %>
-    </dl>
-    <% } %>
+    <section class="newsletter twocol right">
+      <div data-pagelet="mailchimp"></div>
+      <div data-pagelet="social"></div>
+      <div class="copyright right">
+        {{copyright}}
+      </div>
+    </section>
   </section>
 
-  <% if (credits) { %>
-  <section class="credits row"><%- credits %></section>
-  <% } %>
+  {{#if credits}}
+  <section class="credits row">{{credits}}</section>
+  {{/if}}
 </footer>

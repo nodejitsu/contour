@@ -19,18 +19,17 @@ require('./pagelet').extend({
   //
   // Both the login functionality and signup button are optional, see data.
   //
-  pagelets: {},
+  pagelets: {
+    mailchimp: require('./mailchimp'),
+    social: require('./social')
+  },
 
   //
   // Default data for the footer, can be changed by using `set`.
   //
-  data: {
+  defaults: {
     logo: true,
     copyright: new Date().getFullYear() + ' - Design by Nodejitsu Inc.',
-    social: {
-      twitter: 'nodejitsu',
-      github: 'nodejitsu'
-    },
 
     //
     // List of navigation links per column.
@@ -55,14 +54,5 @@ require('./pagelet').extend({
         ]
       }
     ]
-  },
-
-  //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Responsive footer element',
-    weight: 898
   }
 }).on(module);
