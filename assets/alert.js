@@ -18,7 +18,7 @@ require('./pagelet').extend({
   },
 
   //
-  // Enlist the client side JS app Alert, which will be added if loader is called.
+  // If closable enlist client-side JS Alert, which will be added to the loader pagelet.
   //
   initialize: function initialize() {
     if (this.data.closable) this.queue.enlist('loader', { custom: [ 'alert' ] });
