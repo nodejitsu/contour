@@ -4,7 +4,8 @@
 // Required modules.
 //
 var queue = require('../queue')
-  , Pagelet = require('pagelet');
+  , Pagelet = require('pagelet')
+  , pagelet;
 
 /**
  * Return a mapping function with preset brand.
@@ -83,12 +84,39 @@ Pagelet.readable('wrap', {
 //
 // Add additional functionality and expose the extended Pagelet.
 //
-module.exports = Pagelet.extend({
+module.exports = pagelet = Pagelet.extend({
+  /**
+   * Extend the default constructor to always provide an each helper
+   * to the handblebars instance. Also calls `initialize` by default.
+   *
+   * @Constructor
+   * @return {Pagelet}
+   * @api private
+   */
+  constructor: function constructor() {
+    pagelet.__super__.constructor.apply(this);
+
+    //
+    // Register a default each helper, expects context to be a set of objects.
+    //
+    this.temper.require('handlebars').registerHelper('each', function each(context, options) {
+      if (!Array.isArray(context)) return '';
+
+      return context.reduce(function reduce(memo, stack) {
+        return memo + options.fn(stack);
+      }, '');
+    });
+
+    this.initialize();
+    return this;
+  },
+
   /**
    * Set empty name, such that recursive Pagelets will have their name properly set
    * to the key of the object that references them.
    *
    * @type {String}
+   * @api public
    */
   name: '',
 

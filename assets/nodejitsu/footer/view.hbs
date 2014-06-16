@@ -1,19 +1,15 @@
 <footer class="doormat">
   <section class="row">
-    <%
-      var n = navigation.length > 5 ? 5 : navigation.length;
-      for (var i = 0; i < n; i++) {
-        var column = navigation[i];
-    %>
+    {{#footer-column}}
     <dl class="twocol">
-      <dt><%- column.name %></dt>
-      <% Object.keys(column.links).forEach(function footerColumnLinks(key) { %>
+      <dt>{{name}}</dt>
+      {{#each links}}
       <dd>
-        <a href="<%- column.links[key] %>"><%- key %></a>
+        <a href="{{href}}" target="{{target}}">{{text}}</a>
       </dd>
-      <% }) %>
+      {{/each}}
     </dl>
-    <% } %>
+    {{/footer-column}}
 
     <section class="newsletter twocol right">
       <div data-pagelet="mailchimp"></div>

@@ -54,5 +54,27 @@ require('./pagelet').extend({
         ]
       }
     ]
+  },
+
+  /**
+   * Show the first five columns as footer sections.
+   *
+   * @param {Object} options
+   * @returns {String} rendered content
+   * @api public
+   */
+  column: function column(options) {
+    return this.navigation.slice(0, 5).reduce(function reduce(columns, section) {
+      return columns + options.fn(section);
+    }, '');
+  },
+
+  /**
+   * Called after Pagelet construction, register handlebar helpers.
+   *
+   * @api private
+   */
+  initialize: function initialize() {
+    return this.use('footer', 'column', this.column);
   }
 }).on(module);
