@@ -151,11 +151,10 @@ module.exports = pagelet = Pagelet.extend({
    * @api private
    */
   get: function get(done) {
-    done(undefined, this.mixin(
-      this.defaults,
+    done(undefined, this.mixin({}, this.defaults, this.data, this.merge(
       this.data,
-      this.merge(this.data, this.queue.discharge(this.name))
-    ));
+      this.queue.discharge(this.name)
+    )));
   },
 
   /**

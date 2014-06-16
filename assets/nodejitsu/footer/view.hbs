@@ -5,7 +5,7 @@
       <dt>{{name}}</dt>
       {{#each links}}
       <dd>
-        <a href="{{href}}" target="{{target}}">{{text}}</a>
+        <a href="{{href}}" {{#target}}target="{{.}}"{{/target}}>{{text}}</a>
       </dd>
       {{/each}}
     </dl>
