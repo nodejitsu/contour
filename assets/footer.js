@@ -29,7 +29,7 @@ require('./pagelet').extend({
   //
   defaults: {
     logo: true,
-    copyright: new Date().getFullYear() + ' - Design by Nodejitsu Inc.',
+    copyright: '&copy; ' + new Date().getFullYear() + ' - Design by Nodejitsu Inc.',
 
     //
     // List of navigation links per column.
