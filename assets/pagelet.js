@@ -126,7 +126,7 @@ module.exports = Pagelet.extend({
     done(undefined, this.mixin(
       this.defaults,
       this.data,
-      this.queue.discharge(this.name)
+      this.merge(this.data, this.queue.discharge(this.name))
     ));
   },
 

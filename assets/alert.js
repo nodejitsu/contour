@@ -17,10 +17,13 @@ require('./pagelet').extend({
     text: ''
   },
 
-  //
-  // If closable enlist client-side JS Alert, which will be added to the loader pagelet.
-  //
+  /**
+   * Called after Pagelet construction. If closable enlist client-side JS alert,
+   * It will be added to the loader pagelet `data.apps`.
+   *
+   * @api private
+   */
   initialize: function initialize() {
-    if (this.data.closable) this.queue.enlist('loader', { custom: [ 'alert' ] });
+    if (this.data.closable) this.queue.enlist('loader', { apps: [ 'alert' ] });
   }
 }).on(module);

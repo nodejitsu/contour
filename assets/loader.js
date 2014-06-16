@@ -9,6 +9,7 @@ var env = process.env.NODE_ENV || 'development';
 // Expose the asynchronous client-side JS loader Pagelet.
 //
 require('./pagelet').extend({
+  name: 'loader',
   view: '{{brand}}/loader/view.hbs',
 
   //
@@ -23,5 +24,17 @@ require('./pagelet').extend({
     apps: [],
     load: [],
     plain: [ '//webops.nodejitsu.com/js/ui.js' ]
+  },
+
+  /**
+   * Merge the data of custom and external to load and plain.
+   *
+   * @api private
+   */
+  initialize: function initialize() {
+    var data = this.data;
+
+    if ('custom' in data) this.merge(data.load, data.custom);
+    if ('external' in data) this.merge(data.plain, data.external);
   }
 }).on(module);
