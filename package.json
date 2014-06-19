@@ -27,7 +27,7 @@
     "fusing": "~0.3.0",
     "handlebars": "~2.0.0",
     "marked": "~0.3.1",
-    "pagelet": "~0.6.0",
+    "pagelet": "~0.7.0",
     "predefine": "~0.1.1"
   },
   "devDependencies": {
