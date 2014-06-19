@@ -21,6 +21,22 @@ function use(brand) {
 }
 
 /**
+ * Register a default each helper for handblebars via Temper.
+ *
+ * @param {Object} context collection of objects
+ * @param {Object} options
+ * @returns {String}
+ * @api public
+ */
+Pagelet.temper.require('handlebars').registerHelper('each', function each(context, options) {
+  if (!Array.isArray(context)) return '';
+
+  return context.reduce(function reduce(memo, stack) {
+    return memo + options.fn(stack);
+  }, '');
+});
+
+/**
  * Set a specific branch. Used by temper to fetch all the proper assets.
  *
  * @param {String} brand
@@ -31,10 +47,22 @@ function use(brand) {
 Pagelet.brand = function define(brand, standalone) {
   var prototype = this.prototype;
 
-  if (standalone) prototype.fragment = '{pagelet:template}';
+  //
+  // Traverse the pagelet to initialize any child pagelets.
+  //
+  this.traverse(this.name);
+
+  //
+  // Run each of the child pagelets through this special branding function as well.
+  //
   if (prototype.pagelets) Object.keys(prototype.pagelets).forEach(function loop(name) {
     prototype.pagelets[name].brand(brand);
   });
+
+  //
+  // Set the fragment such that only the template is rendered.
+  //
+  if (standalone) prototype.fragment = '{pagelet:template}';
 
   //
   // Use nodejitsu as default brand.
@@ -86,8 +114,7 @@ Pagelet.readable('wrap', {
 //
 module.exports = pagelet = Pagelet.extend({
   /**
-   * Extend the default constructor to always provide an each helper
-   * to the handblebars instance. Also calls `initialize` by default.
+   * Extend the default constructor to always call `initialize` by default.
    *
    * @Constructor
    * @return {Pagelet}
@@ -95,17 +122,6 @@ module.exports = pagelet = Pagelet.extend({
    */
   constructor: function constructor() {
     pagelet.__super__.constructor.apply(this);
-
-    //
-    // Register a default each helper, expects context to be a set of objects.
-    //
-    this.temper.require('handlebars').registerHelper('each', function each(context, options) {
-      if (!Array.isArray(context)) return '';
-
-      return context.reduce(function reduce(memo, stack) {
-        return memo + options.fn(stack);
-      }, '');
-    });
 
     this.initialize();
     return this;

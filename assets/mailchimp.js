@@ -3,7 +3,7 @@
 //
 // Expose the mailchimp Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   css: '{{brand}}/mailchimp/base.styl',
   view: '{{brand}}/mailchimp/view.hbs',
 
@@ -27,18 +27,9 @@ module.exports = require('./pagelet').extend({
   //
   // Default data for mailchimp mailing list form, can be changed by using `set`.
   //
-  data: {
+  defaults: {
     action: 'http://nodejitsu.us2.list-manage.com/subscribe/post',
     u: 'e4a7e45f759ae0d449c3ba923',
     id: '31f76174d4'
-  },
-
-  //
-  // Used by Square to generate the configuration file. Weight will determine the
-  // relative placement with respect to other assets.
-  //
-  meta: {
-    description: 'Small form to subscribe to a mailchimp mailing list',
-    weight: 699
-  },
+  }
 }).on(module);
