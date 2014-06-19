@@ -5,6 +5,7 @@
 //
 var queue = require('../queue')
   , Pagelet = require('pagelet')
+  , async = require('async')
   , pagelet;
 
 /**
@@ -201,6 +202,56 @@ module.exports = pagelet = Pagelet.extend({
     );
 
     return this;
+  },
+
+  /**
+   * Inject rendered pagelets in the base view, which can also be a pagelet view.
+   *
+   * @param {Function} fn completion callback.
+   * @api public
+   */
+  inject: function inject(fn) {
+    var self = this;
+
+    this.render(function parent(error, base) {
+      if (error) return fn(error);
+      if (!self.pagelets) return fn(null, base);
+
+      async.each(Object.keys(self.pagelets), function children(name, next) {
+        (new self.pagelets[name]).inject(function insert(error, view) {
+          if (error) return next(error);
+
+          [
+            "data-pagelet='"+ name +"'",
+            'data-pagelet="'+ name +'"',
+            'data-pagelet='+ name,
+          ].forEach(function locate(attribute) {
+            var index = base.indexOf(attribute)
+              , end;
+
+            //
+            // As multiple versions of the pagelet can be included in to one single
+            // page we need to search for multiple occurrences of the `data-pagelet`
+            // attribute.
+            //
+            while (~index) {
+              end = base.indexOf('>', index);
+
+              if (~end) {
+                base = base.slice(0, end + 1) + view + base.slice(end + 1);
+                index = end + 1 + view.length;
+              }
+
+              index = base.indexOf(attribute, index + 1);
+            }
+          });
+
+          next();
+        });
+      }, function done(error) {
+        fn(error, base);
+      });
+    });
   },
 
   /**
