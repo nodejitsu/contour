@@ -22,22 +22,6 @@ function use(brand) {
 }
 
 /**
- * Register a default each helper for handblebars via Temper.
- *
- * @param {Object} context collection of objects
- * @param {Object} options
- * @returns {String}
- * @api public
- */
-Pagelet.temper.require('handlebars').registerHelper('each', function each(context, options) {
-  if (!Array.isArray(context)) return '';
-
-  return context.reduce(function reduce(memo, stack) {
-    return memo + options.fn(stack);
-  }, '');
-});
-
-/**
  * Set a specific branch. Used by temper to fetch all the proper assets.
  *
  * @param {String} brand
