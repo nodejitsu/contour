@@ -1,7 +1,7 @@
 'use strict';
 
 //
-// Expose the navigation Pagelet.
+// Expose the submit button Pagelet.
 //
 require('./button').extend({
   view: '{{brand}}/submit/view.hbs'

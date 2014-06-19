@@ -1,9 +1,9 @@
-{{#href}}
-<a href="<%= href %>" class="<%= collection[type].class %><%= locals.class ? ' ' + locals.class : '' %>"<%- locals.target ? ' target="' + target + '"' : '' %>>
-  <%- locals.text ? text : collection[type].text %>
+{{#if href}}
+<a href="{{href}}" class="{{use}} {{class}}" {{#target}}target="{{.}}"{{/target}}>
+  {{text}}
 </a>
 {{else}}
-<button class="<%= collection[type].class %><%= locals.class ? ' ' + locals.class : '' %>">
-  <%- locals.text ? text : collection[type].text %>
+<button class="{{use}} {{class}}">
+  {{text}}
 </button>
-{{/href}}
+{{/if}}
