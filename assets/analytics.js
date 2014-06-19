@@ -67,6 +67,7 @@ require('./pagelet').extend({
       return ~file.indexOf('js/analytics') || ~file.indexOf('static/' + data.type);
     });
 
+    this.queue.enlist('loader', { apps: [ 'analytics' ] });
     return this;
   }
 }).on(module);
