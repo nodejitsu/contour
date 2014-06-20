@@ -131,10 +131,6 @@ Contour.readable('include', function include(filename, data, cache) {
     filename += '.ejs';
   }
 
-  filename = this._origin.find(function resolve(origin) {
-    return fs.existsSync(path.resolve(origin, filename));
-  });
-
   return this.addFile(filename, true, cache).call(this, data, true);
 });
 
@@ -396,6 +392,7 @@ Contour.readable('addFile', function addFile(file, incl, cache) {
  */
 Contour.readable('supplier', function supplier(type, render, data, incl) {
   var source = this._options.defaults
+    , self = this
     , copy, html, $;
 
   if (!incl) {
