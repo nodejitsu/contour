@@ -41,14 +41,19 @@ require('./pagelet').extend({
     type: 'plain'
   },
 
-  //
-  // Provide some defaults to the data based on the standard collection.
-  //
-  initialize: function initialize() {
+  /**
+   * Define the class and text that are on the button. Called by set on default.
+   *
+   * @returns {Pagelet}
+   * @api private
+   */
+  define: function define() {
     var type = this.data.type || this.defaults.type
       , collection = this.collection;
 
     this.data.use = collection[type].class;
     this.data.text = this.data.text || collection[type].text;
+
+    return this;
   }
 }).on(module);

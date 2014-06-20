@@ -168,7 +168,7 @@ module.exports = pagelet = Pagelet.extend({
     if ('object' !== typeof data) return this;
     this.mixin(this.data, data);
 
-    return this;
+    return this.define();
   },
 
   /**
@@ -242,12 +242,24 @@ module.exports = pagelet = Pagelet.extend({
   },
 
   /**
+   * Hook to define some values based on defaults. Can be overriden, will be called
+   * by initialize and set by default. If you override this function make sure to
+   * return this.
+   *
+   * @return {Pagelet}
+   * @api private
+   */
+  define: function define() {
+    return this;
+  },
+
+  /**
    * Give the default pagelet an empty initialize, so its always callable.
    *
    * @returns {Pagelet}
    * @api public
    */
   initialize: function initialize() {
-    return this;
+    return this.define();
   }
 });
