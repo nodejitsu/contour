@@ -11,7 +11,7 @@ require('./pagelet').extend({
   //
   // Default data for alert notificiation, can be changed by using `set`.
   //
-  data: {
+  defaults: {
     closable: false,
     type: 'notice',
     text: ''

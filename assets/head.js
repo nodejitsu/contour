@@ -47,18 +47,12 @@ require('./pagelet').extend({
   },
 
   /**
-   * Set a canonical if none is provided via extended data and provide a stylsheet
-   * link helper.
+   * Always set a canonical reference on the data.
    *
-   * @Constructor
-   * @api public
+   * @returns {Pagelet}
+   * @api private
    */
-  initialize: function initialize() {
-    this.use('head', 'stylesheets', this.stylesheets);
-
-    //
-    // Always set a canonical reference on the data.
-    //
+  define: function define() {
     if (!('canonical' in this.data)) {
       this.data.canonical = [
         'https://',
@@ -69,5 +63,16 @@ require('./pagelet').extend({
     }
 
     return this;
+  },
+
+  /**
+   * Set a canonical if none is provided via extended data and provide a stylsheet
+   * link helper.
+   *
+   * @Constructor
+   * @api public
+   */
+  initialize: function initialize() {
+    return this.use('head', 'stylesheets', this.stylesheets);
   }
 }).on(module);

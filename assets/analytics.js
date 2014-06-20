@@ -48,11 +48,12 @@ require('./pagelet').extend({
   query: [ 'type', 'domain', 'key' ],
 
   /**
-   * Called after Pagelet construction, register handlebar helpers.
+   * Set proper key and library based on the data.type.
    *
+   * @return {Pagelet}
    * @api private
    */
-  initialize: function initialize() {
+  define: function define() {
     var data = this.data;
 
     //
@@ -67,7 +68,16 @@ require('./pagelet').extend({
       return ~file.indexOf('js/analytics') || ~file.indexOf('static/' + data.type);
     });
 
-    this.queue.enlist('loader', { apps: [ 'analytics' ] });
     return this;
+  },
+
+  /**
+   * Called after Pagelet construction, register handlebar helpers.
+   *
+   * @api private
+   */
+  initialize: function initialize() {
+    this.queue.enlist('loader', { apps: [ 'analytics' ] });
+    return this.define();
   }
 }).on(module);

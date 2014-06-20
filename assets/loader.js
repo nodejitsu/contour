@@ -29,12 +29,15 @@ require('./pagelet').extend({
   /**
    * Merge the data of custom and external to load and plain.
    *
+   * @returns {Pagelet}
    * @api private
    */
-  initialize: function initialize() {
+  define: function define() {
     var data = this.data;
 
     if ('custom' in data) this.merge(data.load, data.custom);
     if ('external' in data) this.merge(data.plain, data.external);
+
+    return this;
   }
 }).on(module);
