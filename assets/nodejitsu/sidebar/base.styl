@@ -1,0 +1,99 @@
+@import "../defaults"
+
+.sidebar
+  border-width: 0 1px // should be below border of things will go wrong
+  border: 1px solid $divider
+  display: table-cell
+  float: none
+  min-width: 198px
+  padding-bottom: 80px
+  padding-top: 60px
+  vertical-align: top
+
+  .dropdown
+    absolute: top 0 right 0
+    z-index: 1
+
+  s
+    float: right
+    font-size: 10px
+
+  div
+    border-bottom: 1px solid $divider
+    position: relative
+
+    &:not(.active):last-of-type
+      border-bottom: 0
+
+    & > .active:only-child
+      border-bottom: 0
+
+    a:not(.active)
+      border-bottom: 0
+
+  a
+    border-bottom: 1px solid $divider
+    display: block
+    padding: 10px 20px
+    position: relative
+
+    &.sub
+      color: $base-color
+
+    &.gone
+      display: none
+
+    &:not(.active):last-of-type
+      border-bottom: 0
+
+    &:hover
+      text-decoration: none
+
+    &.active
+      background-color: $active-background
+      background-image: linear-gradient(top, rgba(255, 255, 255, .6), @background-color)
+      border: 1px solid $active-border
+      margin: -1px -1px 0 -1px
+
+      // Implement the arrow above the details block, the :after is the inner
+      // color the :before is used for a grey border
+      &:after
+      &:before
+        border: 9px solid transparent
+        content: ""
+        display: inline-block
+        margin-top: 13px
+        position: absolute
+        right: 0
+        top: 0
+
+      &:after
+        border-left-width: 0
+        border-right-color: #FFF
+        margin-right: -1px
+        z-index: 2
+
+      &:before
+        border-left-width: 0
+        border-right-color: $active-border
+        z-index: 1
+
+/**
+ * Support for active state submenu dropdowns in the sidebar
+ */
+for $i in 1..10
+  #sidebar-dd-{$i}:target
+    .sub-items
+      animation-name: fadeIn
+      display: block
+
+    .ss-navigateright:before
+      content: ''
+
+@media handheld, only screen and (max-width: 767px)
+  .sidebar
+    border: 0
+    display: block
+    float: none
+    margin: 30px 0
+    padding: 0 20px
