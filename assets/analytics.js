@@ -13,7 +13,7 @@ require('./pagelet').extend({
   // On initialize the JS that is not required will be filtered out.
   //
   js: [
-    'js/analytics.js',
+    'base/js/analytics.js',
     '../static/segment.js',
     '../static/ga.js',
   ],
