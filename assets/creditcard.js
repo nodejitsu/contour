@@ -12,7 +12,7 @@ module.exports = require('./pagelet').extend({
   js: '{{brand}}/creditcard/base.js',
 
   //
-  // Default data for the navigation, can be changed by using `set`.
+  // Default data for the creditcard from, can be changed by using `set`.
   //
   defaults: {
     production: (process.env.NODE_ENV === 'production').toString(),
@@ -36,13 +36,13 @@ module.exports = require('./pagelet').extend({
    */
   month: function month(options) {
     var content = ''
-      , month = this.month;
+      , m = this.month;
 
-    while(++month <= 12) {
+    while(++m <= 12) {
       content += options.fn({
-        month: month,
-        selected: +this.expiration_month === month ? ' selected' : '',
-        fullMonth: this.months[month - 1]
+        month: m,
+        selected: +this.expiration_month === m ? ' selected' : '',
+        fullMonth: this.months[m - 1]
       });
     }
 
@@ -58,12 +58,12 @@ module.exports = require('./pagelet').extend({
    */
   year: function year(options) {
     var content = ''
-      , year = this.year;
+      , y = this.year;
 
-    while(++year < this.max_year) {
+    while(++y < this.max_year) {
       content += options.fn({
-        year: year,
-        selected: +this.expiration_year === year ? ' selected' : '',
+        year: y,
+        selected: +this.expiration_year === y ? ' selected' : '',
       });
     }
 
