@@ -6,6 +6,7 @@
 var queue = require('../queue')
   , Pagelet = require('pagelet')
   , async = require('async')
+  , wrapJS = require('../static/wrap')
   , pagelet;
 
 /**
@@ -81,18 +82,18 @@ Pagelet.fetch = function fetch(key) {
 };
 
 /**
- * Some Pagelets require JS that needs to be wrapped with a Cortex initialization
- * script. This getter provides easy access to the content.
+ * Update the dataset for the current pagelet and return a new instance.
  *
- * @return {Object} parts of the Cortex load script.
+ * @param {Object} data properties
  * @api public
  */
-Pagelet.readable('wrap', {
-  enumerable: false,
-  get: function wrap() {
-    return require('../static/wrap');
-  }
-});
+Pagelet.set = function set(data) {
+  if ('object' !== typeof data) return this;
+
+  return new (this.extend({
+    data: this.prototype.mixin(data, this.prototype.data)
+  }));
+};
 
 //
 // Add additional functionality and expose the extended Pagelet.
@@ -156,19 +157,6 @@ module.exports = pagelet = Pagelet.extend({
       this.data,
       this.queue.discharge(this.name)
     )));
-  },
-
-  /**
-   * Update the dataset for the current pagelet.
-   *
-   * @param {Object} data properties
-   * @api public
-   */
-  set: function set(data) {
-    if ('object' !== typeof data) return this;
-    this.mixin(this.data, data);
-
-    return this.define();
   },
 
   /**
@@ -242,8 +230,19 @@ module.exports = pagelet = Pagelet.extend({
   },
 
   /**
+   * Some Pagelets require JS that needs to be wrapped with a Cortex initialization
+   * script. This getter provides easy access to the content.
+   *
+   * @return {Object} parts of the Cortex load script.
+   * @api public
+   */
+  get wrap() {
+    return wrapJS;
+  },
+
+  /**
    * Hook to define some values based on defaults. Can be overriden, will be called
-   * by initialize and set by default. If you override this function make sure to
+   * by initialize by default. If you override this function make sure to
    * return this.
    *
    * @return {Pagelet}
