@@ -19,9 +19,7 @@ var async = require('async')
 //
 // Defaults.
 //
-var defaults = require('./defaults')
-  , template = __dirname + '/templates'
-  , Assets = require('./assets')
+var Assets = require('./assets')
   , available = [ 'nodejitsu', 'npm' ];
 
 /**
@@ -71,9 +69,6 @@ function Contour(options) {
   readable('_storage', {});
   readable('_options', {
     brand: this.brand,
-    defaults: this.mixin(defaults.nodejitsu, defaults[this.brand]),
-    template: path.resolve(template, this.brand),
-    fallback: path.resolve(template, 'nodejitsu')
   });
 
   //
@@ -85,14 +80,6 @@ function Contour(options) {
     console.log(pagelet);
     pagelet = require(path.join(assets, pagelet));
   });*/
-
-  // Get all the templates, synced so another application does not
-  // have to defer their whole initialization for nodejitsu-app.
-  if ('nodejitsu' !== this._options.brand) {
-    fs.readdirSync(this._options.template).forEach(function prepareTemplates(file) {
-      this.addFile(file);
-    }.bind(this));
-  }
 
   // Start monitoring for included templates to automatically update Square.
   /*if (monitor) return;
