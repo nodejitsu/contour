@@ -1,0 +1,32 @@
+<script type="cerebral/cortex">{ "creditcard": { "production": {{production}} }}</script>
+
+<fieldset data-validate="{{validate}}" class="row creditcard {{class}}">
+  <legend><s class="ss-icon ss-creditcard"></s> Credit card</legend>
+
+  <label class="eightcol">
+    Card number
+    <input name="full_number" placeholder="•••• •••• •••• ••••" maxlength="19" value="{{full_number}}"{{#if required}} required{{/if}}>
+  </label>
+  <label class="fourcol last">
+    Security code
+    <input name="cvv" placeholder="•••" maxlength="4" value="{{cvv}}"{{#if required}} required{{/if}}>
+  </label>
+
+  <section class="eightcol">
+    <label class="twelvecol last" for="expiration_month">Expiration</label>
+    <select name="expiration_month" id="expiration_month" class="sixcol"{{#if required}} required{{/if}}>
+      {{#creditcard-month}}
+      <option value="{{month}}"{{selected}}>{{fullMonth}}</option>
+      {{/creditcard-month}}
+    </select>
+    <select name="expiration_year" class="sixcol last"{{#if required}} required{{/if}}>
+      {{#creditcard-year}}
+      <option value="{{year}}"{{selected}}>{{year}}</option>
+      {{/creditcard-year}}
+    </select>
+  </section>
+
+  <p class="twelvecol card gone">
+    You will be paying with: <strong></strong>
+  </p>
+</fieldset>
