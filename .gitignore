@@ -20,3 +20,4 @@ projectFilesBackup
 dist
 
 .DS_Store
+.coveralls.yml
