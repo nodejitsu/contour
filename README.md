@@ -14,8 +14,9 @@ npm install --save contour
 
 ## Tests
 
-```js
-npm test
+```bash
+npm test                   # run tests
+npm run-script coverage    # run tests to determine code coverage
 ```
 
 ##  Documentation
