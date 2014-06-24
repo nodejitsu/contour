@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
     "async": "~0.8.0",
     "cheerio": "~0.16.0",
     "creditcard": "~0.1.1",
-    "ejs": "~1.0.0",
     "fusing": "~0.3.0",
     "handlebars": "~2.0.0",
     "marked": "~0.3.1",
@@ -37,7 +36,6 @@
     "sinon-chai": "2.5.x",
     "pre-commit": "0.0.x",
     "zuul": "~1.6.4",
-    "phantomjs": "~1.9.7",
-    "square": "git://github.com/observing/square.git#development"
+    "phantomjs": "~1.9.7"
   }
 }

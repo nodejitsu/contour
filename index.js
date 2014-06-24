@@ -24,79 +24,24 @@ var Assets = require('./assets')
 
 /**
  * Contour will register several default HTML5 templates of Nodejitsu. These
- * templates can used from inside views of other projets.
+ * templates can used from inside views of other projects.
  *
- * Options can be supplied
+ * Options that can be supplied
  *  - brand {String} framework or brand to use, e.g nodejitsu or opsmezzo
  *  - mode {String} bigpipe or standalone, defaults to bigpipe
- *  - store {String} full path to store Square configuration
- *  - output {String} directory to store output of Square, e.g. compiled CSS/JS
- *  - import {String|Array} custom Square configuration to include in the build
- *  - dist {String} distribution filenames of generated CSS/JS
- *  - monitor {Boolean} force monitoring if true
- *  - origin {String|Array} absolute paths to templates, required for including
  *
  * @Constructor
  * @param {Object} options optional, see above
  * @api public
  */
 function Contour(options) {
-  options = options || {};
-
-  //
-  // Store options locally and force monitoring if not explicitly cancelled.
-  //
-  var contour = this
-    , store = options.store
-    , env = process.env.NODE_ENV || 'development'
-    , monitor = options.monitor || (env === 'development' && store)
-    , readable = Contour.predefine(this, Contour.predefine.READABLE)
-    , origin = options.origin || [];
-
-  //
-  // Providing multiple paths should be possible via origin.
-  //
-  if (!Array.isArray(options.origin)) origin = [ origin ];
+  this.fuse();
 
   //
   // Add the pagelets of the required framework.
   //
+  options = options || {};
   this.mixin(this, new Assets(options.brand, options.mode || 'bigpipe'));
-
-  // Set options and provide fallbacks.
-  readable('_queue', queue);
-  readable('_origin', origin || []);
-  readable('_storage', {});
-  readable('_options', {
-    brand: this.brand,
-  });
-
-  //
-  // Get all default nodejitsu Pagelets. These will be forcefully overwritten
-  // by a custom brand. It creates a fall back if the custom brand does not
-  // require a different template.
-  //
-  /*fs.readdirSync(assets).forEach(function preparePagelets(pagelet) {
-    console.log(pagelet);
-    pagelet = require(path.join(assets, pagelet));
-  });*/
-
-  // Start monitoring for included templates to automatically update Square.
-  /*if (monitor) return;
-  var Square = require('square');
-
-  this._options.store = store;
-  this._options.dist = options.dist || '{ext}/jitsu.{type}.{ext}';
-  this._options.import = options.import;
-  this._options.output = options.output || path.dirname(store);
-  this._options.resources = path.resolve(__dirname, 'assets');
-
-  //
-  // Initialize square with log level: error, so only important stuff is shown.
-  // Don't include file origins in the files as these are different per developer.
-  //
-  readable('_square', new Square({ 'log level': 2, comments: false }));
-  this.monitor();*/
 }
 
 //
@@ -122,36 +67,6 @@ Contour.readable('include', function include(filename, data, cache) {
 });
 
 /**
- * Debounce function to defer the call of the supplied `fn` with `wait` ms. The
- * timer will be reset as long as the function is called.
- *
- * @param {Function} fn function to call
- * @param {Number} wait milliseconds
- * @api private
- */
-Contour.readable('debounce', function debounce(fn, wait) {
-  var timeout;
-
-  return function defer() {
-    var context = this
-      , args = arguments
-      , timestamp = Date.now()
-      , result;
-
-    function later() {
-      var last = Date.now() - timestamp;
-      if (last < wait) return timeout = setTimeout(later, wait - last);
-
-      timeout = null;
-      result = fn.apply(context, args);
-    }
-
-    if (!timeout) timeout = setTimeout(later, wait);
-    return result;
-  };
-});
-
-/**
  * Run included content through markdown after ejs has done its work.
  *
  * @param {String} filename template
@@ -161,168 +76,6 @@ Contour.readable('debounce', function debounce(fn, wait) {
  */
 Contour.readable('markdown', function markdown() {
   return md(this.include.apply(this, arguments));
-});
-
-/**
- * Reducer for list of files to add to the square configuration bundle.
- *
- * @param {Number} n
- * @param {Object} file representation
- * @api public
- */
-Contour.readable('add', function add(n, file) {
-  var current = Object.keys(this._square.scaffold.get().bundle)
-    , self = this;
-
-  /**
-   * Check for presence of file in current config by doing a
-   * loose check against the final part of the file path.
-   *
-   * @param {String} full current complete path of asset
-   * @api private
-   */
-  function check(full) {
-    return ~full.indexOf(file.source);
-  }
-
-  //
-  // Check for already included files, done against partial path
-  // to prevent duplicate inclusions via symlinked nodejitsu-app.
-  //
-  if(current.filter(check).length) return false;
-  file.source = path.resolve(file.base || self._options.resources, file.source);
-
-  //
-  // Update the configuration of the build file if required.
-  //
-  if (file.configuration && file.configuration.plugins) {
-    self._square.scaffold.plugins(file.configuration.plugins);
-  }
-
-  return self._square.scaffold.add(file) ? n + 1 : n;
-});
-
-/**
- * This will spin up square monitoring and scaffolding to provide
- * CSS and/or JS compiled and minified at the options.store location.
- *
- * @api public
- */
-Contour.readable('monitor', function monitor() {
-  var file = path.resolve(this._options.store)
-    , extend = this._options.import
-    , self = this
-    , save;
-
-  /**
-   * Add assets to the Square configuration.
-   *
-   * @param {Array} files collection of assets
-   * @param {Function} callback optional callback for use in async
-   * @api private
-   */
-  function addAssets(files, callback) {
-    var added = files.reduce(self.add.bind(self), 0);
-    return callback ? process.nextTick(callback) : added;
-  }
-
-  /**
-   * On exists make sure we save the file.
-   *
-   * @api private
-   */
-  function finalize() {
-    self.live.destroy();
-    self._square.scaffold.save(function results(result) {
-      console.log(result);
-      process.exit();
-    });
-  }
-
-  //
-  // Scaffold a configuration file and pass it to the square parser. If file
-  // points to an actual scaffolded configuration that is loaded beforehand.
-  //
-  this._square.scaffold.init(file);
-
-  //
-  // Default Square configuration options.
-  //
-  var config = {
-    storage: ['disk'],
-    plugins: { minify: {} },
-    dist: path.resolve(this._options.output, this._options.dist)
-  };
-
-  // Check if custom build files were provided with additional assets.
-  // These will be imported gracefully by Square.
-  if (extend) {
-    if (!Array.isArray(extend)) extend = [ extend ];
-
-    extend.forEach(function loopImports(imported) {
-      var base = path.dirname(path.resolve(imported))
-        , files = [];
-
-      imported = require(path.join(path.dirname(file), imported));
-      config = self.mixin(config, imported.configuration);
-
-      Object.keys(imported.bundle).forEach(function loopBundle(key) {
-        var ext = 'pre:' + path.extname(key).slice(1);
-        imported.bundle[key][ext] = imported.bundle[key][ext] || {};
-        imported.bundle[key][ext].paths = self._options.resources;
-
-        files.push({ meta: imported.bundle[key], source: key, base: base });
-      });
-
-      addAssets(files);
-    });
-  }
-
-  //
-  // Overwrite the default config constructed above with existing directives.
-  //
-  config = self.mixin(config, this._square.scaffold.get().configuration);
-  this._square.scaffold.configuration(config);
-
-  // Find the path to assets inside Nodejitsu-app so Square has proper paths, do
-  // an initial setup and save this configuration before starting anything.
-  async.waterfall([
-    addAssets.bind(this, this.assets.defaults),
-    this._square.scaffold.save.bind(this._square.scaffold)
-  ], function initWatcher() {
-    // Add default framework files to the configuration and set distribution.
-    // After adding assets, start live monitoring and keep logging minimal.
-    self._square.parse(file);
-    self.live = new self._square.Watcher(8888, true);
-
-    // Notify the developer if the build file changed.
-    self._square.on('parsed', function structChanged() {
-      console.log('[info]'.green + ' build file structure changes detected, parsing...');
-    });
-
-    // Notify the developer about file changes.
-    self._square.on('refresh', function contentChanged() {
-      console.log(' --'.blue + ' content changes detected, refreshing...');
-    });
-
-    // Keep track if all CSS/JS assets are added to the configuration. If assets
-    // actually changed debounce the write function for a short time.
-    save = self.debounce(self._square.scaffold.save, 100).bind(self._square.scaffold);
-    self.on('homegrown', function morph(files) {
-      // Save latest version of configuration, this will trigger rebuilds and
-      // reloading of the browser. Also it will ensure relative paths are
-      // correctly resolved.
-      if (addAssets(files)) save();
-    });
-
-    // On exit stop watching and destroy the watcher to prevent any rebuilds
-    // from occuring, finally write and update the scaffolded configuration.
-    // Before listening check if there are already registered SIGINT interrupts.
-    if (!process.listeners('SIGINT').length) process.once('SIGINT', finalize);
-
-    // Notify external APIs that we are monitoring.
-    self.emit('monitoring');
-  });
 });
 
 /**
