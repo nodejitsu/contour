@@ -45,7 +45,7 @@ fuse(Contour, require('events').EventEmitter);
  * @api public
  */
 Contour.get = function get(brand) {
-  if (!~available.indexOf(brand)) return;
+  if (!~available.indexOf(brand)) brand = 'nodejitsu';
   var base = path.join(__dirname, 'assets', brand);
 
   return fs.readdirSync(base).reduce(function reduce(memo, file) {
@@ -60,6 +60,16 @@ Contour.get = function get(brand) {
 // Proxy method to get.
 //
 Contour.readable('get', Contour.get);
+
+//
+// Expose the brands that are available.
+//
+Contour.readable('available', available);
+
+//
+// Expose the Assets constructor.
+//
+Contour.readable('Assets', Assets);
 
 //
 // Expose constructor.

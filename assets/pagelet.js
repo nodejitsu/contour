@@ -8,10 +8,12 @@ var wrapJS = require('../static/wrap')
   , cheerio = require('cheerio')
   , queue = require('../queue')
   , async = require('async')
+  , fs = require('fs')
   , pagelet;
 
 /**
- * Return a mapping function with preset brand.
+ * Return a mapping function with preset brand, will default to nodejitsu files if
+ * the requested branded file does not exist.
  *
  * @param {String} brand
  * @returns {Function} mapper
@@ -19,7 +21,8 @@ var wrapJS = require('../static/wrap')
  */
 function use(brand) {
   return function branding(file) {
-    return file.replace('{{brand}}', brand);
+    var branded = file.replace('{{brand}}', brand);
+    return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
   };
 }
 
@@ -32,44 +35,39 @@ function use(brand) {
  * @api private
  */
 Pagelet.brand = function define(brand, standalone) {
-  var prototype = this.prototype;
+  var prototype = this.prototype
+    , brander = use(brand);
 
   //
   // Traverse the pagelet to initialize any child pagelets.
   //
   this.traverse(this.name);
+  return this.extend({
+    //
+    // Run each of the child pagelets through this special branding function as well.
+    //
+    pagelets: Object.keys(prototype.pagelets || {}).reduce(function reduce(memo, name) {
+      memo[name] = prototype.pagelets[name].brand(brand);
+      return memo;
+    }, {}),
 
-  //
-  // Run each of the child pagelets through this special branding function as well.
-  //
-  if (prototype.pagelets) Object.keys(prototype.pagelets).forEach(function loop(name) {
-    prototype.pagelets[name].brand(brand);
-  });
+    //
+    // Set the fragment such that only the template is rendered.
+    //
+    fragment: standalone ? '{pagelet:template}' : prototype.fragment,
 
-  //
-  // Set the fragment such that only the template is rendered.
-  //
-  if (standalone) prototype.fragment = '{pagelet:template}';
+    //
+    // Use nodejitsu as default brand.
+    //
+    view: brander(prototype.view),
 
-  //
-  // Use nodejitsu as default brand.
-  //
-  brand = use(brand ? brand : 'nodejitsu');
-  prototype.view = brand(prototype.view);
-
-  //
-  // CSS and JS will be supplied as arrays, replace paths with brand.
-  //
-  if (prototype.css) prototype.css = Array.isArray(prototype.css)
-    ? prototype.css.map(brand)
-    : brand(prototype.css);
-
-  if (prototype.js) prototype.js = Array.isArray(prototype.js)
-    ? prototype.js.map(brand)
-    : brand(prototype.js);
-
-  prototype.dependencies = prototype.dependencies.map(brand);
-  return this.optimize();
+    //
+    // Replace paths in CSS, JS and dependencies.
+    //
+    css: prototype.css ? prototype.css.map(brander) : [],
+    js: prototype.js ? prototype.js.map(brander) : [],
+    dependencies: prototype.dependencies ? prototype.dependencies.map(brander) : []
+  }).optimize();
 };
 
 /**
