@@ -186,7 +186,8 @@ module.exports = pagelet = Pagelet.extend({
    */
   get inject() {
     var self = this
-      , data = this.data;
+      , data = this.data
+      , $;
 
     return function inject(fn) {
       self.render(function parent(error, base) {
