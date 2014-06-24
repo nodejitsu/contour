@@ -27,5 +27,7 @@ require('./pagelet').extend({
    */
   initialize: function initialize() {
     this.queue.enlist('loader', { apps: [ 'tooltip' ] });
+
+    return this;
   }
 }).on(module);
