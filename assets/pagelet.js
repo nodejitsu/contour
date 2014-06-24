@@ -3,10 +3,11 @@
 //
 // Required modules.
 //
-var queue = require('../queue')
+var wrapJS = require('../static/wrap')
   , Pagelet = require('pagelet')
+  , cheerio = require('cheerio')
+  , queue = require('../queue')
   , async = require('async')
-  , wrapJS = require('../static/wrap')
   , pagelet;
 
 /**
@@ -184,13 +185,33 @@ module.exports = pagelet = Pagelet.extend({
    * @api public
    */
   get inject() {
-    var self = this;
+    var self = this
+      , data = this.data;
 
     return function inject(fn) {
       self.render(function parent(error, base) {
         if (error) return fn(error);
-        if (!self.pagelets) return fn(null, base);
 
+        //
+        // Allow data-attributes to be changed on the fly by cheerio.
+        //
+        if (data && data.attributes) {
+          $ = cheerio.load(base);
+
+          Object.keys(data.attributes).forEach(function loopAttributes(selector) {
+            var attr = data.attributes[selector];
+            Object.keys(attr).forEach(function loopDataKeys(key) {
+              $(selector).attr('data-' + key, attr[key]);
+            });
+          });
+
+          base = $.html();
+        }
+
+        //
+        // Process all child pagelets, if any.
+        //
+        if (!self.pagelets) return fn(null, base);
         async.each(Object.keys(self.pagelets), function children(name, next) {
           (new self.pagelets[name]).inject(function insert(error, view) {
             if (error) return next(error);
