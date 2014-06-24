@@ -47,7 +47,7 @@ Pagelet.brand = function define(brand, standalone) {
     // Run each of the child pagelets through this special branding function as well.
     //
     pagelets: Object.keys(prototype.pagelets || {}).reduce(function reduce(memo, name) {
-      memo[name] = prototype.pagelets[name].brand(brand);
+      memo[name] = prototype.pagelets[name].brand(brand, standalone);
       return memo;
     }, {}),
 

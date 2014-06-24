@@ -21,7 +21,7 @@
 
   <p>Log in below to your Nodejitsu account and start rocking.</p>
 
-  <%- app.alert({ type: 'notice', class: 'error gone' }) %>
+  <div data-pagelet="notice"></div>
   <form method="POST" action="/signin">
     <label>
       Username
@@ -47,8 +47,8 @@
 
   <p>Tell us your username and we will reset it for you.</p>
 
-  <%- app.alert({ type: 'notice', class: 'error' }) %>
-  <%- app.alert({ type: 'success', class: 'success' }) %>
+  <div data-pagelet="error"></div>
+  <div data-pagelet="success"></div>
 
   <form method="POST" action="/forgot">
     <label>
