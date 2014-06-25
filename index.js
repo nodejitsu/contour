@@ -46,7 +46,7 @@ fuse(Contour, require('events').EventEmitter);
  */
 Contour.get = function get(brand) {
   if (!~available.indexOf(brand)) brand = 'nodejitsu';
-  var base = path.join(__dirname, 'assets', brand);
+  var base = path.join(__dirname, 'pagelets', brand);
 
   return fs.readdirSync(base).reduce(function reduce(memo, file) {
     if ('.styl' !== path.extname(file)) return memo;
