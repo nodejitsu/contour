@@ -1,10 +1,6 @@
 'use strict';
 
-//
-// Required modules.
-//
-var wrapJS = require('../static/wrap')
-  , Pagelet = require('pagelet')
+var Pagelet = require('pagelet')
   , cheerio = require('cheerio')
   , queue = require('../queue')
   , async = require('async')
@@ -247,17 +243,6 @@ module.exports = pagelet = Pagelet.extend({
         });
       });
     };
-  },
-
-  /**
-   * Some Pagelets require JS that needs to be wrapped with a Cortex initialization
-   * script. This getter provides easy access to the content.
-   *
-   * @return {Object} parts of the Cortex load script.
-   * @api public
-   */
-  get wrap() {
-    return wrapJS;
   },
 
   /**
