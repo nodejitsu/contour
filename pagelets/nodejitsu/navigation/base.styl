@@ -16,7 +16,39 @@ $height = 96px
   position: relative
   // z-index is required to put the navbar above all other regular content as the
   // box-shadow must be dropped upon them
-  z-index: 1
+  z-index: 10
+
+  &.alternative
+    // The alternative navigation bar has a smaller height
+    $height = 70px
+
+    background: transparent
+    box-shadow: none
+    border-bottom: none
+    height: $height
+
+    a
+      color: white
+      font-weight: normal
+
+      &:nth-child(3)
+        border-left: none
+        margin-left: 50px
+
+      &:not(.login):not(.mobile):not(.sign)
+        height: $height - 1 // substract 1px for the bottom border
+        float: left
+        line-height: $height
+
+    .logo
+      background-position: 0 10px
+
+    .sign
+    .login
+      height: 28px
+      margin-top: 20px
+      line-height: 18px
+      font-size: 14px
 
   // We need to apply the padding to the row, or we will break the responsiveness of
   // our faux-column sidebars
@@ -32,7 +64,7 @@ $height = 96px
     width: 177px
 
   .logo
-    background: #FFF url($sprite-location) no-repeat 0 25px
+    background: transparent url($sprite-location) no-repeat 0 25px
     background-size: 90% auto
     float: left
     height: $height
