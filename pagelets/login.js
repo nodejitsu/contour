@@ -15,7 +15,7 @@ require('./pagelet').extend({
   //
   dependencies: [
     '../node_modules/cortex.js/dist/cortex.dev.js',
-    'base/form.styl'
+    '{{brand}}/form.styl'
   ],
 
   pagelets: {

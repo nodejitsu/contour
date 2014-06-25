@@ -6,7 +6,7 @@
 require('./pagelet').extend({
   view: '{{brand}}/button/view.hbs',
   dependencies: [
-    'base/buttons.styl'
+    '{{brand}}/buttons.styl'
   ],
 
   //

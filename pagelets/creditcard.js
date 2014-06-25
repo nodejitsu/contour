@@ -16,8 +16,8 @@ module.exports = require('./pagelet').extend({
   //
   dependencies: [
     '../node_modules/cortex.js/dist/cortex.dev.js',
-    'base/webfonts/ss-standard.styl',
-    'base/form.styl'
+    '{{brand}}/icons.styl',
+    '{{brand}}/form.styl'
   ],
 
   //

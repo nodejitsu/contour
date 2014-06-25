@@ -8,8 +8,8 @@ require('./pagelet').extend({
   view: '{{brand}}/mailchimp/view.hbs',
 
   dependencies: [
-    'base/form.styl',
-    'base/webfonts/ss-standard.styl'
+    '{{brand}}/form.styl',
+    '{{brand}}/icons.styl'
   ],
 
   //
