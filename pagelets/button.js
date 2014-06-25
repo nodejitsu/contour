@@ -4,8 +4,10 @@
 // Expose the button Pagelet.
 //
 require('./pagelet').extend({
-  css: 'base/buttons.styl',
   view: '{{brand}}/button/view.hbs',
+  dependencies: [
+    'base/buttons.styl'
+  ],
 
   //
   // Several standard types of buttons with proper classes.
