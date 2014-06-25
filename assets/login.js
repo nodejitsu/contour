@@ -10,6 +10,13 @@ require('./pagelet').extend({
   js: '{{brand}}/login/base.js',
   view: '{{brand}}/login/view.hbs',
 
+  //
+  // Cortex.JS, the client-side framework is required to run client-side javascript
+  //
+  dependencies: [
+    '../node_modules/cortex.js/dist/cortex.dev.js'
+  ],
+
   pagelets: {
     submit: submit.extend({ data: { type: 'login' }}),
     password: submit.extend({ data: { type: 'password' }}),

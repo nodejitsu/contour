@@ -12,6 +12,13 @@ require('./pagelet').extend({
   view: '{{brand}}/pills/view.hbs',
 
   //
+  // Cortex.JS, the client-side framework is required to run client-side javascript
+  //
+  dependencies: [
+    '../node_modules/cortex.js/dist/cortex.dev.js'
+  ],
+
+  //
   // Default data for the pills, can be changed by using `set`.
   //
   defaults: {

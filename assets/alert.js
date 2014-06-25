@@ -9,6 +9,13 @@ require('./pagelet').extend({
   view: '{{brand}}/alert/view.hbs',
 
   //
+  // Cortex.JS, the client-side framework is required to run client-side javascript
+  //
+  dependencies: [
+    '../node_modules/cortex.js/dist/cortex.dev.js'
+  ],
+
+  //
   // Default data for alert notificiation, can be changed by using `set`.
   //
   defaults: {

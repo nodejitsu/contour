@@ -10,42 +10,34 @@ require('./pagelet').extend({
   view: '{{brand}}/analytics/view.hbs',
 
   //
-  // On initialize the JS that is not required will be filtered out.
+  // Define will will filter out the analytics JS that is not required.
   //
   js: [
-    'base/js/analytics.js',
+    '{{brand}}/analytics/base.js',
     '../static/segment.js',
-    '../static/ga.js',
+    '../static/ga.js'
   ],
 
   //
-  // Some uncommented JS for this pagelet depends on Cortex.JS
+  // Cortex.JS, the client-side framework is required to run client-side javascript
   //
-  //dependencies: [
-  //  '../node_modules/cortex.js/dist/cortex.dev.js'
-  //],
+  dependencies: [
+    '../node_modules/cortex.js/dist/cortex.dev.js'
+  ],
 
   //
-  // Default keys, used when environment is not production.
+  // Development keys, used when environment is not production.
+  //
+  segment: 'r63vj4bdi7',
+  ga: 'UA-24971485-6',
+
+  //
+  // Default data for analytics, can be changed by using `set`.
   //
   defaults: {
-    segment: 'r63vj4bdi7',
-    ga: 'UA-24971485-6'
-  },
-
-  //
-  // Default tracker keys and domain, no sensitive data, these can be found
-  // in HTML source code.
-  //
-  data: {
     domain: 'nodejitsu.com',
     type: 'segment'
   },
-
-  //
-  // Data that gets sends to the client side JS.
-  //
-  query: [ 'type', 'domain', 'key' ],
 
   /**
    * Set proper key and library based on the data.type.
@@ -54,18 +46,18 @@ require('./pagelet').extend({
    * @api private
    */
   define: function define() {
-    var data = this.data;
+    var type = this.data.type || this.defaults.type;
 
     //
     // If not production use development keys.
     //
-    if (process.env.NODE_ENV !== 'production') data.key = this.defaults[data.type];
+    if (process.env.NODE_ENV !== 'production') this.data.key = this[type];
 
     //
-    // Remove unneeded static libraries.
+    // Remove unneeded static libraries, always keep Cortex.JS
     //
     this.js = this.js.filter(function filter(file) {
-      return ~file.indexOf('js/analytics') || ~file.indexOf('static/' + data.type);
+      return ~file.indexOf('analytics/base.js') || ~file.indexOf('static/' + type);
     });
 
     return this;

@@ -9,6 +9,13 @@ require('./pagelet').extend({
   view: '{{brand}}/tooltip/view.hbs',
 
   //
+  // Cortex.JS, the client-side framework is required to run client-side javascript
+  //
+  dependencies: [
+    '../node_modules/cortex.js/dist/cortex.dev.js'
+  ],
+
+  //
   // Tooltip defaults, the tooltip is toggled by clicking the generated hyperlink.
   // It will place the generated div below the hyperlink by default.
   //
