@@ -15,7 +15,10 @@ require('./pagelet').extend({
   //
   defaults: {
     links: [
-      { href: '#', text: 'Section' }
+      { 
+        href: '#', 
+        text: 'Section' 
+      }
     ]
   }
 }).on(module);
