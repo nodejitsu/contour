@@ -9,7 +9,7 @@ require('./pagelet').extend({
 
   dependencies: [
     'base/form.styl',
-    'webfonts/ss-standard.styl'
+    'base/webfonts/ss-standard.styl'
   ],
 
   //
