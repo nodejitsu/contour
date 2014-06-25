@@ -8,7 +8,7 @@ module.exports = require('./pagelet').extend({
   view: '{{brand}}/social/view.hbs',
 
   dependencies: [
-    'webfonts/ss-social.styl'
+    '{{brand}}/icons.styl'
   ],
 
   //

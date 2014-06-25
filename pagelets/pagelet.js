@@ -37,7 +37,7 @@ Pagelet.brand = function define(brand, standalone) {
   //
   // Traverse the pagelet to initialize any child pagelets.
   //
-  this.traverse(this.name);
+  this.traverse(this.name || this.prototype.name);
   return this.extend({
     //
     // Run each of the child pagelets through this special branding function as well.
