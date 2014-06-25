@@ -10,7 +10,7 @@ var fuse = require('fusing')
 //
 // Base path for assets.
 //
-var assets = path.join(__dirname, 'assets');
+var assets = path.join(__dirname, 'pagelets');
 
 /**
  * Create new collection of assets from a specific brand.

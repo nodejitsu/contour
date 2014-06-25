@@ -48,7 +48,7 @@ describe('Contour', function () {
     });
 
     it('exposes Pagelets by file names', function () {
-      var pagelets = fs.readdirSync('assets');
+      var pagelets = fs.readdirSync('pagelets');
 
       pagelets.forEach(function checkFunction(file) {
         if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;

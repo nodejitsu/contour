@@ -5,7 +5,7 @@ describe('Pagelet', function () {
     , expect = common.expect
     , sinon = common.sinon;
 
-  var Pagelet = require('../../assets/pagelet')
+  var Pagelet = require('../../pagelets/pagelet')
     , pagelet;
 
   beforeEach(function () {
