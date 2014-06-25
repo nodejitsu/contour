@@ -680,7 +680,7 @@ flexibility. Scripts should be included in the projects' build file manually.
 #### ANCHOR
 
 To make the normal anchor hyperlink behaviour scrollable include the
-`/assets/js/anchor.js` script in the JS and add the attribute `data-scroll` to
+`/pagelets/js/anchor.js` script in the JS and add the attribute `data-scroll` to
 the anchor.
 
 ```
