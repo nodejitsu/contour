@@ -6,7 +6,8 @@
 require('./pagelet').extend({
   view: '{{brand}}/button/view.hbs',
   dependencies: [
-    '{{brand}}/buttons.styl'
+    '{{brand}}/buttons.styl',
+    '{{brand}}/icons.styl'
   ],
 
   //
@@ -17,9 +18,18 @@ require('./pagelet').extend({
       class: 'btn',
       text: 'Submit'
     },
+    signup: {
+      class: 'btn sign',
+      text: '<s class="ss-icon ss-uploadcloud"></s> Sign up',
+      href: '/signup'
+    },
     action: {
       class: 'action',
       text: 'Call to action'
+    },
+    flat: {
+      class: 'action flat',
+      test: 'Flat, shadowless call to action'
     },
     login: {
       class: 'action',
@@ -55,6 +65,7 @@ require('./pagelet').extend({
 
     this.data.use = collection[type].class;
     this.data.text = this.data.text || collection[type].text;
+    this.data.href = this.data.href || collection[type].href;
 
     return this;
   }

@@ -43,6 +43,13 @@
     padding: 10px
     font-size: 16px
 
+.btn.sign
+  height: 32px
+
+  s
+    float: left
+    margin: 1px 5px 0 0
+
 .btn-icon
   background-color: $btn-icon-bg-bottom
   background-image: linear-gradient(top, $btn-icon-bg-top, $btn-icon-bg-bottom)
@@ -87,3 +94,11 @@
 
   &.standalone
     margin: 30px 0 20px
+
+  &.flat
+    box-shadow: none
+    text-shadow: none
+
+    &:hover
+      background-image: linear-gradient(top, $btn-action-bg-top 10%, lighten($btn-action-bg-top, 2%))
+      box-shadow: none

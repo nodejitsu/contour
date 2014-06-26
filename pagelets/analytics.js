@@ -64,7 +64,7 @@ require('./pagelet').extend({
   },
 
   /**
-   * Called after Pagelet construction, register handlebar helpers.
+   * Called after Pagelet construction, queue client side JS.
    *
    * @api private
    */

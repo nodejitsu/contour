@@ -21,5 +21,15 @@ require('./pagelet').extend({
     href: '#',
     class: '',
     text: 'I scroll down, I hate jumping'
+  },
+
+  /**
+   * Called after Pagelet construction, queue client side JS.
+   *
+   * @api private
+   */
+  initialize: function initialize() {
+    this.queue.enlist('loader', { apps: [ 'anchor' ] });
+    return this.define();
   }
 }).on(module);
