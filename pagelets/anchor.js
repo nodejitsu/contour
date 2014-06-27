@@ -30,6 +30,6 @@ require('./pagelet').extend({
    */
   initialize: function initialize() {
     this.queue.enlist('loader', { apps: [ 'anchor' ] });
-    return this.define();
+    return this;
   }
 }).on(module);

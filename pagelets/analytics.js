@@ -70,6 +70,6 @@ require('./pagelet').extend({
    */
   initialize: function initialize() {
     this.queue.enlist('loader', { apps: [ 'analytics' ] });
-    return this.define();
+    return this;
   }
 }).on(module);
