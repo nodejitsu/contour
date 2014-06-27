@@ -35,7 +35,7 @@ $height = 96px
         border-left: none
         margin-left: 50px
 
-      &:not(.login):not(.mobile):not(.sign)
+      &:not(.loginout):not(.mobile):not(.sign)
         height: $height - 1 // substract 1px for the bottom border
         float: left
         line-height: $height
@@ -44,7 +44,7 @@ $height = 96px
       background-position: 0 10px
 
     .sign
-    .login
+    .loginout
       height: 28px
       margin-top: 20px
       line-height: 18px
@@ -90,13 +90,13 @@ $height = 96px
 
     // Make the menu items the same height as the bar, so we have bigger click area
     // except for the login button as that will deform the button class it uses
-    &:not(.login):not(.mobile):not(.sign)
+    &:not(.loginout):not(.mobile):not(.sign)
       height: $height - 1 // substract 1px for the bottom border
       float: left
       line-height: $height
 
     // Sign up button should have a little margin towards the login button
-    &:not(.login):not(.mobile)
+    &:not(.loginout):not(.mobile)
       margin-right: 5px
 
     &:nth-child(3)
@@ -105,14 +105,14 @@ $height = 96px
     &:hover
       color: $link-hover
 
-  h1 a:not(.login):not(.mobile):not(.sign)
+  h1 a:not(.loginout):not(.mobile):not(.sign)
     height: $height - 3
 
   .mobile
     display: none
 
   .sign
-  .login
+  .loginout
     height: 32px
     margin-top: 30px
     padding: 5px 10px 2px
@@ -123,22 +123,22 @@ $height = 96px
 
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
   .navigation
-    a.login
+    a.loginout
       margin-right: 100px
 
-    a:not(.mobile):not(.logo):not(.login):not(.sign)
+    a:not(.mobile):not(.logo):not(.loginout):not(.sign)
       padding: 0 8px
 
 @media handheld, only screen and (max-width: 1120px) and (min-width: 767px)
   .navigation
-    a:not(.mobile):not(.logo):not(.login):not(.sign)
+    a:not(.mobile):not(.logo):not(.loginout):not(.sign)
       font-size: 12px
 
       &.active
         line-height: 95px
 
     a.sign
-    a.login
+    a.loginout
       font-size: 10px
       padding-left: 3px
       padding-right: 3px
@@ -148,7 +148,7 @@ $height = 96px
 
 @media handheld, only screen and (max-width: 910px) and (min-width: 767px)
   .navigation
-    a.login
+    a.loginout
       margin-right: 0px
 
 @media handheld, only screen and (max-width: 767px)
@@ -188,7 +188,7 @@ $height = 96px
       &:nth-child(3)
         border-left: none
 
-      &:not(.login):not(.sign)
+      &:not(.loginout):not(.sign)
         border-bottom: 1px solid $divider
         height: 59px
         float: none
@@ -196,7 +196,7 @@ $height = 96px
         margin: 0 -20px
 
     a.sign
-    a.login
+    a.loginout
       width: 44%
       margin: 10px
 

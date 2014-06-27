@@ -15,7 +15,8 @@ require('./pagelet').extend({
   //
   dependencies: [
     '../node_modules/cortex.js/dist/cortex.dev.js',
-    '{{brand}}/form.styl'
+    '{{brand}}/form.styl',
+    '{{brand}}/modal.styl'
   ],
 
   pagelets: {
@@ -24,12 +25,5 @@ require('./pagelet').extend({
     error: alert.extend({ data: { type: 'error', class: 'error' }}),
     notice: alert.extend({ data: { type: 'notice', class: 'error gone' }}),
     success: alert.extend({ data: { type: 'success', class: 'success' }})
-  },
-
-  //
-  // Default data for the navigation, can be changed by using `set`.
-  //
-  defaults: {
-    logout: false
   }
 }).on(module);

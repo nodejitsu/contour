@@ -21,6 +21,14 @@ module.exports = require('./pagelet').extend({
   //
   pagelets: {
     login: require('./login'),
+    loginout: require('./button').extend({
+      data: {
+        href: '#',
+        class: 'loginout login right',
+        text: '<s class="ss-icon ss-lock" role="presentation"></s> Login',
+        title: 'Login with your credentials'
+      }
+    }),
     signup: require('./button').extend({
       data: {
         href: '/signup',
@@ -35,6 +43,7 @@ module.exports = require('./pagelet').extend({
   //
   defaults: {
     base: 'paas',
+    loggedin: false,
     navigation: [
       { name: 'Cloud', href: '/paas/' },
       { name: 'Enterprise', href: '/enterprise/' },
@@ -42,6 +51,27 @@ module.exports = require('./pagelet').extend({
       { name: 'Support', href: '/support/' },
       { name: 'Company', href: '/company/' }
     ]
+  },
+
+  /**
+   * Set proper key and library based on the data.type.
+   *
+   * @return {Pagelet}
+   * @api private
+   */
+  define: function define() {
+    if (this.data.loggedin || this.defaults.loggedin)  {
+      this.pagelets.loginout = this.pagelets.loginout.extend({
+        data: {
+          href: '/logout',
+          class: 'loginout right',
+          text: '<s class="ss-icon ss-unlock" role="presentation"></s> Logout',
+          title: 'Logout'
+        }
+      });
+    }
+
+    return this;
   },
 
   /**

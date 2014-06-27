@@ -104,6 +104,7 @@ module.exports = pagelet = Pagelet.extend({
   constructor: function constructor() {
     pagelet.__super__.constructor.apply(this);
 
+    this.define();
     this.initialize();
     return this;
   },
@@ -264,6 +265,6 @@ module.exports = pagelet = Pagelet.extend({
    * @api public
    */
   initialize: function initialize() {
-    return this.define();
+    return this;
   }
 });

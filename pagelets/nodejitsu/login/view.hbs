@@ -1,18 +1,6 @@
-<a href="#" class="login right btn" title="Login with your credentials">
-  <s class="ss-lock" role="presentation"></s>
-  Login
-</a>
-
-{{#logout}}
-<a href="/logout" class="login right btn" title="Logout">
-  <s class="ss-unlock" role="presentation"></s>
-  Logout
-</a>
-{{/logout}}
-
 <div class="lightbox gone"></div>
 
-<section class="modal box gone">
+<section class="login modal box gone">
   <h3>
     Gimme your credentials
     <s class="spinner right gone"></s>
@@ -33,7 +21,7 @@
       <input name="password" placeholder="password" type="password" />
     </label>
 
-    <section data-pagelet="submit"></section>
+    <span data-pagelet="submit"></span>
 
     <a href="#" class="forgotten">Forgot password?</a>
   </form>
