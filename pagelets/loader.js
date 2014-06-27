@@ -33,10 +33,12 @@ require('./pagelet').extend({
    * @api private
    */
   define: function define() {
-    var data = this.data;
+    var data = this.data
+      , load = data.load || this.defaults.load
+      , plain = data.plain || this.defaults.plain;
 
-    if ('custom' in data) this.merge(data.load, data.custom);
-    if ('external' in data) this.merge(data.plain, data.external);
+    if ('custom' in data) data.load = load.concat(data.custom);
+    if ('external' in data) data.plain = plain.concat(data.external);
 
     return this;
   }
