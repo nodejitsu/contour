@@ -138,9 +138,6 @@ $height = 96px
     a:not(.mobile):not(.logo):not(.loginout):not(.sign)
       font-size: 12px
 
-      &.active
-        line-height: 95px
-
     a.sign
     a.loginout
       font-size: 10px
@@ -202,7 +199,21 @@ $height = 96px
     a.sign
     a.loginout
       width: 44%
-      margin: 10px
+      margin: 20px 10px
+
+    &.alternative
+      border-bottom: 1px solid $divider
+      box-shadow: 0 -3px 10px $nav-box-shadow, inset 0 0 1px $nav-box-shadow
+      height: 70px
+
+      h1
+        height: 70px
+
+      a
+        color: $base-color
+
+      .mobile
+        top: 15px
 
   // by using :target we can change the menu's height, we need to use a fixed height
   // in order for it to animate nicely
