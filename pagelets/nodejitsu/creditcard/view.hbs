@@ -12,7 +12,7 @@
     <input name="cvv" placeholder="•••" maxlength="4" value="{{cvv}}"{{#if required}} required{{/if}}>
   </label>
 
-  <section class="eightcol">
+  <section class="eightcol expiration">
     <label class="twelvecol last" for="expiration_month">Expiration</label>
     <select name="expiration_month" id="expiration_month" class="sixcol"{{#if required}} required{{/if}}>
       {{#creditcard-month}}
