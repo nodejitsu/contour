@@ -32,7 +32,7 @@ module.exports = require('./pagelet').extend({
     signup: require('./button').extend({
       data: {
         href: '/signup',
-        class: 'right sign',
+        class: 'right action sign',
         text: '<s class="ss-icon ss-uploadcloud"></s> sign up'
       }
     })
