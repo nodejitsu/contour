@@ -7,17 +7,17 @@
     {{/logo}}
 
     <div class="sixcol nav">
-    {{#navigation}}
+    {{#footer-column}}
       <dl class="threecol">
-        {{#links}}
+        {{#each links}}
         <dd>
           <a href="{{href}}" {{#target}}target="{{.}}"{{/target}}>
             {{text}}
           </a>
         </dd>
-        {{/links}}
+        {{/each}}
       </dl>
-    {{/navigation}}
+    {{/footer-column}}
     </div>
 
     <div class="threecol last social">
