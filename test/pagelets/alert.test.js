@@ -27,7 +27,7 @@ describe('Pagelet - Alert', function () {
     expect(alert.defaults).to.have.property('closable', false);
   });
 
-  it('render will use data for the template', function (done) {
+  it('render will use defaults and data for the template', function (done) {
     Alert.brand().set({ text: 'Very fancy alert' }).render(function (err, content) {
       expect(err).to.equal(undefined);
       expect(content).to.include('pipe.arrive');

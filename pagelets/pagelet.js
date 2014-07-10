@@ -86,7 +86,7 @@ Pagelet.set = function set(data) {
   if ('object' !== typeof data) return this;
 
   return new (this.extend({
-    data: this.prototype.mixin(data, this.prototype.data)
+    data: this.prototype.mixin({}, this.prototype.data, data)
   }));
 };
 
