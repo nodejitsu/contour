@@ -104,7 +104,6 @@ module.exports = pagelet = Pagelet.extend({
   constructor: function constructor() {
     pagelet.__super__.constructor.apply(this);
 
-    this.define();
     this.initialize();
     return this;
   },
@@ -149,6 +148,7 @@ module.exports = pagelet = Pagelet.extend({
    * @api private
    */
   get: function get(done) {
+    this.define();
     done(undefined, this.mixin({}, this.defaults, this.data, this.merge(
       this.data,
       this.queue.discharge(this.name)

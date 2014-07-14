@@ -25,11 +25,6 @@ function Assets(brand, mode) {
     , self = this;
 
   //
-  // Maintain stack of loaded pagelets.
-  //
-  readable('stack', {});
-
-  //
   // Default framework to use with reference to the path to core.styl.
   //
   readable('brand', brand = brand || 'nodejitsu');
@@ -40,15 +35,12 @@ function Assets(brand, mode) {
   fs.readdirSync(assets).forEach(function include(file) {
     if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
 
-    var name = path.basename(file, '.js');
-    self.stack[name] = require(path.join(assets, file)).brand(brand, mode === 'standalone');
-
     //
     // Create getter for each pagelet in assets.
     //
-    enumerable(name, {
+    enumerable(path.basename(file, '.js'), {
       enumerable: true,
-      value: self.stack[name]
+      value: require(path.join(assets, file)).brand(brand, mode === 'standalone')
     }, true);
   });
 }
