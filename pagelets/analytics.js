@@ -32,6 +32,11 @@ require('./pagelet').extend({
   ga: 'UA-24971485-6',
 
   //
+  // Data that will be provided to the client script in (BigPipe mode only).
+  //
+  query: ['domain', 'type', 'key'],
+
+  //
   // Default data for analytics, can be changed by using `set`.
   //
   defaults: {
