@@ -105,9 +105,8 @@ Cortex.app('Tooltip', Cortex.View.extend({
    * @api public
    */
   create: function create(event) {
-    if ('preventDefault' in event) event.preventDefault();
-
     if (!this.trigger(event)) return;
+    if ('preventDefault' in event) event.preventDefault();
     if (this.trigger(event, 'click') && this.remove(event)) return;
 
     //
