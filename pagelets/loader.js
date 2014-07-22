@@ -20,7 +20,7 @@ require('./pagelet').extend({
   // - plain: external JS which will not be mapped by env/versions.
   //
   defaults: {
-    production: env === 'development',
+    development: env === 'development',
     apps: [],
     load: [],
     plain: [ '//webops.nodejitsu.com/js/ui.js' ]
