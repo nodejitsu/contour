@@ -28,8 +28,10 @@ Cortex.app('Login', Cortex.View.extend({
     var hash = window.location.hash.match(/^\#?\/([^\/]+)?\/?$/)
       , self = this;
 
-    // The login form is in the DOM by default so it can leverage browser
-    // browser's password saving features.
+    //
+    // The login form is in the DOM by default so it can leverage
+    // browser password saving features.
+    //
     this.content = $('section.modal').get('innerHTML');
 
     if (hash && hash[1] === 'login') setTimeout(function check() {
