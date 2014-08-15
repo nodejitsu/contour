@@ -50,7 +50,7 @@ require('./pagelet').extend({
       {
         name: 'Resources',
         links: [
-          { text: 'Service Status', target: '_blank', href: 'https://status.nodejitsu.com/' }
+          { text: 'Service Status', target: '_blank', href: 'http://status.nodejitsu.com/' }
         ]
       }
     ]
