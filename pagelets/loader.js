@@ -25,19 +25,4 @@ require('./pagelet').extend({
     load: [],
     plain: [ '//webops.nodejitsu.com/js/ui.js' ]
   },
-
-  /**
-   * Merge the data of custom and external to load and plain.
-   *
-   * @returns {Pagelet}
-   * @api private
-   */
-  define: function define() {
-    var data = this.data
-      , load = data.load || this.defaults.load
-      , plain = data.plain || this.defaults.plain;
-
-    if ('custom' in data) data.load = load.concat(data.custom);
-    return this;
-  }
 }).on(module);
