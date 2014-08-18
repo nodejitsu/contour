@@ -38,8 +38,6 @@ require('./pagelet').extend({
       , plain = data.plain || this.defaults.plain;
 
     if ('custom' in data) data.load = load.concat(data.custom);
-    if ('external' in data) data.plain = plain.concat(data.external);
-
     return this;
   }
 }).on(module);
