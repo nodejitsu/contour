@@ -95,20 +95,6 @@ Pagelet.set = function set(data) {
 //
 module.exports = pagelet = Pagelet.extend({
   /**
-   * Extend the default constructor to always call `initialize` by default.
-   *
-   * @Constructor
-   * @return {Pagelet}
-   * @api private
-   */
-  constructor: function constructor() {
-    pagelet.__super__.constructor.apply(this);
-
-    this.initialize();
-    return this;
-  },
-
-  /**
    * Set empty name, such that recursive Pagelets will have their name properly set
    * to the key of the object that references them.
    *
@@ -185,6 +171,10 @@ module.exports = pagelet = Pagelet.extend({
       , data = this.data
       , $;
 
+    //
+    // Initialize before returning inject functionality.
+    //
+    this.initialize();
     return function inject(fn) {
       self.render(function parent(error, base) {
         if (error) return fn(error);

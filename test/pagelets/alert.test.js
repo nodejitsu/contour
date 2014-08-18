@@ -39,7 +39,7 @@ describe('Pagelet - Alert', function () {
   });
 
   it('close functionality can be added which will enlist client-side JS', function (done) {
-    Alert.brand().set({ closable: true }).render(function (err, content) {
+    Alert.brand().set({ closable: true }).inject(function (err, content) {
       expect(err).to.equal(undefined);
       expect(content).to.include('<a href="#close" class="close">');
       expect(content).to.include('<s class="ss-icon ss-delete">');

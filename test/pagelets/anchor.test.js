@@ -40,7 +40,7 @@ describe('Pagelet - Anchor', function () {
   });
 
   it('will enlist the client-side JS', function (done) {
-    Anchor.brand().set({}).render(function (err, content) {
+    Anchor.brand().set({}).inject(function (err, content) {
       expect(err).to.equal(undefined);
       expect(content).to.include('<a href="#" class=""');
       expect(anchor.queue.store).to.have.property('loader');
