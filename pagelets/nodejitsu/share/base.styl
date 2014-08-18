@@ -6,15 +6,17 @@
   &.vertical
     & > div
     & > iframe
-      display: inline-block
-      margin: 1em 0 1em 1em
+      display: block
+      margin: 0 0 1em 0
+
+      &:last-child
+        margin-bottom: 0
 
   &.horizontal
     & > div
     & > iframe
       float: left
+      margin: 0 1em 0 0
 
-  &.vertical
-    & > div
-    & > iframe
-      display: block
+      &:last-child
+        margin-right: 0

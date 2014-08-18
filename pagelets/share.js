@@ -11,23 +11,36 @@ module.exports = require('./pagelet').extend({
   css: '{{brand}}/share/base.styl',
 
   //
+  // Regular load scripts for each share button.
+  //
+  js: [
+    '{{brand}}/share/hackernews.js',
+    '{{brand}}/share/facebook.js',
+    '{{brand}}/share/twitter.js'
+  ],
+
+  //
   // Default data for the navigation, can be changed by using `set`.
   //
   defaults: {
     layout: 'horizontal',
     domain: 'https://www.nodejitsu.com',
-    facebook: true,
-    hackernews: true,
-    twitter: true
+    title: 'Node.js hosting, cloud products and services | Nodejitsu Inc.',
+    via: 'nodejitsu',
+    load: {
+      facebook: true,
+      hackernews: true,
+      twitter: true
+    }
   },
 
   //
-  // List of reference to different share button scripts.
+  // References to the external share button scripts.
   //
   href: {
     twitter: '//platform.twitter.com/widgets.js',
     facebook: '//connect.facebook.net/en_US/all.js#xfbml=1',
-    hackernews: '//hnbutton.appspot.com/static/hn.min.js'
+    hackernews: '//hn-button.herokuapp.com/hn-button.js'
   },
 
   /**
@@ -38,19 +51,20 @@ module.exports = require('./pagelet').extend({
    */
   define: function define() {
     var defaults = this.defaults
-      , href = this.href
       , data = this.data
+      , load = data.load || defaults.load
+      , href = this.href
       , def = [];
 
     //
     // Check what social media to load, if none provided load defaults in `load`.
     //
-    Object.keys(href).forEach(function checkDefaults(key) {
-      var load = data[key] || defaults[key];
-      if (load && !~def.indexOf(href[key])) def.push(href[key]);
+    Object.keys(load).forEach(function checkLoad(key) {
+      if (!load[key] || !(key in href)) return;
+      def.push(href[key]);
     });
 
-    this.queue.enlist('loader', { external: def });
+    this.queue.enlist('loader', { plain: def });
     return this;
   }
 }).on(module);
