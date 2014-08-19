@@ -23,7 +23,8 @@ var assets = path.join(__dirname, 'pagelets');
 function Assets(brand, mode) {
   var readable = Assets.predefine(this, Assets.predefine.READABLE)
     , enumerable = Assets.predefine(this, { configurable: false })
-    , self = this;
+    , self = this
+    , files;
 
   //
   // Default framework to use with reference to the path to core.styl.
@@ -33,20 +34,29 @@ function Assets(brand, mode) {
   //
   // Load all assets of the branch.
   //
-  fs.readdir(assets, function (error, files) {
-    if(error) return done();
+  (files = fs.readdirSync(assets)).forEach(function include(file) {
+    var i = 0;
 
-    async.each(files, function include(file, next) {
-      if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
+    if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
 
-      //
-      // Create getter for each pagelet in assets.
-      //
-      enumerable(path.basename(file, '.js'), {
-        enumerable: true,
-        value: require(path.join(assets, file)).brand(brand, mode === 'standalone', next)
-      }, true);
-    }, self.emits('optimized'));
+    /**
+     * Callback to emit optimized event after all Pagelets have been optimized.
+     *
+     * @param {Error} error
+     * @api private
+     */
+    function next(error) {
+      if (error) return self.emit('error', error);
+      if (++i === files.length) self.emit('optimized');
+    }
+
+    //
+    // Create getter for each pagelet in assets.
+    //
+    enumerable(path.basename(file, '.js'), {
+      enumerable: true,
+      value: require(path.join(assets, file)).brand(brand, mode === 'standalone', next)
+    }, true);
   });
 }
 
