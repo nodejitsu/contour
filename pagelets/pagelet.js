@@ -27,10 +27,11 @@ function use(brand) {
  *
  * @param {String} brand
  * @param {Boolean} standalone, force pagelet to standalone mode
+ * @param {Function} done Completion callback.
  * @returns {Pagelet} fluent interface
  * @api private
  */
-Pagelet.brand = function define(brand, standalone) {
+Pagelet.brand = function define(brand, standalone, done) {
   var prototype = this.prototype
     , brander = use(brand);
 
@@ -55,15 +56,17 @@ Pagelet.brand = function define(brand, standalone) {
     //
     // Use nodejitsu as default brand.
     //
-    view: brander(prototype.view),
+    view: brander(prototype.view)
+  }).optimize({ transform: function transform(Pagelet) {
+    prototype = Pagelet.prototype;
 
     //
     // Replace paths in CSS, JS and dependencies.
     //
-    css: prototype.css ? prototype.css.map(brander) : [],
-    js: prototype.js ? prototype.js.map(brander) : [],
-    dependencies: prototype.dependencies ? prototype.dependencies.map(brander) : []
-  }).optimize();
+    prototype.css = prototype.css ? prototype.css.map(brander) : [];
+    prototype.js = prototype.js ? prototype.js.map(brander) : [];
+    prototype.dependencies = prototype.dependencies ? prototype.dependencies.map(brander) : [];
+  }}, done);
 };
 
 /**

@@ -23,13 +23,23 @@ var Assets = require('./assets')
  * @api public
  */
 function Contour(options) {
+  var contour = this
+    , assets;
+
   this.fuse();
 
   //
   // Add the pagelets of the required framework.
   //
   options = options || {};
-  this.mixin(this, new Assets(options.brand, options.mode || 'bigpipe'));
+
+  //
+  // Load and optimize the pagelets, extend contour but acknowledge external
+  // listeners when all pagelets have been fully initialized.
+  //
+  assets = new Assets(options.brand, options.mode || 'bigpipe');
+  assets.on('optimized', this.emits('init'));
+  this.mixin(this, assets);
 }
 
 //

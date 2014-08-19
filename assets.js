@@ -4,6 +4,7 @@
 // Required modules.
 //
 var fuse = require('fusing')
+  , async = require('async')
   , path = require('path')
   , fs = require('fs');
 
@@ -16,7 +17,7 @@ var assets = path.join(__dirname, 'pagelets');
  * Create new collection of assets from a specific brand.
  *
  * @param {String} brand nodejitsu by default.
- * @param {String} mode standalone || bigpipe, defaults to bigpipe
+ * @param {String} mode standalone || bigpipe, defaults to bigpipe.
  * @api public
  */
 function Assets(brand, mode) {
@@ -32,20 +33,24 @@ function Assets(brand, mode) {
   //
   // Load all assets of the branch.
   //
-  fs.readdirSync(assets).forEach(function include(file) {
-    if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
+  fs.readdir(assets, function (error, files) {
+    if(error) return done();
 
-    //
-    // Create getter for each pagelet in assets.
-    //
-    enumerable(path.basename(file, '.js'), {
-      enumerable: true,
-      value: require(path.join(assets, file)).brand(brand, mode === 'standalone')
-    }, true);
+    async.each(files, function include(file, next) {
+      if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
+
+      //
+      // Create getter for each pagelet in assets.
+      //
+      enumerable(path.basename(file, '.js'), {
+        enumerable: true,
+        value: require(path.join(assets, file)).brand(brand, mode === 'standalone', next)
+      }, true);
+    }, self.emits('optimized'));
   });
 }
 
 //
 // Expose the collection.
 //
-module.exports = fuse(Assets);
+module.exports = fuse(Assets, require('events').EventEmitter);
