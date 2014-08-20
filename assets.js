@@ -24,7 +24,19 @@ function Assets(brand, mode) {
   var readable = Assets.predefine(this, Assets.predefine.READABLE)
     , enumerable = Assets.predefine(this, { configurable: false })
     , self = this
+    , i = 0
     , files;
+
+  /**
+   * Callback to emit optimized event after all Pagelets have been optimized.
+   *
+   * @param {Error} error
+   * @api private
+   */
+  function next(error) {
+    if (error) return self.emit('error', error);
+    if (++i === files.length) self.emit('optimized');
+  }
 
   //
   // Default framework to use with reference to the path to core.styl.
@@ -35,20 +47,7 @@ function Assets(brand, mode) {
   // Load all assets of the branch.
   //
   (files = fs.readdirSync(assets)).forEach(function include(file) {
-    var i = 0;
-
     if ('.js' !== path.extname(file) || ~file.indexOf('pagelet')) return;
-
-    /**
-     * Callback to emit optimized event after all Pagelets have been optimized.
-     *
-     * @param {Error} error
-     * @api private
-     */
-    function next(error) {
-      if (error) return self.emit('error', error);
-      if (++i === files.length) self.emit('optimized');
-    }
 
     //
     // Create getter for each pagelet in assets.
