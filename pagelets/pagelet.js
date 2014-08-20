@@ -36,29 +36,21 @@ Pagelet.brand = function define(brand, standalone, done) {
     , brander = use(brand);
 
   //
+  // Set the fragment such that only the template is rendered.
+  //
+  prototype.fragment = standalone ? '{pagelet:template}' : prototype.fragment;
+
+  //
+  // Use nodejitsu as default brand.
+  //
+  prototype.view = brander(prototype.view);
+
+  //
   // Traverse the pagelet to initialize any child pagelets.
   //
-  this.traverse(this.name || this.prototype.name);
-  return this.extend({
-    //
-    // Run each of the child pagelets through this special branding function as well.
-    //
-    pagelets: Object.keys(prototype.pagelets || {}).reduce(function reduce(memo, name) {
-      memo[name] = prototype.pagelets[name].brand(brand, standalone);
-      return memo;
-    }, {}),
-
-    //
-    // Set the fragment such that only the template is rendered.
-    //
-    fragment: standalone ? '{pagelet:template}' : prototype.fragment,
-
-    //
-    // Use nodejitsu as default brand.
-    //
-    view: brander(prototype.view)
-  }).optimize({ transform: function transform(Pagelet) {
-    prototype = Pagelet.prototype;
+  this.traverse(this.name || prototype.name);
+  return this.optimize({ transform: function transform(Pagelet, fn) {
+    var prototype = Pagelet.prototype;
 
     //
     // Replace paths in CSS, JS and dependencies.
@@ -66,6 +58,14 @@ Pagelet.brand = function define(brand, standalone, done) {
     prototype.css = prototype.css ? prototype.css.map(brander) : [];
     prototype.js = prototype.js ? prototype.js.map(brander) : [];
     prototype.dependencies = prototype.dependencies ? prototype.dependencies.map(brander) : [];
+
+    //
+    // Run each of the child pagelets through this special branding function as well.
+    //
+    if (!prototype.pagelets) return fn();
+    async.each(Object.keys(prototype.pagelets), function reduce(name, next) {
+      prototype.pagelets[name] = prototype.pagelets[name].brand(brand, standalone, next);
+    }, fn);
   }}, done);
 };
 
