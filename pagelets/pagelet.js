@@ -50,14 +50,20 @@ Pagelet.brand = function define(brand, standalone, done) {
   //
   this.traverse(this.name || prototype.name);
   return this.optimize({ transform: function transform(Pagelet, fn) {
-    var prototype = Pagelet.prototype;
-
     //
     // Replace paths in CSS, JS and dependencies.
     //
-    prototype.css = prototype.css ? prototype.css.map(brander) : [];
-    prototype.js = prototype.js ? prototype.js.map(brander) : [];
-    prototype.dependencies = prototype.dependencies ? prototype.dependencies.map(brander) : [];
+    if (Array.isArray(prototype.css)) {
+      prototype.css = prototype.css.map(brander);
+    }
+
+    if (Array.isArray(prototype.js)) {
+      prototype.js = prototype.js.map(brander);
+    }
+
+    if (Array.isArray(prototype.dependencies)) {
+      prototype.dependencies = prototype.dependencies.map(brander);
+    }
 
     //
     // Run each of the child pagelets through this special branding function as well.
