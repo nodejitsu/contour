@@ -52,9 +52,10 @@ function Assets(brand, mode) {
     //
     // Create getter for each pagelet in assets.
     //
+    var Pagelet = require(path.join(assets, file));
     enumerable(path.basename(file, '.js'), {
       enumerable: true,
-      value: require(path.join(assets, file)).brand(brand, mode === 'standalone', next)
+      value: Pagelet.brand(self.brand, mode === 'standalone', next)
     }, true);
   });
 }
