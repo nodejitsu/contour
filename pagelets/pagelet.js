@@ -113,6 +113,15 @@ module.exports = pagelet = Pagelet.extend({
   name: '',
 
   /**
+   * REMOVE IN FUTURE: temporary fix for bigpipe 0.8, conditional expects
+   * a `page.req` object to be present.
+   *
+   * @type {Object}
+   * @api public
+   */
+  page: { req: null },
+
+  /**
    * Reference to the queue singleton.
    *
    * @type {Queue}
