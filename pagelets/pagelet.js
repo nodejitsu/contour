@@ -27,43 +27,52 @@ function use(brand) {
  *
  * @param {String} brand
  * @param {Boolean} standalone, force pagelet to standalone mode
+ * @param {Function} done Completion callback.
  * @returns {Pagelet} fluent interface
  * @api private
  */
-Pagelet.brand = function define(brand, standalone) {
+Pagelet.brand = function define(brand, standalone, done) {
   var prototype = this.prototype
     , brander = use(brand);
 
   //
+  // Set the fragment such that only the template is rendered.
+  //
+  prototype.fragment = standalone ? '{pagelet:template}' : prototype.fragment;
+
+  //
+  // Use nodejitsu as default brand.
+  //
+  prototype.view = brander(prototype.view);
+
+  //
   // Traverse the pagelet to initialize any child pagelets.
   //
-  this.traverse(this.name || this.prototype.name);
-  return this.extend({
-    //
-    // Run each of the child pagelets through this special branding function as well.
-    //
-    pagelets: Object.keys(prototype.pagelets || {}).reduce(function reduce(memo, name) {
-      memo[name] = prototype.pagelets[name].brand(brand, standalone);
-      return memo;
-    }, {}),
-
-    //
-    // Set the fragment such that only the template is rendered.
-    //
-    fragment: standalone ? '{pagelet:template}' : prototype.fragment,
-
-    //
-    // Use nodejitsu as default brand.
-    //
-    view: brander(prototype.view),
-
+  this.traverse(this.name || prototype.name);
+  return this.optimize({ transform: function transform(Pagelet, fn) {
     //
     // Replace paths in CSS, JS and dependencies.
     //
-    css: prototype.css ? prototype.css.map(brander) : [],
-    js: prototype.js ? prototype.js.map(brander) : [],
-    dependencies: prototype.dependencies ? prototype.dependencies.map(brander) : []
-  }).optimize();
+    if (Array.isArray(prototype.css)) {
+      prototype.css = prototype.css.map(brander);
+    }
+
+    if (Array.isArray(prototype.js)) {
+      prototype.js = prototype.js.map(brander);
+    }
+
+    if (Array.isArray(prototype.dependencies)) {
+      prototype.dependencies = prototype.dependencies.map(brander);
+    }
+
+    //
+    // Run each of the child pagelets through this special branding function as well.
+    //
+    if (!prototype.pagelets) return fn();
+    async.each(Object.keys(prototype.pagelets), function reduce(name, next) {
+      prototype.pagelets[name] = prototype.pagelets[name].brand(brand, standalone, next);
+    }, fn);
+  }}, done);
 };
 
 /**
@@ -102,6 +111,15 @@ module.exports = pagelet = Pagelet.extend({
    * @api public
    */
   name: '',
+
+  /**
+   * REMOVE IN FUTURE: temporary fix for bigpipe 0.8, conditional expects
+   * a `page.req` object to be present.
+   *
+   * @type {Object}
+   * @api public
+   */
+  page: { req: null },
 
   /**
    * Reference to the queue singleton.
