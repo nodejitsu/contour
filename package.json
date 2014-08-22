@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
@@ -36,10 +36,8 @@
     "istanbul": "0.3.x",
     "mocha": "1.21.x",
     "mocha-lcov-reporter": "0.0.x",
-    "phantomjs": "1.9.x",
     "pre-commit": "0.0.x",
     "sinon": "1.10.x",
-    "sinon-chai": "2.5.x",
-    "zuul": "1.10.x"
+    "sinon-chai": "2.5.x"
   }
 }
