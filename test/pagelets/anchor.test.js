@@ -16,7 +16,7 @@ describe('Pagelet - Anchor', function () {
     anchor = null;
   });
 
-  it('is exposed as constructable and extenable Pagelet', function () {
+  it('is exposed as constructible and extendable Pagelet', function () {
     expect(Anchor).to.be.a('function');
     expect(Anchor.extend).to.be.a('function');
   });
