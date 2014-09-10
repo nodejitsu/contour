@@ -29,7 +29,7 @@ require('./pagelet').extend({
   // Default data for mailchimp mailing list form, can be changed by using `set`.
   //
   defaults: {
-    action: 'http://nodejitsu.us2.list-manage.com/subscribe/post',
+    action: '//nodejitsu.us2.list-manage.com/subscribe/post',
     u: 'e4a7e45f759ae0d449c3ba923',
     id: '31f76174d4'
   }
