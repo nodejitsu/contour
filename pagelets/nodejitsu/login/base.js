@@ -9,6 +9,12 @@
 Cortex.app('Login', Cortex.View.extend({
   selector: '[data-login]',
 
+  //
+  // Potential redirect location, can be set on the evoking element with
+  // an attributed named data-redirect.
+  //
+  redirect: null,
+
   /**
    * Delegate the events.
    *
@@ -54,6 +60,8 @@ Cortex.app('Login', Cortex.View.extend({
     Cortex.app('modal').off('done');
 
     var self = this;
+    self.redirect = $(e.element).get('data-redirect');
+
     if (!this.restore) this.restore = Cortex.app('modal').on('close', function () {
       // The modal is closed, make sure that we still have a login state
       // present or restore it with our cached content.
@@ -232,6 +240,13 @@ Cortex.app('Login', Cortex.View.extend({
     Cortex.app('modal')
       .render(template)
       .once('done', this.close.bind(this, name));
+
+    //
+    // Check if we need to create a hidden input field with a redirect directive.
+    //
+    if (this.redirect) {
+      $('.modal form input[name="redirect"]').set('value', this.redirect);
+    }
 
     return this;
   }
