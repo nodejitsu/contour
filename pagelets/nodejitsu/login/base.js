@@ -7,7 +7,7 @@
  * @api private
  */
 Cortex.app('Login', Cortex.View.extend({
-  selector: '.navigation .login',
+  selector: '[data-login]',
 
   /**
    * Delegate the events.

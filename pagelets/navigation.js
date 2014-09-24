@@ -26,7 +26,12 @@ module.exports = require('./pagelet').extend({
         href: '#',
         class: 'loginout login right',
         text: '<s class="ss-icon ss-lock" role="presentation"></s> Login',
-        title: 'Login with your credentials'
+        title: 'Login with your credentials',
+        attributes: {
+          'a.login': {
+            login: true
+          }
+        }
       }
     }),
     signup: require('./button').extend({
