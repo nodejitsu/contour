@@ -38,6 +38,7 @@ Cortex.app('Analytics', Cortex.View.extend({
       break;
 
       case 'segment':
+      default:
         window.analytics.load(this.key);
         window.analytics.page();
       break;
