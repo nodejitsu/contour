@@ -5,7 +5,7 @@
     </h1>
     <a href="#navigation" class="mobile btn ss-rows"></a>
 
-    {{#navigation-links}}
+    {{#navigation-links navigation}}
     <a href="{{href}}"{{target}}{{{active}}}>
       {{name}}
     </a>
@@ -14,5 +14,12 @@
     <section data-pagelet="loginout"></section>
     <section data-pagelet="signup"></section>
   </nav>
+</section>
+<section class="row subnavigation">
+  {{#navigation-links subnavigation}}
+  <a href="{{href}}"{{target}}{{{active}}}>
+    {{name}}
+  </a>
+  {{/navigation-links}}
 </section>
 <section data-pagelet="login"></section>

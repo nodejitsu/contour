@@ -88,11 +88,13 @@ module.exports = require('./pagelet').extend({
    * @return {String} generated template
    * @api private
    */
-  links: function links(options) {
-    var targets = ['self', 'blank', 'parent', 'top'],
-        base    = this.base;
+  links: function links(data, options) {
+    if (!data || !data.length) return;
 
-    return this.navigation.reduce(function reduce(menu, item) {
+    var targets = ['self', 'blank', 'parent', 'top'],
+        base = this.base;
+
+    return data.reduce(function reduce(menu, item) {
       item.target = item.target && ~targets.indexOf(item.target)
         ? ' target=_' + item.target
         : '';
