@@ -1,11 +1,11 @@
 <section class="navigation {{class}}" id="navigation">
+  <h1>
+    <a href="/" class="logo" title="Back to the homepage">Nodejitsu</a>
+  </h1>
   <nav class="row">
-    <h1>
-      <a href="/" class="logo" title="Back to the homepage">Nodejitsu</a>
-    </h1>
     <a href="#navigation" class="mobile btn ss-rows"></a>
 
-    {{#navigation-links navigation}}
+    {{#navigation-links navigation false}}
     <a href="{{href}}"{{target}}{{{active}}}>
       {{name}}
     </a>
@@ -15,11 +15,13 @@
     <section data-pagelet="signup"></section>
   </nav>
 </section>
-<section class="row subnavigation">
-  {{#navigation-links subnavigation}}
-  <a href="{{href}}"{{target}}{{{active}}}>
-    {{name}}
-  </a>
-  {{/navigation-links}}
+<section class="subnavigation">
+  <nav class="row">
+    {{#navigation-links subnavigation true}}
+    <a href="{{href}}"{{target}}{{{active}}}>
+      {{name}}
+    </a>
+    {{/navigation-links}}
+  </nav>
 </section>
 <section data-pagelet="login"></section>

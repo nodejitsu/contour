@@ -48,6 +48,7 @@ module.exports = require('./pagelet').extend({
   //
   defaults: {
     base: 'paas',
+    sub: '',
     loggedin: false,
     navigation: [
       { name: 'Cloud', href: '/paas/' },
@@ -85,22 +86,27 @@ module.exports = require('./pagelet').extend({
    * provided menu entry `base`.
    *
    * @param {Object} options
+   * @param {Boolean} page Current iteration over page or root of url
    * @return {String} generated template
    * @api private
    */
-  links: function links(data, options) {
+  links: function links(data, page, options) {
     if (!data || !data.length) return;
 
-    var targets = ['self', 'blank', 'parent', 'top'],
-        base = this.base;
+    var targets = ['self', 'blank', 'parent', 'top']
+      , navigation = this;
 
     return data.reduce(function reduce(menu, item) {
-      item.target = item.target && ~targets.indexOf(item.target)
-        ? ' target=_' + item.target
+      var url = item.href.split('/').filter(String)
+        , active = url.shift();
+
+      if (page) active = item.base || url.shift();
+      item.active = ~navigation[page ? 'page' : 'base'].indexOf(active)
+        ? ' class="active"'
         : '';
 
-      item.active = ~base.indexOf(item.base || item.href.split('/').filter(String).shift())
-        ? ' class="active"'
+      item.target = item.target && ~targets.indexOf(item.target)
+        ? ' target=_' + item.target
         : '';
 
       return menu + options.fn(item);
