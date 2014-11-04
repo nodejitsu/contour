@@ -15,6 +15,7 @@
     <section data-pagelet="signup"></section>
   </nav>
 </section>
+{{#if subnavigation}}
 <section class="subnavigation">
   <nav class="row">
     {{#navigation-links subnavigation true}}
@@ -24,4 +25,5 @@
     {{/navigation-links}}
   </nav>
 </section>
+{{/if}}
 <section data-pagelet="login"></section>
