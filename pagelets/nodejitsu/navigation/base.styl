@@ -1,4 +1,5 @@
 @import "../defaults"
+@import "../../base/mixins/arrow"
 
 // The navigation bar has a fixed height
 $height = 96px
@@ -6,6 +7,7 @@ $height = 96px
 .navigation
 .subnavigation
   border-bottom: 1px solid $divider
+  border-width: 1px 0
   margin: 0 -20px
   height: 48px
   position: relative
@@ -16,7 +18,6 @@ $height = 96px
 .navigation
   background-color: $hero-background
   background-image: linear-gradient(top, rgba(255, 255, 255, .4) 0%, transparent 100%);
-  border-bottom: 1px solid $divider
   box-shadow: 0 -3px 10px $nav-box-shadow, inset 0 0 1px $nav-box-shadow
   font-size: 16px
   font-weight: bold
@@ -30,6 +31,7 @@ $height = 96px
     height: $height
 
     .active
+      arrow('top', 50%, 6px, $active-background, $active-background, 1px, true)
       background: none
       border: none
 
@@ -39,15 +41,17 @@ $height = 96px
 
       &:nth-child(3)
         border-left: none
-        margin-left: 50px
 
       &:not(.loginout):not(.mobile):not(.sign)
-        height: $height - 1 // substract 1px for the bottom border
+        height: $height
         float: left
         line-height: $height
 
     .logo
       background-position: 0 -146px
+      position: absolute
+      left: 50%
+      margin-left: -750px
 
     .sign
     .loginout
@@ -56,11 +60,15 @@ $height = 96px
       line-height: 18px
       font-size: 14px
 
+    .row
+      height: auto
+      padding: 0
+
   // We need to apply the padding to the row, or we will break the responsiveness of
   // our faux-column sidebars
   .row
-    padding: 0 20px
     height: $height - 2 // Max nav height (required for IE9) to show bottom border
+    padding: 0 20px
 
   h1
     display: block
@@ -135,16 +143,11 @@ $height = 96px
     line-height: @height
     padding: 0 20px
 
-    &:first-child
-      padding-left: 0
-
-    &:last-child
-      padding-right: 0
-
     &.active
       background-color: $active-background
       background-image: linear-gradient(top, rgba(255, 255, 255, .6), @background-color)
       border: 1px solid $active-border
+      border-width: 0 1px
       display: inline-block
 
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)

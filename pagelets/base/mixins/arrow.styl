@@ -14,22 +14,23 @@
  * @param string border color
  * @param string background color
  * @param integer width of the border
+ * @param boolean display the arrow inside
  * @return markup for attached to parent
  */
-arrow(side, offset, size, border, background, width)
+arrow(side, offset, size, border, background, width, inside = false)
   // Transpose the sides, right arrow requires left border etc.
   if side is 'right'
-    side = 'left'
-    pos = left 100% top 0
+    side = inside ? 'right' : 'left'
+    pos = inside ? left 0 top 0 : left 100% top 0
   else if side is 'left'
-    side = 'right'
-    pos = right 100% top 0
+    side = inside ? 'left' : 'right'
+    pos = inside ? right 0 top 0 : right 100% top 0
   else if side is 'top'
-    side = 'bottom'
-    pos = left 0 bottom 100%
+    side = inside ? 'top' : 'bottom'
+    pos = inside ? left 0 top 0 : left 0 bottom 100%
   else if side is 'bottom'
-    side = 'top'
-    pos = left 0 top 100%
+    side = inside ? 'bottom' : 'top'
+    pos = inside ? left 0 bottom 0 : left 0 top 100%
 
   sides = side is 'left' or side is 'right' ? 1 : 0
 
@@ -42,10 +43,12 @@ arrow(side, offset, size, border, background, width)
 
   &:before
     {sides ? 'top' : 'left'}: offset
+    {sides ? 'margin-top' : 'margin-left'}: size * -1
     border: size solid transparent
     border-{side}-color: border
 
   &:after
     {sides ? 'top' : 'left'}: offset
+    {sides ? 'margin-top' : 'margin-left'}: size * -1
     border: (size - width) solid transparent
     border-{side}-color: background
