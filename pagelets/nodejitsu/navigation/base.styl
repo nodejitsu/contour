@@ -135,20 +135,17 @@ $height = 96px
     s
       font-size: 70%
 
-.subnavigation
-  margin-bottom: 2em
+.subnavigation a
+  height: 48px
+  line-height: @height
+  padding: 0 20px
 
-  a
-    height: 48px
-    line-height: @height
-    padding: 0 20px
-
-    &.active
-      background-color: $active-background
-      background-image: linear-gradient(top, rgba(255, 255, 255, .6), @background-color)
-      border: 1px solid $active-border
-      border-width: 0 1px
-      display: inline-block
+  &.active
+    background-color: $active-background
+    background-image: linear-gradient(top, rgba(255, 255, 255, .6), @background-color)
+    border: 1px solid $active-border
+    border-width: 0 1px
+    display: inline-block
 
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
   .navigation
