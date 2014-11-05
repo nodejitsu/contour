@@ -5,13 +5,13 @@ nSlides = 4
 max = nSlides - 1
 for i in 0..(max)
   #panel{i}:checked
-    ~ article .slidedeck
+    ~ .slidedeck
       margin-left: i * -100%
 
 
     // Active Indicators below the slider
     k = i + 1
-    ~ article .indicator li:nth-child({k}) label
+    ~ .indicator li:nth-child({k}) label
       background-color: $indicator
       background-image: -webkit-radial-gradient(center, ellipse cover, lighten($indicator, 5) 0%, $indicator 100%)
       box-shadow: inset 0 1px 1px darken($indicator, 10)
@@ -74,7 +74,7 @@ input[name=panel]
   .slide
     float: left
     left: 0
-    height: $height
+    height: $height - 50px
     margin-bottom: 30px
     position: relative
     top: 0
