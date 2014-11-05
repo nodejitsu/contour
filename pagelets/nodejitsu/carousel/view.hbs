@@ -1,0 +1,27 @@
+<section class="carousel row">
+  {{#carousel-controls slides}}
+  <input type="radio" name="panel" id="{{panel}}"{{checked}}>
+  {{/carousel-controls}}
+
+  <div class="slidedeck">
+    {{#each slides}}
+    <div class="slide{{#if class}} {{class}}{{/if}}">
+      {{{content}}}
+    </div>
+    {{/each}}
+  </div>
+
+  <ul class="indicator" role="presentation">
+    {{#carousel-controls slides}}
+    <li>
+      <label for="{{panel}}"></label>
+    </li>
+    {{/carousel-controls}}
+  </ul>
+
+  <div class="carousel-control gone">
+    {{#carousel-controls slides}}
+    <label class="control ss-navigateleft" for="{{panel}}"></label>
+    {{/carousel-controls}}
+  </div>
+</section>
