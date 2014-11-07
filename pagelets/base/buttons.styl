@@ -80,6 +80,22 @@
   text-shadow: 0 -1px 0 lighten($btn-action-text-shadow, 20%)
   text-transform: uppercase
 
+  &.red
+    background-color: $btn-action-red-bg-bottom
+    background-image: linear-gradient(top, $btn-action-red-bg-top 10%, $btn-action-red-bg-bottom)
+    text-shadow: 0 -1px 0 $btn-action-red-bg-top
+
+    &:hover
+      background-image: linear-gradient(top, $btn-action-red-bg-top 10%, $btn-action-red-bg-bottom-hover)
+
+  &.blue
+    background-color: $btn-action-blue-bg-bottom
+    background-image: linear-gradient(top, $btn-action-blue-bg-top 10%, $btn-action-blue-bg-bottom)
+    text-shadow: 0 -1px 0 $btn-action-blue-bg-top
+
+    &:hover
+      background-image: linear-gradient(top, $btn-action-blue-bg-top 10%, $btn-action-blue-bg-bottom-hover)
+
   &:hover
     background-image: linear-gradient(top, $btn-action-bg-top 10%, lighten($btn-action-bg-top, 2%))
     color: #FFF !important
