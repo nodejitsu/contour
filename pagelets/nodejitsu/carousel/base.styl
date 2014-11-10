@@ -12,7 +12,6 @@ for i in 0..(max)
     ~ .slidedeck
       margin-left: i * -100%
 
-
     //
     // Active Indicators below the slider
     //
@@ -21,7 +20,7 @@ for i in 0..(max)
       background-color: $indicator
       box-shadow: inset 0 1px 1px darken($indicator, 10)
 
-    ~ .carousel-control label
+    ~ .controls label
       //
       // Next arrow, right of the carousel.
       //
@@ -65,8 +64,8 @@ input[name=panel]
   transform: translateZ(0) // Force hardware rendering on the whole carousel
   width: 100%
 
-  a
-    text-shadow:none;
+  &:hover .controls .control
+    visibility: visible
 
   .slidedeck
     margin-top: 20px
@@ -108,22 +107,24 @@ input[name=panel]
       width: @height
       transition: all 0.5s ease-out
 
-.carousel-control
+.controls
   overflow: visible
   position: relative
 
   .control
-    color: $indicator
+    color: #c4c7c9
     cursor: pointer
     display: none
     position: absolute
+    visibility: hidden
     font-size: 34px
     line-height: @font-size
     margin-top: (height / 2) - @font-size
     text-align: left
+    transition: visibility 1s ease-out
 
     &:hover
-      color: $link
+      color: $indicator
 
     &:before
       display: inline-block
@@ -133,5 +134,5 @@ input[name=panel]
     .slide
       padding: 0 20px
 
-  .carousel-control
-    display: none
+    .controls
+      display: none
