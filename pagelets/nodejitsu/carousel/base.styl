@@ -1,65 +1,68 @@
 @import "../defaults"
 
-// slider controls, adjecent nodes are styled by checked radio input.
+//
+// Slider controls, adjecent nodes are styled by checked radio input.
+//
+height = 300px
 nSlides = 4
 max = nSlides - 1
+
 for i in 0..(max)
   #panel{i}:checked
     ~ .slidedeck
       margin-left: i * -100%
 
 
+    //
     // Active Indicators below the slider
+    //
     k = i + 1
     ~ .indicator li:nth-child({k}) label
       background-color: $indicator
-      background-image: -webkit-radial-gradient(center, ellipse cover, lighten($indicator, 5) 0%, $indicator 100%)
       box-shadow: inset 0 1px 1px darken($indicator, 10)
 
     ~ .carousel-control label
+      //
       // Next arrow, right of the carousel.
+      //
       k = i < max ? i + 2 : 1
       &:nth-child({k})
         display: block
-        float: right
-        margin: 0 -145px 0
-        text-align: right
+        right: 0
 
         &:before
           transform: rotate(-180deg)
-          display: inline-block
-          text-shadow: #B2D1E8 -1px 1px 0
 
+      //
       // Previous arrow, left of the carousel.
+      //
       k = i == 0 ? nSlides : i
       &:nth-child({k})
         display: block
 
-// only do the transitions after the webfonts are fully loaded or this will cause
+//
+// Only do the transitions after the webfonts are fully loaded or this will cause
 // some funky effects when you go back to the page
+//
 .cortex-loaded .carousel .slidedeck
   transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000)
   transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000)
 
-// hide radio buttons that are being abused as status control
+//
+// Hide radio buttons that are being abused as status control
+//
 input[name=panel]
   display: none
 
 .carousel
-  $height = 300px // slide height
-
   background: $background
   border-radius: 5px
-  border-bottom: 2px solid $divider
   color: $base-color
-  height: $height
+  height: height
   margin-bottom: 10px
   overflow: hidden
   position: relative
-  // force hardware rendering on the whole carousel
-  transform: translateZ(0)
-  // ensures that it's above the carousel-control
-  z-index: 1
+  transform: translateZ(0) // Force hardware rendering on the whole carousel
   width: 100%
 
   a
@@ -68,19 +71,18 @@ input[name=panel]
   .slidedeck
     margin-top: 20px
     position: relative
-    // times 4 the relative size to fit 4 panes of features
-    width: 400%
+    width: 400% // Times 4 the relative size to fit 4 panes of features
 
   .slide
     float: left
-    left: 0
-    height: $height - 50px
-    margin-bottom: 30px
-    position: relative
-    top: 0
+    height: height - 50px
+    padding: 0 40px
     width: 25% // Each pane is a quarter of the total size
+    position: relative
 
-  // The slides indicator
+  //
+  // Slide indicators
+  //
   .indicator
     bottom: 0
     left: 30%
@@ -107,32 +109,27 @@ input[name=panel]
       transition: all 0.5s ease-out
 
 .carousel-control
-  margin: -257px auto 0
   overflow: visible
   position: relative
 
-  // ensures that it's under the actual carousel
-  z-index: 0
-
   .control
-    background: url($sprite-carousel-control) no-repeat
-    color: #D6E8F6
+    color: $indicator
     cursor: pointer
     display: none
-    float: left
+    position: absolute
     font-size: 34px
-    height: 220px
-    margin: 0 0 0 -145px
-    padding: 50px 95px 0
+    line-height: @font-size
+    margin-top: (height / 2) - @font-size
     text-align: left
-    text-shadow: #B2D1E8 -1px -1px 0
-    width: 290px
+
+    &:hover
+      color: $link
+
+    &:before
+      display: inline-block
 
 @media handheld, only screen and (max-width: 767px)
   .carousel
-    &.twelvecol
-      padding: 0
-
     .slide
       padding: 0 20px
 
