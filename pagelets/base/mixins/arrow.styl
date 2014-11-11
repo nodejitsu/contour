@@ -21,10 +21,10 @@ arrow(side, offset, size, border, background, width, inside = false)
   // Transpose the sides, right arrow requires left border etc.
   if side is 'right'
     side = inside ? 'right' : 'left'
-    pos = inside ? left 0 top 0 : left 100% top 0
+    pos = inside ? right 0 top 0 : left 100% top 0
   else if side is 'left'
     side = inside ? 'left' : 'right'
-    pos = inside ? right 0 top 0 : right 100% top 0
+    pos = inside ? left 0 top 0 : right 100% top 0
   else if side is 'top'
     side = inside ? 'top' : 'bottom'
     pos = inside ? left 0 top 0 : left 0 bottom 100%

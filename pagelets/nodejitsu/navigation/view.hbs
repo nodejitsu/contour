@@ -18,13 +18,15 @@
 </section>
 {{#if subnavigation}}
 <section class="subnavigation">
-  <nav class="row">
-    {{#navigation-links subnavigation true}}
-    <a href="{{href}}"{{target}}{{{active}}}>
-      {{name}}
-    </a>
-    {{/navigation-links}}
-  </nav>
+  <div class="row">
+    <nav class="twelvecol">
+      {{#navigation-links subnavigation true}}
+      <a href="{{href}}"{{target}}{{{active}}}>
+        {{name}}
+      </a>
+      {{/navigation-links}}
+    </nav>
+  </div>
 </section>
 {{/if}}
 <section data-pagelet="login"></section>

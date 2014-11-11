@@ -31,7 +31,6 @@ $height = 96px
     height: $height
 
     .active
-      arrow('top', 50%, 6px, $active-background, $active-background, 1px, true)
       background: none
       border: none
 
@@ -147,18 +146,24 @@ $height = 96px
     border-width: 0 1px
     display: inline-block
 
+
+@media handheld, only screen and (min-width: 767px)
+  .navigation.alternative .active
+    arrow('top', 50%, 6px, $active-background, $active-background, 1px, true)
+
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
   .navigation
     a.loginout
-      margin-right: 100px
+      margin-right: 12px
 
-    a:not(.mobile):not(.logo):not(.loginout):not(.sign)
-      padding: 0 8px
+@media handheld, only screen and (max-width: 1120px)
+  .subnavigation a
+    font-size: 12px
 
 @media handheld, only screen and (max-width: 1120px) and (min-width: 767px)
   .navigation
     a:not(.mobile):not(.logo):not(.loginout):not(.sign)
-      font-size: 12px
+      font-size: 13px
 
     a.sign
     a.loginout
@@ -231,8 +236,12 @@ $height = 96px
       h1
         height: 70px
 
-      a
-        color: $base-color
+      a:not(.mobile):not(.logo):not(.loginout):not(.sign)
+        margin: 0
+        border-bottom: none
+
+        &.active
+          arrow('left', 50%, 6px, $active-background, $active-background, 1px, true)
 
       .mobile
         top: 15px
