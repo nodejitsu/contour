@@ -20,12 +20,12 @@ for i in 0..(max)
       background-color: $indicator
       box-shadow: inset 0 1px 1px darken($indicator, 10)
 
-    ~ .controls label
+    ~ .control
       //
       // Next arrow, right of the carousel.
       //
       k = i < max ? i + 2 : 1
-      &:nth-child({k})
+      &:nth-of-type({k})
         display: block
         right: 0
 
@@ -36,7 +36,7 @@ for i in 0..(max)
       // Previous arrow, left of the carousel.
       //
       k = i == 0 ? nSlides : i
-      &:nth-child({k})
+      &:nth-of-type({k})
         display: block
 
 //
@@ -57,14 +57,14 @@ input[name=panel]
   background: $background
   border-radius: 5px
   color: $base-color
-  height: height
+  min-height: height
   margin-bottom: 10px
   overflow: hidden
   position: relative
   transform: translateZ(0) // Force hardware rendering on the whole carousel
   width: 100%
 
-  &:hover .controls .control
+  &:hover .control
     visibility: visible
 
   .slidedeck
@@ -74,7 +74,7 @@ input[name=panel]
 
   .slide
     float: left
-    height: height - 50px
+    min-height: height - 50px
     padding: 0 40px
     width: 25% // Each pane is a quarter of the total size
     position: relative
@@ -107,10 +107,6 @@ input[name=panel]
       width: @height
       transition: all 0.5s ease-out
 
-.controls
-  overflow: visible
-  position: relative
-
   .control
     color: #c4c7c9
     cursor: pointer
@@ -119,7 +115,8 @@ input[name=panel]
     visibility: hidden
     font-size: 34px
     line-height: @font-size
-    margin-top: (height / 2) - @font-size
+    top: 50%
+    margin-top: -@font-size
     text-align: left
     transition: visibility 1s ease-out
 
@@ -132,7 +129,7 @@ input[name=panel]
 @media handheld, only screen and (max-width: 767px)
   .carousel
     .slide
-      padding: 0 20px
+      padding: 0
 
-    .controls
-      display: none
+    .control
+      display: none !important
