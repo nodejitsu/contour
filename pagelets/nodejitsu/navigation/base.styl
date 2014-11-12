@@ -45,11 +45,13 @@ $height = 96px
         float: left
         line-height: $height
 
-    .logo
-      background-position: 0 -146px
+    h1
       position: absolute
       left: 50%
       margin-left: -750px
+
+      .logo
+        background-position: 0 -146px
 
     .sign
     .loginout
@@ -155,6 +157,12 @@ $height = 96px
     a.loginout
       margin-right: 12px
 
+    &.alternative h1
+      right: 0
+      left: initial
+      margin-right: 20%
+      width: 56px
+
 @media handheld, only screen and (max-width: 1120px)
   .subnavigation a
     font-size: 12px
@@ -229,6 +237,10 @@ $height = 96px
 
       h1
         height: 70px
+        position: relative
+        left: initial
+        margin-left: 20px
+        width: 180px
 
       a:not(.mobile):not(.logo):not(.loginout):not(.sign)
         margin: 0
