@@ -152,6 +152,11 @@ $height = 96px
   .navigation.alternative .active
     arrow('top', 50%, 6px, $active-background, $active-background, 1px, true)
 
+@media handheld, only screen and (max-width: 1540px) and (min-width: 1270px)
+  .navigation.alternative h1
+    width: 56px
+    margin-left: -629px
+
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
   .navigation
     a.loginout
