@@ -20,7 +20,7 @@ require('./pagelet').extend({
   view: '{{brand}}/head/view.hbs',
 
   //
-  // Default data for alert notificiation, can be changed by using `set`.
+  // Default data for head elements, can be changed by using `set`.
   //
   defaults: {
     optimizely: false,

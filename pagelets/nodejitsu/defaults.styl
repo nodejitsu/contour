@@ -24,7 +24,7 @@ $cdn = '//versions.nodejitsu.com/id:home'
  * $sprite-trusted = Trusted companies logos
  * $sprite-carousel = Logos that we don't have in our fonts
  */
-$sprite-location = $cdn '/img/sprite.png'
+$sprite-location = '/img/sprite.png'
 $sprite-grid = 12px
 
 $sprite-trusted = $cdn '/img/trusted.png'
@@ -175,6 +175,14 @@ $btn-action-bg-bottom = #FF9200
 $btn-action-bg-bottom-hover = #D27901
 $btn-action-box-shadow = #B86900
 $btn-action-box-shadow-hover = #894E00
+
+$btn-action-red-bg-bottom = #CC5C5C
+$btn-action-red-bg-top = lighten($btn-action-red-bg-bottom, 20%)
+$btn-action-red-bg-bottom-hover = lighten($btn-action-red-bg-top, 2%)
+
+$btn-action-blue-bg-bottom = $link
+$btn-action-blue-bg-top = lighten($btn-action-blue-bg-bottom, 20%)
+$btn-action-blue-bg-bottom-hover = lighten($btn-action-blue-bg-top, 2%)
 
 /**
  * Form

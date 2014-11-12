@@ -1,0 +1,136 @@
+@import "../defaults"
+
+//
+// Slider controls, adjecent nodes are styled by checked radio input.
+//
+height = 300px
+nSlides = 4
+max = nSlides - 1
+
+for i in 0..(max)
+  #panel{i}:checked
+    ~ .slidedeck
+      margin-left: i * -100%
+
+    //
+    // Active Indicators below the slider
+    //
+    k = i + 1
+    ~ .indicator li:nth-child({k}) label
+      background-color: $indicator
+      box-shadow: inset 0 1px 1px darken($indicator, 10)
+
+    ~ .control
+      //
+      // Next arrow, right of the carousel.
+      //
+      k = i < max ? i + 2 : 1
+      &:nth-of-type({k})
+        display: block
+        right: 0
+
+        &:before
+          transform: rotate(-180deg)
+
+      //
+      // Previous arrow, left of the carousel.
+      //
+      k = i == 0 ? nSlides : i
+      &:nth-of-type({k})
+        display: block
+
+//
+// Only do the transitions after the webfonts are fully loaded or this will cause
+// some funky effects when you go back to the page
+//
+.cortex-loaded .carousel .slidedeck
+  transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000)
+  transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000)
+
+//
+// Hide radio buttons that are being abused as status control
+//
+input[name=panel]
+  display: none
+
+.carousel
+  background: $background
+  border-radius: 5px
+  color: $base-color
+  min-height: height
+  margin-bottom: 10px
+  overflow: hidden
+  position: relative
+  transform: translateZ(0) // Force hardware rendering on the whole carousel
+  width: 100%
+
+  &:hover .control
+    visibility: visible
+
+  .slidedeck
+    margin-top: 20px
+    position: relative
+    width: 400% // Times 4 the relative size to fit 4 panes of features
+
+  .slide
+    float: left
+    min-height: height - 50px
+    padding: 0 40px
+    width: 25% // Each pane is a quarter of the total size
+    position: relative
+
+  //
+  // Slide indicators
+  //
+  .indicator
+    bottom: 0
+    left: 30%
+    list-style: none
+    padding-left: 0
+    position: absolute
+    right: 30%
+    text-align: center
+    user-select: none;
+
+    li
+      display: inline-block
+      margin: 0 3px
+
+    label
+      background: $divider
+      border-radius: 10px
+      box-shadow: inset 0 1px 1px darken($divider, 20)
+      cursor: pointer
+      display: inline-block
+      height: 8px
+      overflow: hidden
+      text-indent: -9999px
+      width: @height
+      transition: all 0.5s ease-out
+
+  .control
+    color: #c4c7c9
+    cursor: pointer
+    display: none
+    position: absolute
+    visibility: hidden
+    font-size: 34px
+    line-height: @font-size
+    top: 50%
+    margin-top: -@font-size
+    text-align: left
+    transition: visibility 1s ease-out
+
+    &:hover
+      color: $indicator
+
+    &:before
+      display: inline-block
+
+@media handheld, only screen and (max-width: 767px)
+  .carousel
+    .slide
+      padding: 0
+
+    .control
+      display: none !important

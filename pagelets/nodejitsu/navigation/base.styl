@@ -1,28 +1,30 @@
 @import "../defaults"
+@import "../../base/mixins/arrow"
 
 // The navigation bar has a fixed height
 $height = 96px
 
 .navigation
-  background: $background
+.subnavigation
   border-bottom: 1px solid $divider
+  border-width: 1px 0
+  margin: 0 -20px
+  position: relative
+  z-index: 10
+  overflow: hidden
+  font-family: $font-family
+
+.navigation
+  background-color: $hero-background
+  background-image: linear-gradient(top, rgba(255, 255, 255, .4) 0%, transparent 100%);
   box-shadow: 0 -3px 10px $nav-box-shadow, inset 0 0 1px $nav-box-shadow
   font-size: 16px
   font-weight: bold
-  font-family: $font-family
-  height: $height
-  margin: 0 -20px
-  overflow: hidden
-  position: relative
-  // z-index is required to put the navbar above all other regular content as the
-  // box-shadow must be dropped upon them
-  z-index: 10
 
   &.alternative
     // The alternative navigation bar has a smaller height
-    $height = 70px
+    $height = 64px
 
-    background: transparent
     box-shadow: none
     border-bottom: none
     height: $height
@@ -37,28 +39,36 @@ $height = 96px
 
       &:nth-child(3)
         border-left: none
-        margin-left: 50px
 
       &:not(.loginout):not(.mobile):not(.sign)
-        height: $height - 1 // substract 1px for the bottom border
+        height: $height
         float: left
         line-height: $height
 
-    .logo
-      background-position: 0 -146px
+    h1
+      position: absolute
+      left: 50%
+      margin-left: -750px
+
+      .logo
+        background-position: 0 -146px
 
     .sign
     .loginout
       height: 28px
-      margin-top: 20px
+      margin-top: 18px
       line-height: 18px
       font-size: 14px
+
+    .row
+      height: auto
+      padding: 0
 
   // We need to apply the padding to the row, or we will break the responsiveness of
   // our faux-column sidebars
   .row
-    padding: 0 20px
     height: $height - 2 // Max nav height (required for IE9) to show bottom border
+    padding: 0 20px
 
   h1
     display: block
@@ -125,18 +135,42 @@ $height = 96px
     s
       font-size: 70%
 
+.subnavigation a
+  height: 48px
+  line-height: @height
+  padding: 0 20px
+
+  &.active
+    background-color: $active-background
+    background-image: linear-gradient(top, rgba(255, 255, 255, .6), @background-color)
+    border: 1px solid $active-border
+    display: inline-block
+    height: 50px
+    margin: -1px 0
+
+@media handheld, only screen and (min-width: 767px)
+  .navigation.alternative .active
+    arrow('top', 50%, 6px, $active-background, $active-background, 1px, true)
+
 @media handheld, only screen and (max-width: 1270px) and (min-width: 767px)
   .navigation
     a.loginout
-      margin-right: 100px
+      margin-right: 12px
 
-    a:not(.mobile):not(.logo):not(.loginout):not(.sign)
-      padding: 0 8px
+    &.alternative h1
+      right: 0
+      left: initial
+      margin-right: 20%
+      width: 56px
+
+@media handheld, only screen and (max-width: 1120px)
+  .subnavigation a
+    font-size: 12px
 
 @media handheld, only screen and (max-width: 1120px) and (min-width: 767px)
   .navigation
     a:not(.mobile):not(.logo):not(.loginout):not(.sign)
-      font-size: 12px
+      font-size: 13px
 
     a.sign
     a.loginout
@@ -146,11 +180,6 @@ $height = 96px
 
       s
         display: none
-
-@media handheld, only screen and (max-width: 910px) and (min-width: 767px)
-  .navigation
-    a.loginout
-      margin-right: 0px
 
 @media handheld, only screen and (max-width: 767px)
   // don't add the transitions until our webfonts are loaded as it will increase in size
@@ -208,9 +237,17 @@ $height = 96px
 
       h1
         height: 70px
+        position: relative
+        left: initial
+        margin-left: 20px
+        width: 180px
 
-      a
-        color: $base-color
+      a:not(.mobile):not(.logo):not(.loginout):not(.sign)
+        margin: 0
+        border-bottom: none
+
+        &.active
+          arrow('left', 50%, 6px, $active-background, $active-background, 1px, true)
 
       .mobile
         top: 15px

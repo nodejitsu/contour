@@ -22,10 +22,9 @@
   background-image: linear-gradient(top, $btn-default-bg-top 10%, $btn-default-bg-bottom)
   border-radius: $radius
   border: 1px solid $btn-default-border
-  box-shadow: 0 2px 0 $btn-default-box-shadow
   color: $link !important
   display: inline-block
-  font-weight: bold
+  font-weight: normal
   padding: 5px 10px
   text-decoration: none
   text-shadow: 0 1px 0 #FFF
@@ -58,7 +57,7 @@
   color: $btn-icon-text !important
   display: inline-block
   font-size: 13px
-  font-weight: bold
+  font-weight: normal
   padding: 5px 10px
   text-decoration: none
   text-shadow: 0 1px 0 #FFF
@@ -73,18 +72,32 @@
   background-image: linear-gradient(top, $btn-action-bg-top 10%, $btn-action-bg-bottom)
   border-radius: $radius
   border: 0
-  box-shadow: 0 2px 0 $btn-action-box-shadow
   color: #FFF !important
   display: inline-block
-  font-weight: bold
+  font-weight: normal
   padding: 5px 10px
   text-decoration: none
-  text-shadow: 0 -1px 0 $btn-action-text-shadow
+  text-shadow: 0 -1px 0 lighten($btn-action-text-shadow, 20%)
   text-transform: uppercase
 
+  &.red
+    background-color: $btn-action-red-bg-bottom
+    background-image: linear-gradient(top, $btn-action-red-bg-top 10%, $btn-action-red-bg-bottom)
+    text-shadow: 0 -1px 0 $btn-action-red-bg-top
+
+    &:hover
+      background-image: linear-gradient(top, $btn-action-red-bg-top 10%, $btn-action-red-bg-bottom-hover)
+
+  &.blue
+    background-color: $btn-action-blue-bg-bottom
+    background-image: linear-gradient(top, $btn-action-blue-bg-top 10%, $btn-action-blue-bg-bottom)
+    text-shadow: 0 -1px 0 $btn-action-blue-bg-top
+
+    &:hover
+      background-image: linear-gradient(top, $btn-action-blue-bg-top 10%, $btn-action-blue-bg-bottom-hover)
+
   &:hover
-    background-image: linear-gradient(top, $btn-action-bg-top 10%, $btn-action-bg-bottom-hover)
-    box-shadow: 0 2px 0 $btn-action-box-shadow-hover
+    background-image: linear-gradient(top, $btn-action-bg-top 10%, lighten($btn-action-bg-top, 2%))
     color: #FFF !important
     text-decoration: none
 
@@ -94,11 +107,3 @@
 
   &.standalone
     margin: 30px 0 20px
-
-  &.flat
-    box-shadow: none
-    text-shadow: none
-
-    &:hover
-      background-image: linear-gradient(top, $btn-action-bg-top 10%, lighten($btn-action-bg-top, 2%))
-      box-shadow: none

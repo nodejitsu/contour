@@ -27,4 +27,4 @@ TODO
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Nodejitsu Inc.
+Copyright (c) 2014 Moveo - Martijn Swaagman.
