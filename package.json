@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   "dependencies": {
     "async": "0.9.x",
     "cheerio": "0.17.x",
-    "cortex.js": "0.1.x",
+    "cortex.js": "0.2.x",
     "creditcard": "0.1.x",
     "fusing": "0.3.x",
     "handlebars": "2.0.x",
