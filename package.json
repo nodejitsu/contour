@@ -1,6 +1,6 @@
 {
   "name": "contour",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Front-end scaffolding utility",
   "main": "index.js",
   "scripts": {
@@ -22,22 +22,22 @@
   "license": "MIT",
   "dependencies": {
     "async": "0.9.x",
-    "cheerio": "0.17.x",
+    "cheerio": "0.18.x",
     "cortex.js": "0.2.x",
     "creditcard": "0.1.x",
-    "fusing": "0.3.x",
+    "fusing": "0.4.x",
     "handlebars": "2.0.x",
     "pagelet": "0.8.x",
     "predefine": "0.1.x"
   },
   "devDependencies": {
-    "chai": "1.9.x",
+    "chai": "1.10.x",
     "coveralls": "2.11.x",
     "istanbul": "0.3.x",
-    "mocha": "1.21.x",
+    "mocha": "2.0.x",
     "mocha-lcov-reporter": "0.0.x",
     "pre-commit": "0.0.x",
-    "sinon": "1.10.x",
-    "sinon-chai": "2.5.x"
+    "sinon": "1.12.x",
+    "sinon-chai": "2.6.x"
   }
 }
