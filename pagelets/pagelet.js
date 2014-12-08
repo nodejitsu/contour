@@ -48,7 +48,7 @@ Pagelet.brand = function define(brand, standalone, done) {
   //
   // Traverse the pagelet to initialize any child pagelets.
   //
-  this.traverse(this.name || prototype.name);
+  this.children(this.name || prototype.name);
   return this.optimize({ transform: function transform(Pagelet, fn) {
     //
     // Replace paths in CSS, JS and dependencies.
