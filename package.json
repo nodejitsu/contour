@@ -28,7 +28,8 @@
     "fusing": "0.4.x",
     "handlebars": "2.0.x",
     "pagelet": "0.8.x",
-    "predefine": "0.1.x"
+    "predefine": "0.1.x",
+    "temper": "^0.2.1"
   },
   "devDependencies": {
     "chai": "1.10.x",

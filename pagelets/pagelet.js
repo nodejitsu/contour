@@ -3,8 +3,10 @@
 var Pagelet = require('pagelet')
   , cheerio = require('cheerio')
   , queue = require('../queue')
+  , Temper = require('temper')
   , async = require('async')
   , fs = require('fs')
+  , temper = new Temper
   , pagelet;
 
 /**
@@ -49,30 +51,33 @@ Pagelet.brand = function define(brand, standalone, done) {
   // Traverse the pagelet to initialize any child pagelets.
   //
   this.children(this.name || prototype.name);
-  return this.optimize({ transform: function transform(Pagelet, fn) {
-    //
-    // Replace paths in CSS, JS and dependencies.
-    //
-    if (Array.isArray(prototype.css)) {
-      prototype.css = prototype.css.map(brander);
-    }
+  return this.optimize({
+    temper: temper,
+    transform: function transform(Pagelet, fn) {
+      //
+      // Replace paths in CSS, JS and dependencies.
+      //
+      if (Array.isArray(prototype.css)) {
+        prototype.css = prototype.css.map(brander);
+      }
 
-    if (Array.isArray(prototype.js)) {
-      prototype.js = prototype.js.map(brander);
-    }
+      if (Array.isArray(prototype.js)) {
+        prototype.js = prototype.js.map(brander);
+      }
 
-    if (Array.isArray(prototype.dependencies)) {
-      prototype.dependencies = prototype.dependencies.map(brander);
-    }
+      if (Array.isArray(prototype.dependencies)) {
+        prototype.dependencies = prototype.dependencies.map(brander);
+      }
 
-    //
-    // Run each of the child pagelets through this special branding function as well.
-    //
-    if (!prototype.pagelets) return fn();
-    async.each(Object.keys(prototype.pagelets), function reduce(name, next) {
-      prototype.pagelets[name] = prototype.pagelets[name].brand(brand, standalone, next);
-    }, fn);
-  }}, done);
+      //
+      // Run each of the child pagelets through this special branding function as well.
+      //
+      if (!prototype.pagelets) return fn();
+      async.each(Object.keys(prototype.pagelets), function reduce(name, next) {
+        prototype.pagelets[name] = prototype.pagelets[name].brand(brand, standalone, next);
+      }, fn);
+    }
+  }, done);
 };
 
 /**
@@ -111,15 +116,6 @@ module.exports = pagelet = Pagelet.extend({
    * @api public
    */
   name: '',
-
-  /**
-   * REMOVE IN FUTURE: temporary fix for bigpipe 0.8, conditional expects
-   * a `page.req` object to be present.
-   *
-   * @type {Object}
-   * @api public
-   */
-  page: { req: null },
 
   /**
    * Reference to the queue singleton.
