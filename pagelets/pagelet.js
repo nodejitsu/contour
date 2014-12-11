@@ -3,82 +3,9 @@
 var Pagelet = require('pagelet')
   , cheerio = require('cheerio')
   , queue = require('../queue')
-  , Temper = require('temper')
   , async = require('async')
   , fs = require('fs')
-  , temper = new Temper
   , pagelet;
-
-/**
- * Return a mapping function with preset brand, will default to nodejitsu files if
- * the requested branded file does not exist.
- *
- * @param {String} brand
- * @returns {Function} mapper
- * @api private
- */
-function use(brand) {
-  return function branding(file) {
-    var branded = file.replace('{{brand}}', brand);
-    return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
-  };
-}
-
-/**
- * Set a specific branch. Used by temper to fetch all the proper assets.
- *
- * @param {String} brand
- * @param {Boolean} standalone, force pagelet to standalone mode
- * @param {Function} done Completion callback.
- * @returns {Pagelet} fluent interface
- * @api private
- */
-Pagelet.brand = function define(brand, standalone, done) {
-  var prototype = this.prototype
-    , brander = use(brand);
-
-  //
-  // Set the fragment such that only the template is rendered.
-  //
-  prototype.fragment = standalone ? '{pagelet:template}' : prototype.fragment;
-
-  //
-  // Use nodejitsu as default brand.
-  //
-  prototype.view = brander(prototype.view);
-
-  //
-  // Traverse the pagelet to initialize any child pagelets.
-  //
-  this.children(this.name || prototype.name);
-  return this.optimize({
-    temper: temper,
-    transform: function transform(Pagelet, fn) {
-      //
-      // Replace paths in CSS, JS and dependencies.
-      //
-      if (Array.isArray(prototype.css)) {
-        prototype.css = prototype.css.map(brander);
-      }
-
-      if (Array.isArray(prototype.js)) {
-        prototype.js = prototype.js.map(brander);
-      }
-
-      if (Array.isArray(prototype.dependencies)) {
-        prototype.dependencies = prototype.dependencies.map(brander);
-      }
-
-      //
-      // Run each of the child pagelets through this special branding function as well.
-      //
-      if (!prototype.pagelets) return fn();
-      async.each(Object.keys(prototype.pagelets), function reduce(name, next) {
-        prototype.pagelets[name] = prototype.pagelets[name].brand(brand, standalone, next);
-      }, fn);
-    }
-  }, done);
-};
 
 /**
  * Fetch some values of the Pagelets' original prototype.
@@ -116,6 +43,14 @@ module.exports = pagelet = Pagelet.extend({
    * @api public
    */
   name: '',
+
+  /**
+   * Set a flag to indicate this pagelet originates from contour.
+   *
+   * @type {Boolean}
+   * @api public
+   */
+  contour: true,
 
   /**
    * Reference to the queue singleton.

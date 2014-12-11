@@ -16,7 +16,7 @@ var Assets = require('./assets')
  *
  * Options that can be supplied
  *  - brand {String} framework or brand to use, e.g nodejitsu or opsmezzo
- *  - mode {String} bigpipe or standalone, defaults to bigpipe
+ *  - pipe {BigPipe} bigpipe instance
  *
  * @Constructor
  * @param {Object} options optional, see above
@@ -32,13 +32,15 @@ function Contour(options) {
   // Add the pagelets of the required framework.
   //
   options = options || {};
+  options.mode = 'object' === typeof options.pipe ? 'bigpipe' : 'standalone';
 
   //
   // Load and optimize the pagelets, extend contour but acknowledge external
   // listeners when all pagelets have been fully initialized.
   //
-  assets = new Assets(options.brand, options.mode || 'bigpipe');
+  assets = new Assets(options);
   assets.on('optimized', this.emits('init'));
+
   this.mixin(this, assets);
 }
 
