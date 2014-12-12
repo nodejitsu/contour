@@ -14,21 +14,6 @@ var fuse = require('fusing')
 var assets = path.join(__dirname, 'pagelets');
 
 /**
- * Return a mapping function with preset brand, will default to nodejitsu files if
- * the requested branded file does not exist.
- *
- * @todo, make call async
- *
- * @param {String} brand
- * @returns {Function} mapper
- * @api private
- */
-function brander(file) {
-  var branded = file.replace('{{brand}}', options.brand);
-  return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
-};
-
-/**
  * Create new collection of assets from a specific brand.
  *
  * Options that can be supplied
@@ -42,6 +27,21 @@ function Assets(options) {
     , enumerable = Assets.predefine(this, { configurable: false })
     , standalone = options.mode === 'standalone'
     , self = this;
+
+  /**
+   * Return a mapping function with preset brand, will default to nodejitsu files if
+   * the requested branded file does not exist.
+   *
+   * @todo, make call async
+   *
+   * @param {String} brand
+   * @returns {Function} mapper
+   * @api private
+   */
+  function brander(file) {
+    var branded = file.replace('{{brand}}', options.brand);
+    return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
+  };
 
   //
   // Hook into the before emit of optimize, this allows changing properties
