@@ -41,7 +41,7 @@ function Assets(options) {
   function brander(file) {
     var branded = file.replace('{{brand}}', options.brand);
     return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
-  };
+  }
 
   //
   // Hook into the before emit of optimize, this allows changing properties
