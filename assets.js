@@ -64,17 +64,17 @@ function Assets(options) {
     //
     // Replace paths in CSS, JS and dependencies.
     //
-    if (Array.isArray(prototype.css)) {
-      prototype.css = prototype.css.map(brander);
-    }
+    if (prototype.css) prototype.css = Array.isArray(prototype.css)
+      ? prototype.css.map(brander)
+      : brander(prototype.css);
 
-    if (Array.isArray(prototype.js)) {
-      prototype.js = prototype.js.map(brander);
-    }
+    if (prototype.js) prototype.js = Array.isArray(prototype.js)
+      ? prototype.js.map(brander)
+      : brander(prototype.js);
 
-    if (Array.isArray(prototype.dependencies)) {
-      prototype.dependencies = prototype.dependencies.map(brander);
-    }
+    if (prototype.dependencies) prototype.dependencies = Array.isArray(prototype.dependencies)
+      ? prototype.dependencies.map(brander)
+      : brander(prototype.dependencies);
 
     return done(null, Pagelet);
   });
