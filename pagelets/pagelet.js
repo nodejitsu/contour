@@ -100,7 +100,7 @@ module.exports = pagelet = Pagelet.extend({
    */
   use: function use(namespace, name, fn) {
     name = name || this.name;
-    this.temper.require('handlebars').registerHelper(
+    this._temper.require('handlebars').registerHelper(
       namespace + '-' + name,
       fn
     );

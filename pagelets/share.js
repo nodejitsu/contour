@@ -3,7 +3,7 @@
 //
 // Expose the share buttons Pagelet.
 //
-module.exports = require('./pagelet').extend({
+require('./pagelet').extend({
   //
   // Brand is replaced by Contour when the Pagelet is fetched from assets.
   //
