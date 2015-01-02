@@ -23,6 +23,8 @@ var assets = path.join(__dirname, 'pagelets');
  * @api public
  */
 function Assets(options) {
+  options = options || Object.create(null);
+
   var readable = Assets.predefine(this, Assets.predefine.READABLE)
     , enumerable = Assets.predefine(this, { configurable: false })
     , standalone = options.mode === 'standalone'
