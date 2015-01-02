@@ -24,9 +24,9 @@ var assets = path.join(__dirname, 'pagelets');
  */
 function Assets(options) {
   options = options || Object.create(null);
+  this.fuse();
 
-  var readable = Assets.predefine(this, Assets.predefine.READABLE)
-    , enumerable = Assets.predefine(this, { configurable: false })
+  var enumerable = Assets.predefine(this, { configurable: false })
     , standalone = options.mode === 'standalone'
     , self = this;
 
