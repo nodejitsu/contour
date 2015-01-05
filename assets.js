@@ -51,11 +51,11 @@ function Assets(options) {
     // Replace paths in views, css, js and dependencies.
     //
     async.each(['dependencies', 'view', 'css', 'js'], function brander(property, next) {
-      var value = prototype[property] && Array.isArray(prototype[property])
+      var value = Array.isArray(prototype[property])
         ? prototype[property]
         : [prototype[property]];
 
-      async.map(value, function each(file, fn) {
+      async.map(value.filter(Boolean), function each(file, fn) {
         var branded = file.replace('{{brand}}', options.brand);
 
         fs.exists(branded, function exist(exists) {

@@ -92,7 +92,7 @@ module.exports = require('./pagelet').extend({
    */
   links: function links(data, page, options) {
     if (!data || !data.length) return;
-
+console.log(arguments);
     var targets = ['self', 'blank', 'parent', 'top']
       , navigation = this;
 
