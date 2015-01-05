@@ -30,21 +30,6 @@ function Assets(options) {
     , standalone = options.mode === 'standalone'
     , self = this;
 
-  /**
-   * Return a mapping function with preset brand, will default to nodejitsu files if
-   * the requested branded file does not exist.
-   *
-   * @todo, make call async
-   *
-   * @param {String} brand
-   * @returns {Function} mapper
-   * @api private
-   */
-  function brander(file) {
-    var branded = file.replace('{{brand}}', options.brand);
-    return fs.existsSync(branded) ? branded : file.replace('{{brand}}', 'nodejitsu');
-  }
-
   //
   // Hook into the before emit of optimize, this allows changing properties
   // of the pagelet before it is constructed.
@@ -61,24 +46,38 @@ function Assets(options) {
     // Set the fragment such that only the template is rendered.
     //
     prototype.fragment = standalone ? '{pagelet:template}' : prototype.fragment;
-    prototype.view = brander(prototype.view);
 
     //
-    // Replace paths in CSS, JS and dependencies.
+    // Replace paths in views, css, js and dependencies.
     //
-    if (prototype.css) prototype.css = Array.isArray(prototype.css)
-      ? prototype.css.map(brander)
-      : brander(prototype.css);
+    async.each(['dependencies', 'view', 'css', 'js'], function brander(property, next) {
+      var value = prototype[property] && Array.isArray(prototype[property])
+        ? prototype[property]
+        : [prototype[property]];
 
-    if (prototype.js) prototype.js = Array.isArray(prototype.js)
-      ? prototype.js.map(brander)
-      : brander(prototype.js);
+      async.map(value, function each(file, fn) {
+        var branded = file.replace('{{brand}}', options.brand);
 
-    if (prototype.dependencies) prototype.dependencies = Array.isArray(prototype.dependencies)
-      ? prototype.dependencies.map(brander)
-      : brander(prototype.dependencies);
+        fs.exists(branded, function exist(exists) {
+          if (exists) return fn(null, branded);
 
-    return done(null, Pagelet);
+          //
+          // Resolve the path against the pagelet map and check again.
+          //
+          branded = path.join(__dirname, 'pagelets', branded);
+          fs.exists(branded, function exist(exists) {
+            fn(null, exists ? branded : file.replace('{{brand}}', 'nodejitsu'));
+          });
+        });
+      }, function mapped(error, result) {
+        if (error) return next(error);
+
+        prototype[property] = result.length === 1 ? result[0] : result;
+        next();
+      });
+    }, function branded(error) {
+      done(error, Pagelet);
+    });
   });
 
   //
